@@ -19,7 +19,7 @@ import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class DemoApplicationTests {
+class DatabaseTests {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
