@@ -55,7 +55,19 @@
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>decentralized-identity</groupId>
+			<artifactId>did-common-java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>danubetech-maven-public</id>
+			<url>https://repo.danubetech.com/repository/maven-public/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

@@ -29,7 +29,7 @@ public class VerifiableCredentialService {
 
     private final Keystore keystore;
 
-    static URI TRACEABILITY_URI = URI.create("https://w3id.org/traceability/v1");
+    static final URI TRACEABILITY_URI = URI.create("https://w3id.org/traceability/v1");
 
     @PostConstruct
     private void init() throws IOException, JsonLdError {
@@ -47,7 +47,7 @@ public class VerifiableCredentialService {
         VerifiableCredential verifiableCredential = VerifiableCredential.builder()
                 .context(TRACEABILITY_URI)
                 .issuer(issuerId)
-                .issuanceDate(new Date())
+                .issuanceDate(issuanceDate)
                 .credentialSubject(credentialSubject)
                 .build();
         Ed25519Signature2018LdSigner signer = new Ed25519Signature2018LdSigner(keystore.getPrivKey());
