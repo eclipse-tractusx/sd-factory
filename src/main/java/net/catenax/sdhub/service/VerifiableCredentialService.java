@@ -1,4 +1,4 @@
-package com.tsystems.sdhub.service;
+package net.catenax.sdhub.service;
 
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
@@ -6,11 +6,11 @@ import com.apicatalog.jsonld.http.media.MediaType;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
-import com.tsystems.sdhub.util.Keystore;
 import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 import info.weboftrust.ldsignatures.signer.Ed25519Signature2018LdSigner;
 import info.weboftrust.ldsignatures.verifier.Ed25519Signature2018LdVerifier;
 import lombok.RequiredArgsConstructor;
+import net.catenax.sdhub.util.Keystore;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

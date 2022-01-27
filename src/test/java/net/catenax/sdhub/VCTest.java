@@ -1,7 +1,7 @@
-package com.tsystems.sdhub;
+package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import com.tsystems.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

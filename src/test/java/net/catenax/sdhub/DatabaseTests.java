@@ -1,8 +1,8 @@
-package com.tsystems.sdhub;
+package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.mongodb.DBObject;
-import com.tsystems.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.bson.Document;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
