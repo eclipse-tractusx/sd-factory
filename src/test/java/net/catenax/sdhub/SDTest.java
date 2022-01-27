@@ -34,9 +34,18 @@ public class SDTest {
                 .retrieve()
                 .bodyToMono(VerifiablePresentation.class)
                 .block();
-        var keyRef = URI.create("did:web:catalog.demo.supplytree.org:api:user:5673c857d0#key");
+        // holder is just missed in the VP from https://catalog.demo.supplytree.org
         var holderId = URI.create("did:web:catalog.demo.supplytree.org:api:user:5673c857d0");
+        var keyRef = URI.create("#key");
         var verifier = didResolver.createVerifier(holderId, keyRef);
         Assert.assertTrue(verifier.verify(vp));
+        var vc = vp.getVerifiableCredential();
+        var issuerUrl = vc.getIssuer().toString();
+        var issuerId = issuerUrl.substring(issuerUrl.lastIndexOf("/") + 1);
+        // Issuer DID is given in form of URL, but not as DID. Probably a bug
+        var issuerDid = URI.create("did:web:catalog.demo.supplytree.org:api:user:" + issuerId);
+        var issuerKeyRef = URI.create("#key");
+        verifier = didResolver.createVerifier(issuerDid, issuerKeyRef);
+        Assert.assertTrue(verifier.verify(vc));
     }
 }
