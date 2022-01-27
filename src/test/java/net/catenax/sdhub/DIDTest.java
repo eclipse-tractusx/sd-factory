@@ -5,7 +5,9 @@ import foundation.identity.did.DIDDocument;
 import foundation.identity.did.Service;
 import foundation.identity.did.VerificationMethod;
 import io.ipfs.multibase.Base58;
+import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.util.Keystore;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,11 @@ public class DIDTest {
     @Autowired
     private Keystore keystore;
 
+    @Autowired
+    DidResolver didResolver;
+
     @Test
-    public void didTest() {
+    public void createDidTest() {
         URI did = URI.create("did:ex:1234");
 
         Service service = Service.builder()
@@ -43,5 +48,17 @@ public class DIDTest {
                 .build();
 
         System.out.println(diddoc.toJson(true));
+    }
+
+    @Test
+    public void resolveDidTest() {
+        var didDocument = didResolver.resolveKey(URI.create("did:web:vc.transmute.world"), URI.create("did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"));
+        Assert.assertNotNull(didDocument);
+    }
+
+    @Test
+    public void createVerifier() {
+        var verifier = didResolver.createVerifier(URI.create("did:web:vc.transmute.world"), URI.create("did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"));
+        Assert.assertNotNull(verifier);
     }
 }
