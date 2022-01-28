@@ -56,5 +56,4 @@ public class VCTest {
                 URI.create("https://catalog.demo.supplytree.org/api/user/sd-hub")
         );
     }
-
 }

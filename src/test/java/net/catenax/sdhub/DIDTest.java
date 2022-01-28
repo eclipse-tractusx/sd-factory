@@ -4,6 +4,7 @@ package net.catenax.sdhub;
 import foundation.identity.did.DIDDocument;
 import foundation.identity.did.Service;
 import foundation.identity.did.VerificationMethod;
+import foundation.identity.jsonld.JsonLDDereferencer;
 import io.ipfs.multibase.Base58;
 import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.util.Keystore;
@@ -51,14 +52,21 @@ public class DIDTest {
     }
 
     @Test
-    public void resolveDidTest() {
-        var didDocument = didResolver.resolveKey(URI.create("did:web:vc.transmute.world"), URI.create("did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"));
+    public void resolveDid1Test() {
+        var didDocument = didResolver.resolve(URI.create("did:web:vc.transmute.world"));
         Assert.assertNotNull(didDocument);
     }
 
     @Test
-    public void createVerifier() {
-        var verifier = didResolver.createVerifier(URI.create("did:web:vc.transmute.world"), URI.create("did:web:vc.transmute.world#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN"));
-        Assert.assertNotNull(verifier);
+    public void resolveDid2Test() {
+        var didDocument = didResolver.resolve(URI.create("https://catalog.demo.supplytree.org/api/user/5673c857d0"));
+        Assert.assertNotNull(didDocument);
+    }
+
+    @Test
+    public void resolveDid3Test() {
+        var didDocument = didResolver.resolve(URI.create("did:web:catalog.demo.supplytree.org:api:user:52d92e5904"));
+        var keyLd = JsonLDDereferencer.findByIdInJsonLdObject(didDocument, URI.create("#key"), didDocument.getId());
+
     }
 }

@@ -3,6 +3,7 @@ package net.catenax.sdhub;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import foundation.identity.jsonld.JsonLDException;
 import net.catenax.sdhub.service.DidResolver;
+import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.net.URI;
 import java.security.GeneralSecurityException;
 
 @SpringBootTest
@@ -21,6 +21,9 @@ import java.security.GeneralSecurityException;
 public class SDTest {
 
     private String sdUrl = "https://catalog.demo.supplytree.org/api/user/5673c857d0/selfdescription";
+
+    @Autowired
+    VerifiableCredentialService verifiableCredentialService;
 
     @Autowired
     DidResolver didResolver;
@@ -34,18 +37,18 @@ public class SDTest {
                 .retrieve()
                 .bodyToMono(VerifiablePresentation.class)
                 .block();
-        // holder is just missed in the VP from https://catalog.demo.supplytree.org
-        var holderId = URI.create("did:web:catalog.demo.supplytree.org:api:user:5673c857d0");
-        var keyRef = URI.create("#key");
-        var verifier = didResolver.createVerifier(holderId, keyRef);
-        Assert.assertTrue(verifier.verify(vp));
+        var verifier = verifiableCredentialService.createVerifier(vp);
+        Assert.assertNotNull(verifier);
+        Assert.assertTrue(verifier.getFirst().verify(vp));
+        System.out.printf("VP is authentic and signed by %s\n", verifier.getSecond());
         var vc = vp.getVerifiableCredential();
-        var issuerUrl = vc.getIssuer().toString();
-        var issuerId = issuerUrl.substring(issuerUrl.lastIndexOf("/") + 1);
-        // Issuer DID is given in form of URL, but not as DID. Probably a bug
-        var issuerDid = URI.create("did:web:catalog.demo.supplytree.org:api:user:" + issuerId);
-        var issuerKeyRef = URI.create("#key");
-        verifier = didResolver.createVerifier(issuerDid, issuerKeyRef);
-        Assert.assertTrue(verifier.verify(vc));
+        var issuer = vc.getIssuer();
+        var didDocument = didResolver.resolve(issuer);
+        vc.getLdProof().getVerificationMethod();
+        verifier = verifiableCredentialService.createVerifier(vc);
+        Assert.assertNotNull(verifier);
+        Assert.assertTrue(verifier.getFirst().verify(vc));
+        System.out.println(vc.getCredentialSubject().toJson(true));
+        System.out.printf("VC is authentic and signed by %s\n", verifier.getSecond());
     }
 }
