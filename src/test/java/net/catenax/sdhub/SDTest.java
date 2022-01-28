@@ -42,9 +42,6 @@ public class SDTest {
         Assert.assertTrue(verifier.verifier().verify(vp));
         System.out.printf("VP is authentic and signed by %s\n", verifier.controller());
         var vc = vp.getVerifiableCredential();
-        var issuer = vc.getIssuer();
-        var didDocument = didResolver.resolve(issuer);
-        vc.getLdProof().getVerificationMethod();
         verifier = verifiableCredentialService.createVerifier(vc);
         Assert.assertNotNull(verifier);
         Assert.assertTrue(verifier.verifier().verify(vc));
