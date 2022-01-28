@@ -21,7 +21,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.bitcoinj.core.Base58;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -40,6 +39,10 @@ import java.util.function.Function;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
 public class VerifiableCredentialService {
+
+    public record Verifier(
+            LdVerifier<? extends SignatureSuite> verifier,
+            URI controller) {}
 
     private final Keystore keystore;
     private final DidResolver didResolver;
@@ -83,7 +86,7 @@ public class VerifiableCredentialService {
 		return verifier.verify(verifiableCredential);
 	}
 
-    public Pair<LdVerifier<? extends SignatureSuite>, URI> createVerifier(JsonLDObject signedObject) {
+    public Verifier createVerifier(JsonLDObject signedObject) {
         var ldProof = LdProof.getFromJsonLDObject(signedObject);
         var verificationMethod = ldProof.getVerificationMethod();
         JsonLDObject keyLd;
@@ -114,6 +117,6 @@ public class VerifiableCredentialService {
             case "Ed25519Signature2020" -> new Ed25519Signature2020LdVerifier(key);
             default -> null;
         };
-        return Objects.isNull(verifier) ? null : Pair.of(verifier, controller);
+        return Objects.isNull(verifier) ? null : new Verifier(verifier, controller);
     }
 }

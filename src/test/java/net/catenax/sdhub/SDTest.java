@@ -39,16 +39,16 @@ public class SDTest {
                 .block();
         var verifier = verifiableCredentialService.createVerifier(vp);
         Assert.assertNotNull(verifier);
-        Assert.assertTrue(verifier.getFirst().verify(vp));
-        System.out.printf("VP is authentic and signed by %s\n", verifier.getSecond());
+        Assert.assertTrue(verifier.verifier().verify(vp));
+        System.out.printf("VP is authentic and signed by %s\n", verifier.controller());
         var vc = vp.getVerifiableCredential();
         var issuer = vc.getIssuer();
         var didDocument = didResolver.resolve(issuer);
         vc.getLdProof().getVerificationMethod();
         verifier = verifiableCredentialService.createVerifier(vc);
         Assert.assertNotNull(verifier);
-        Assert.assertTrue(verifier.getFirst().verify(vc));
+        Assert.assertTrue(verifier.verifier().verify(vc));
         System.out.println(vc.getCredentialSubject().toJson(true));
-        System.out.printf("VC is authentic and signed by %s\n", verifier.getSecond());
+        System.out.printf("VC is authentic and signed by %s\n", verifier.controller());
     }
 }
