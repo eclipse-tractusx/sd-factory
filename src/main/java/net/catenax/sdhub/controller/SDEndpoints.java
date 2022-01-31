@@ -29,7 +29,7 @@ public class SDEndpoints {
     private final VerifiableCredentialService verifiableCredentialService;
     private final MongoTemplate mongoTemplate;
 
-    @PostMapping(consumes = {"application/did+ld+json"})
+    @PostMapping(consumes = {"application/vp+ld+json"})
     public void publishSelfDescription(@RequestBody VerifiablePresentation verifiablePresentation) throws Exception{
         var verifier = verifiableCredentialService.createVerifier(verifiablePresentation);
         if (verifier.verifier().verify(verifiablePresentation)) {
@@ -46,7 +46,7 @@ public class SDEndpoints {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Self-Description is not authentic");
     }
 
-    @GetMapping(value = "/id/{id}", produces = {"application/did+ld+json"})
+    @GetMapping(value = "/id/{id}", produces = {"application/vp+ld+json"})
     public DBObject getById( @PathVariable("id") String id) {
         var query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
