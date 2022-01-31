@@ -5,7 +5,7 @@ import com.mongodb.DBObject;
 import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.bson.Document;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class DatabaseTests {
+class DatabaseTest {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 

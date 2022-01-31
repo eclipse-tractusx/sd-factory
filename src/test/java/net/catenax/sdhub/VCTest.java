@@ -3,7 +3,7 @@ package net.catenax.sdhub;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
