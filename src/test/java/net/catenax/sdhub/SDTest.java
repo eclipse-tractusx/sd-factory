@@ -5,7 +5,7 @@ import foundation.identity.jsonld.JsonLDException;
 import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
