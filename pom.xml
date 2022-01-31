@@ -83,10 +83,6 @@
 			<id>danubetech-maven-public</id>
 			<url>https://repo.danubetech.com/repository/maven-public/</url>
 		</repository>
-		<repository>
-			<id>danubetech-maven-public</id>
-			<url>https://repo.danubetech.com/repository/maven-public/</url>
-		</repository>
 	</repositories>
 
 	<build>

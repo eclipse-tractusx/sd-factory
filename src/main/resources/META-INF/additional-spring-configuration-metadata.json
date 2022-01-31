@@ -6,7 +6,7 @@
       "description": "path to the java keystore."
     },
     {
-      "name": "app.keystore.alias",
+      "name": "app.issuer.keystore.alias",
       "type": "java.lang.String",
       "description": "alias for the key to load."
     },
@@ -14,6 +14,16 @@
       "name": "app.keystore.passwd",
       "type": "java.lang.String",
       "description": "password for the keystore."
+    },
+    {
+      "name": "app.db.sd.collectionName",
+      "type": "java.lang.String",
+      "description": "Name for the collection for SD in MongoDB."
+    },
+    {
+      "name": "app.issuer.did.uri",
+      "type": "java.lang.String",
+      "description": "DID of  the issuer."
     }
   ]
   

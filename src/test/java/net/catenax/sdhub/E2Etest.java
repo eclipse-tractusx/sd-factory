@@ -174,11 +174,11 @@ public class E2Etest {
     public void saveAndRetriveValidSdTest() throws Exception {
         var createAction = getMockMvc().perform(post("/selfdescription")
                         .content(validSelfDescr)
-                        .contentType(new MediaType("application", "did+ld+json"))
+                        .contentType(new MediaType("application", "vp+ld+json"))
         );
         createAction.andExpect(MockMvcResultMatchers.status().isOk());
         var getAction = getMockMvc().perform(get("/selfdescription/id/1643307778671")
-                .accept(new MediaType("application", "did+ld+json"))
+                .accept(new MediaType("application", "vp+ld+json"))
         );
         getAction.andExpect(MockMvcResultMatchers.status().isOk());
         var result = getAction.andReturn().getResponse().getContentAsString();
@@ -191,7 +191,7 @@ public class E2Etest {
     public void trySaveBadSd1Test() throws Exception {
         var createAction = getMockMvc().perform(post("/selfdescription")
                 .content(badChallengeInVpSignature)
-                .contentType(new MediaType("application", "did+ld+json"))
+                .contentType(new MediaType("application", "vp+ld+json"))
         );
         createAction.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
@@ -200,7 +200,7 @@ public class E2Etest {
     public void trySaveBadSd2Test() throws Exception {
         var createAction = getMockMvc().perform(post("/selfdescription")
                 .content(badVc)
-                .contentType(new MediaType("application", "did+ld+json"))
+                .contentType(new MediaType("application", "vp+ld+json"))
         );
         createAction.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }

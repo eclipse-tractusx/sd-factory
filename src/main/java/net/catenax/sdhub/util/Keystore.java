@@ -28,7 +28,7 @@ public class Keystore {
     @Value("${app.keystore.passwd}")
     private String password;
 
-    @Value("${app.keystore.alias}")
+    @Value("${app.issuer.keystore.alias}")
     private String alias;
 
     @Getter
