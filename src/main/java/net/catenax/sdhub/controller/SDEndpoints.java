@@ -5,7 +5,6 @@ import com.mongodb.DBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.sdhub.service.VerifiableCredentialService;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -37,7 +36,7 @@ public class SDEndpoints {
 
     @PostMapping(consumes = {"application/vp+ld+json"})
     public void publishSelfDescription(@RequestBody VerifiablePresentation verifiablePresentation) throws Exception{
-        var verifier = verifiableCredentialService.createVerifier(verifiablePresentation);
+        /*var verifier = verifiableCredentialService.createVerifier(verifiablePresentation);
         if (verifier.verifier().verify(verifiablePresentation)) {
             log.debug("Verifiable Presentation is authentic for controller {}", verifier.controller());
             var vc = verifiablePresentation.getVerifiableCredential();
@@ -49,6 +48,8 @@ public class SDEndpoints {
                 return;
             }
         }
+
+         */
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Self-Description is not authentic");
     }
 

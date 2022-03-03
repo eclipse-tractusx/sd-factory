@@ -2,6 +2,7 @@ package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.mongodb.DBObject;
+import net.catenax.sdhub.service.SDFactory;
 import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.bson.Document;
 import org.junit.Assert;
@@ -25,10 +26,13 @@ public class DatabaseTest {
 	private MongoTemplate mongoTemplate;
 
 	@Autowired
-	private VerifiableCredentialService verifiableCredentialService;
+	private SDFactory sdFactory;
 
 	@Value("${app.db.sd.collectionName}")
 	private String sdCollectionName;
+
+	@Autowired
+	private VerifiableCredentialService verifiableCredentialService;
 
 	@Test
 	public void testDB() throws Exception {
@@ -37,11 +41,7 @@ public class DatabaseTest {
 		claims.put("operator", "My operator");
 		claims.put("region", "Germany");
 		claims.put("service", "Connector");
-		VerifiableCredential vc = verifiableCredentialService.createVC(
-				claims,
-				URI.create("https://catalog.demo.supplytree.org/api/user/holder"),
-				URI.create("https://catalog.demo.supplytree.org/api/user/sd-hub")
-		);
+		VerifiableCredential vc = sdFactory.createVC(claims, URI.create("https://catalog.demo.supplytree.org/api/user/holder"));
 		Document doc = Document.parse(vc.toJson());
 		mongoTemplate.save(doc, sdCollectionName);
 		List<DBObject> all = mongoTemplate.findAll(DBObject.class, sdCollectionName);
@@ -49,7 +49,7 @@ public class DatabaseTest {
 		one.removeField("_id");
 		System.out.println(one);
 		vc = VerifiableCredential.fromJson(one.toString());
-		Assert.assertTrue(verifiableCredentialService.verifySDHubVC(vc));
+		Assert.assertTrue(verifiableCredentialService.createVerifier(vc).verifier().verify(vc));
 	}
 
 }

@@ -1,6 +1,8 @@
 package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import foundation.identity.jsonld.JsonLDObject;
+import net.catenax.sdhub.service.SDFactory;
 import net.catenax.sdhub.service.VerifiableCredentialService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +20,12 @@ import java.util.Map;
 public class VCTest {
 
     @Autowired
-    VerifiableCredentialService verifiableCredentialService;
+    private SDFactory sdFactory;
+
+    @Autowired
+    private VerifiableCredentialService verifiableCredentialService;
+
+    private static String HOLDER_DID =  "https://catalog.demo.supplytree.org/api/user/holder";
 
     @Test
     public void testVc() throws Exception{
@@ -29,19 +36,20 @@ public class VCTest {
         System.out.println(representation);
     }
 
+
     @Test
     public void testGoodSignature() throws Exception{
         VerifiableCredential verifiableCredential = createVc();
-        Assert.assertTrue(verifiableCredentialService.verifySDHubVC(verifiableCredential));
+        Assert.assertTrue(verifiableCredentialService.createVerifier(verifiableCredential).verifier().verify(verifiableCredential));
     }
 
     @Test
     public void testBadSignature() throws Exception{
         VerifiableCredential verifiableCredential = createVc();
         String representation = verifiableCredential.toJson(true);
-        String tamperedRepresentation = representation.replaceFirst("https://catalog.demo.supplytree.org/api/user/sd-hub", "https://catalog.demo.supplytree.org/api/user/fake-sd-hub");
+        String tamperedRepresentation = representation.replaceFirst(HOLDER_DID, "https://catalog.demo.supplytree.org/api/user/fake-holder");
         VerifiableCredential tamperedVerifiableCredential = VerifiableCredential.fromJson(tamperedRepresentation);
-        Assert.assertFalse(verifiableCredentialService.verifySDHubVC(tamperedVerifiableCredential));
+        Assert.assertFalse(verifiableCredentialService.createVerifier(tamperedVerifiableCredential).verifier().verify(tamperedVerifiableCredential));
     }
 
     private VerifiableCredential createVc() throws Exception{
@@ -50,10 +58,24 @@ public class VCTest {
         claims.put("operator", "My operator");
         claims.put("region", "Germany");
         claims.put("service", "Connector");
-        return verifiableCredentialService.createVC(
-                claims,
-                URI.create("https://catalog.demo.supplytree.org/api/user/holder"),
-                URI.create("https://catalog.demo.supplytree.org/api/user/sd-hub")
-        );
+        return sdFactory.createVC(claims, URI.create(HOLDER_DID));
+    }
+
+    @Test
+    public void testJsonLd() throws Exception{
+
+        JsonLDObject jsonLDObject = JsonLDObject.fromJson("""
+                {
+                    "@context" : {
+                        "company_number": "https://schema.org/taxID",
+                        "headquarter.country": "https://schema.org/addressCountry",
+                        "legal.country": "https://schema.org/addressCountry"
+                     },
+                     "company_number": " ru123",
+                     "headquarter.country": "RU",
+                     "legal.country": "RU"
+                }
+                """);
+        System.out.println(jsonLDObject.toJson(true));
     }
 }

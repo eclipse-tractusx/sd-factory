@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VCEndpoint {
 
-    @Value("${app.issuer.did.uri}")
+    @Value("${app.wallet.catena-x.did}")
     private String issuerDid;
 
     private final VerifiableCredentialService verifiableCredentialService;
@@ -30,11 +29,14 @@ public class VCEndpoint {
     public VerifiableCredential getVc(@RequestParam Map<String, String> allRequestParams) throws Exception {
         Map<String, Object> clames =  new HashMap<>(allRequestParams);
         var holderDid = Optional.ofNullable(clames.remove("holderDid")).map(Object::toString).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Holder did is not provided"));
-        return verifiableCredentialService.createVC(
+       /* return verifiableCredentialService.createVC(
                 clames,
                 URI.create(holderDid),
                 URI.create(issuerDid)
         );
+
+        */
+        return null;
     }
 
 }

@@ -8,6 +8,7 @@ import foundation.identity.jsonld.JsonLDDereferencer;
 import io.ipfs.multibase.Base58;
 import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.util.Keystore;
+import net.catenax.sdhub.util.KeystoreProperties;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.net.URI;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -25,11 +30,14 @@ public class DIDTest {
     private Keystore keystore;
 
     @Autowired
-    DidResolver didResolver;
+    private DidResolver didResolver;
+
+    @Autowired
+    private KeystoreProperties keystoreProperties;
 
     @Test
-    public void createDidTest() {
-        URI did = URI.create("did:ex:1234");
+    public void createDidTest() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
+        URI did = URI.create(keystoreProperties.getCatenax().getDid());
 
         Service service = Service.builder()
                 .type("ServiceEndpointProxyService")
@@ -39,7 +47,7 @@ public class DIDTest {
         VerificationMethod verificationMethod = VerificationMethod.builder()
                 .id(URI.create(did + "#key-1"))
                 .type("Ed25519VerificationKey2018")
-                .publicKeyBase58(Base58.encode(keystore.getPubKey()))
+                .publicKeyBase58(Base58.encode(keystore.getPubKey(keystoreProperties.getCatenax().getKeyId().iterator().next()).rawKey()))
                 .build();
 
         DIDDocument diddoc = DIDDocument.builder()
@@ -67,6 +75,5 @@ public class DIDTest {
     public void resolveDid3Test() {
         var didDocument = didResolver.resolve(URI.create("did:web:catalog.demo.supplytree.org:api:user:52d92e5904"));
         var keyLd = JsonLDDereferencer.findByIdInJsonLdObject(didDocument, URI.create("#key"), didDocument.getId());
-
     }
 }
