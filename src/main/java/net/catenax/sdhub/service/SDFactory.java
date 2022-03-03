@@ -7,7 +7,6 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import lombok.RequiredArgsConstructor;
 import net.catenax.sdhub.util.KeystoreProperties;
-import net.catenax.sdhub.util.Signer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

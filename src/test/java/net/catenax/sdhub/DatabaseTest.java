@@ -3,7 +3,7 @@ package net.catenax.sdhub;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.mongodb.DBObject;
 import net.catenax.sdhub.service.SDFactory;
-import net.catenax.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifierService;
 import org.bson.Document;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class DatabaseTest {
 	private String sdCollectionName;
 
 	@Autowired
-	private VerifiableCredentialService verifiableCredentialService;
+	private VerifierService verifierService;
 
 	@Test
 	public void testDB() throws Exception {
@@ -49,7 +49,7 @@ public class DatabaseTest {
 		one.removeField("_id");
 		System.out.println(one);
 		vc = VerifiableCredential.fromJson(one.toString());
-		Assert.assertTrue(verifiableCredentialService.createVerifier(vc).verifier().verify(vc));
+		Assert.assertTrue(verifierService.createVerifier(vc).verifier().verify(vc));
 	}
 
 }

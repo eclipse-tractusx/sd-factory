@@ -3,7 +3,7 @@ package net.catenax.sdhub;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import foundation.identity.jsonld.JsonLDObject;
 import net.catenax.sdhub.service.SDFactory;
-import net.catenax.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifierService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class VCTest {
     private SDFactory sdFactory;
 
     @Autowired
-    private VerifiableCredentialService verifiableCredentialService;
+    private VerifierService verifierService;
 
     private static String HOLDER_DID =  "https://catalog.demo.supplytree.org/api/user/holder";
 
@@ -40,7 +40,7 @@ public class VCTest {
     @Test
     public void testGoodSignature() throws Exception{
         VerifiableCredential verifiableCredential = createVc();
-        Assert.assertTrue(verifiableCredentialService.createVerifier(verifiableCredential).verifier().verify(verifiableCredential));
+        Assert.assertTrue(verifierService.createVerifier(verifiableCredential).verifier().verify(verifiableCredential));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class VCTest {
         String representation = verifiableCredential.toJson(true);
         String tamperedRepresentation = representation.replaceFirst(HOLDER_DID, "https://catalog.demo.supplytree.org/api/user/fake-holder");
         VerifiableCredential tamperedVerifiableCredential = VerifiableCredential.fromJson(tamperedRepresentation);
-        Assert.assertFalse(verifiableCredentialService.createVerifier(tamperedVerifiableCredential).verifier().verify(tamperedVerifiableCredential));
+        Assert.assertFalse(verifierService.createVerifier(tamperedVerifiableCredential).verifier().verify(tamperedVerifiableCredential));
     }
 
     private VerifiableCredential createVc() throws Exception{

@@ -2,7 +2,7 @@ package net.catenax.sdhub.controller;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
-import net.catenax.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifierService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class VCEndpoint {
     @Value("${app.wallet.catena-x.did}")
     private String issuerDid;
 
-    private final VerifiableCredentialService verifiableCredentialService;
+    private final VerifierService verifierService;
 
     @GetMapping(produces = {"application/vp+ld+json"})
     public VerifiableCredential getVc(@RequestParam Map<String, String> allRequestParams) throws Exception {

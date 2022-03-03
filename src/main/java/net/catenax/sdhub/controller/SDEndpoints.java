@@ -4,7 +4,7 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.mongodb.DBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifierService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class SDEndpoints {
 
-    private final VerifiableCredentialService verifiableCredentialService;
+    private final VerifierService verifierService;
     private final MongoTemplate mongoTemplate;
 
     @Value("${app.db.sd.collectionName}")

@@ -1,10 +1,12 @@
-package net.catenax.sdhub.util;
+package net.catenax.sdhub.service.impl;
 
 import foundation.identity.jsonld.JsonLDObject;
 import info.weboftrust.ldsignatures.jsonld.LDSecurityKeywords;
 import info.weboftrust.ldsignatures.signer.Ed25519Signature2018LdSigner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.catenax.sdhub.service.Signer;
+import net.catenax.sdhub.util.Keystore;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -14,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SignerLocal implements Signer{
+public class SignerLocal implements Signer {
 
     private final Keystore keystore;
 

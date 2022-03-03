@@ -1,7 +1,7 @@
 package net.catenax.sdhub;
 
 import net.catenax.sdhub.service.DidResolver;
-import net.catenax.sdhub.service.VerifiableCredentialService;
+import net.catenax.sdhub.service.VerifierService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ public class SDTest {
     private String sdUrl = "https://catalog.demo.supplytree.org/api/user/5673c857d0/selfdescription";
 
     @Autowired
-    VerifiableCredentialService verifiableCredentialService;
+    VerifierService verifierService;
 
     @Autowired
     DidResolver didResolver;

@@ -17,7 +17,7 @@ import java.util.Objects;
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
-public class VerifiableCredentialService {
+public class VerifierService {
     public record Verifier(
             LdVerifier<? extends SignatureSuite> verifier,
             URI controller) {}
