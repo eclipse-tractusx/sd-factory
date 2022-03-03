@@ -4,6 +4,7 @@ import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import lombok.RequiredArgsConstructor;
 import net.catenax.sdhub.util.KeystoreProperties;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -47,5 +49,13 @@ public class SDFactory {
                 .credentialSubject(credentialSubject)
                 .build();
         return (VerifiableCredential) signer.getSigned(keystoreProperties.getCatenax().getKeyId().iterator().next(), null, verifiableCredential);
+    }
+
+    public VerifiablePresentation createVP(List<VerifiableCredential> verifiableCredentialList, String challenge) throws Exception {
+        VerifiablePresentation verifiablePresentation = VerifiablePresentation.builder()
+                .holder(URI.create(keystoreProperties.getSdhub().getDid()))
+                .build();
+        verifiableCredentialList.forEach(vc->vc.addToJsonLDObjectAsJsonArray(verifiablePresentation));
+        return (VerifiablePresentation) signer.getSigned(keystoreProperties.getSdhub().getKeyId().iterator().next(), challenge, verifiablePresentation);
     }
 }
