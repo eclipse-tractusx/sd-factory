@@ -66,10 +66,10 @@ public class SDTest {
 
     private VerifiableCredential createVc(URI holderDid) throws Exception{
         Map<String, Object> claims = new LinkedHashMap<>();
-        claims.put("company", "My cool company");
-        claims.put("operator", "My operator");
-        claims.put("region", "Germany");
-        claims.put("service", "Connector");
+        claims.put("company_number", "RU-123");
+        claims.put("headquarter.country", "RU");
+        claims.put("legal.country", "RU");
+        claims.put("bpn", "12345678");
         return sdFactory.createVC(claims, holderDid);
     }
 }

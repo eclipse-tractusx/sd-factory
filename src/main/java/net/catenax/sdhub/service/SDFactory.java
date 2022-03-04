@@ -24,10 +24,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SDFactory {
 
-    static final URI TRACEABILITY_URI = URI.create("https://w3id.org/traceability/v1");
+    static final URI SD_VOC_URI = URI.create("https://catena-x.net/selfdescription");
     static {
-        try (InputStream traceabilityIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/traceability-v1.jsonld")) {
-            VerifiableCredentialContexts.CONTEXTS.put(TRACEABILITY_URI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, traceabilityIs));
+        try (InputStream sdVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/sd-document-v0.1.jsonld")) {
+            VerifiableCredentialContexts.CONTEXTS.put(SD_VOC_URI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, sdVocIs));
         } catch (JsonLdError | IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,9 +43,10 @@ public class SDFactory {
                 .build();
         Date issuanceDate = new Date();
         VerifiableCredential verifiableCredential = VerifiableCredential.builder()
-                .context(TRACEABILITY_URI)
+                .context(SD_VOC_URI)
                 .issuer(URI.create(keystoreProperties.getCatenax().getDid()))
                 .issuanceDate(issuanceDate)
+                .type("SD-document")
                 .credentialSubject(credentialSubject)
                 .build();
         return (VerifiableCredential) signer.getSigned(keystoreProperties.getCatenax().getKeyId().iterator().next(), null, verifiableCredential);
