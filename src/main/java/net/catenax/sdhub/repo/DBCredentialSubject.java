@@ -18,4 +18,8 @@ public class DBCredentialSubject {
     private String headquarterCountry;
     @JsonProperty("legal_country")
     private String legalCountry;
+    @JsonProperty("sd_type")
+    private String sdType;
+    @JsonProperty("bpn")
+    private String bpn;
 }

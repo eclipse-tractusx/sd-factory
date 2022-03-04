@@ -1,5 +1,6 @@
 package net.catenax.sdhub;
 
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.identity.jsonld.JsonLDObject;
 import lombok.Getter;
@@ -248,7 +249,10 @@ public class E2ETest {
                 )
                 .andReturn()
                 .getResponse();
-        resp.getContentAsString();
-        // todo: check response
+        Assert.assertEquals(200, resp.getStatus());
+        Assert.assertNotNull(resp.getContentAsString());
+        var resVP = VerifiablePresentation.fromJson(resp.getContentAsString());
+        Assert.assertNotNull(resVP);
+        Assert.assertNotNull(resVP.getVerifiableCredential());
     }
 }
