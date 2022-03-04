@@ -55,8 +55,8 @@ public class VCTest {
     private VerifiableCredential createVc() throws Exception{
         Map<String, Object> claims = new LinkedHashMap<>();
         claims.put("company_number", "RU-123");
-        claims.put("headquarter.country", "RU");
-        claims.put("legal.country", "RU");
+        claims.put("headquarter_country", "RU");
+        claims.put("legal_country", "RU");
         claims.put("bpn", "12345678");
         return sdFactory.createVC(claims, URI.create(HOLDER_DID));
     }

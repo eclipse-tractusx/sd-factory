@@ -3,17 +3,19 @@ package net.catenax.sdhub.controller;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.catenax.sdhub.dto.SDDocumentDto;
+import net.catenax.sdhub.service.SDFactory;
 import net.catenax.sdhub.service.SDRetriever;
-import net.catenax.sdhub.service.VerifierService;
-import org.springframework.http.HttpStatus;
+import net.catenax.sdhub.util.BeanAsMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -22,31 +24,15 @@ import java.util.List;
 @Slf4j
 public class SDEndpoints {
 
-    private final VerifierService verifierService;
     private final SDRetriever sdRetriever;
+    private final SDFactory sdFactory;
 
-    @PostMapping(consumes = {"application/vp+ld+json"})
-    public void publishSelfDescription(@RequestBody VerifiablePresentation verifiablePresentation) throws Exception {
-        /*var verifier = verifiableCredentialService.createVerifier(verifiablePresentation);
-        if (verifier.verifier().verify(verifiablePresentation)) {
-            log.debug("Verifiable Presentation is authentic for controller {}", verifier.controller());
-            var vc = verifiablePresentation.getVerifiableCredential();
-            verifier = verifiableCredentialService.createVerifier(vc);
-            if (verifier.verifier().verify(vc)) {
-                log.debug("Verifiable Credential is authentic for controller {}", verifier.controller());
-                Document doc = Document.parse(verifiablePresentation.toJson());
-                mongoTemplate.save(doc, sdCollectionName);
-                return;
-            }
-        }
-
-         */
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Self-Description is not authentic");
-    }
-
-    @GetMapping(value = "/all")
-    public VerifiablePresentation getAll() {
-        throw new RuntimeException("not implemented");
+    @PostMapping(consumes = {"application/json"})
+    public void publishSelfDescription(@RequestBody SDDocumentDto sdDocumentDto) throws Exception {
+        var sdMap = new HashMap<>(BeanAsMap.asMap(sdDocumentDto));
+        sdMap.remove("did");
+        var verifiedCredentials = sdFactory.createVC(sdMap, URI.create(sdDocumentDto.getDid()));
+        sdFactory.storeVC(verifiedCredentials);
     }
 
     @GetMapping(value = "/by-params", produces = {"application/vp+ld+json"})

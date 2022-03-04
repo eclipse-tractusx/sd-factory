@@ -8,8 +8,11 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import lombok.RequiredArgsConstructor;
 import net.catenax.sdhub.util.KeystoreProperties;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,8 +36,18 @@ public class SDFactory {
         }
     }
 
+    @Value("${app.db.sd.collectionName}")
+    private String sdCollectionName;
+
     private final KeystoreProperties keystoreProperties;
     private final Signer signer;
+    private final MongoTemplate mongoTemplate;
+
+
+    public void storeVC(VerifiableCredential verifiableCredential) {
+        Document doc = Document.parse(verifiableCredential.toJson());
+        mongoTemplate.save(doc, sdCollectionName);
+    }
 
     public VerifiableCredential createVC(Map<String, Object> claims, URI holderId) throws Exception {
         CredentialSubject credentialSubject = CredentialSubject.builder()

@@ -11,16 +11,16 @@
         "company_number": {
           "@id": "https://schema.org/taxID"
         },
-        "headquarter.country": {
+        "headquarter_country": {
           "@id": "https://schema.org/addressCountry"
         },
-        "legal.country": {
+        "legal_country": {
           "@id": "https://schema.org/addressCountry"
         },
-        "service.provider": {
+        "service_provider": {
           "@id": "https://schema.org/url"
         },
-        "sd.type": {
+        "sd_type": {
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         },
         "bpn" : {
