@@ -2,9 +2,9 @@ package net.catenax.sdhub.service;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.mongodb.BasicDBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -41,7 +41,7 @@ public class SDRetriever {
             query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
         }
 
-        var res = mongoTemplate.find(query, BasicDBObject.class, sdCollectionName)
+        var res = mongoTemplate.find(query, Document.class, sdCollectionName)
                 .stream()
                 .peek(it -> it.remove("_id"))
                 .map(it -> VerifiableCredential.fromJson(it.toJson()))
