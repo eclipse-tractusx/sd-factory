@@ -2,11 +2,9 @@ package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import foundation.identity.jsonld.JsonLDObject;
 import lombok.Getter;
-import net.catenax.sdhub.dto.GetSelfDescriptionRequest;
-import net.catenax.sdhub.repo.DBCredentialSubject;
-import net.catenax.sdhub.repo.DBVerifiableCredential;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -226,26 +222,31 @@ public class E2ETest {
 
     @Test
     public void getByParams() throws Exception {
-        var vc = DBVerifiableCredential.builder()
-                .context(List.of("https://www.w3.org/2018/credentials/v1", "https://catena-x.net/selfdescription"))
-                .type(List.of("VerifiableCredential", "SD-document"))
-                .issuer("https://catalog.demo.supplytree.org/api/user/catenax")
-                .issuanceDate("2022-03-04T07:49:24Z")
-                .credentialSubject(DBCredentialSubject.builder()
-                        .id("https://catalog.demo.supplytree.org/api/user/holder")
-                        .companyNumber("RU-123")
-                        .headquarterCountry("RU")
-                        .legalCountry("RU")
-                        .build())
-                .build();
-        mongoTemplate.save(vc, sdCollectionName);
-        var sdr = GetSelfDescriptionRequest.builder()
-                .challenge(RandomStringUtils.random(32, true, true))
-                .id("https://catalog.demo.supplytree.org/api/user/holder")
-                .build();
-        var resp = getMockMvc().perform(post("/selfdescription/by-params")
-                        .content(objectMapper.writeValueAsBytes(sdr))
-                        .contentType(MediaType.APPLICATION_JSON)
+        var vc = """
+                {
+                  "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://catena-x.net/selfdescription" ],
+                  "type" : [ "VerifiableCredential", "SD-document" ],
+                  "issuer" : "https://catalog.demo.supplytree.org/api/user/catenax",
+                  "issuanceDate" : "2022-03-04T07:49:24Z",
+                  "credentialSubject" : {
+                    "id" : "https://catalog.demo.supplytree.org/api/user/holder",
+                    "company_number" : "RU-123",
+                    "headquarter_country" : "RU",
+                    "legal_country" : "RU"
+                  },
+                  "proof" : {
+                    "type" : "Ed25519Signature2018",
+                    "created" : "2022-03-04T07:49:24Z",
+                    "proofPurpose" : "assertionMethod",
+                    "verificationMethod" : "https://catalog.demo.supplytree.org/api/user/catenax/key",
+                    "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFZERTQSJ9..sLwpGgO5WfW328XLcIT736_0amh4FfBxOilcuNaWWCJFuLcXcNoH-EYJbFIu6R_UwUFINCGggH6R2Uj7dG8OBA"
+                  }
+                }
+                """;
+        mongoTemplate.save(BasicDBObject.parse(vc), sdCollectionName);
+        var resp = getMockMvc().perform(get("/selfdescription/by-params")
+                        .param("companyNumber", "RU-123")
+                        .param("challenge", RandomStringUtils.random(32, true, true))
                 )
                 .andReturn()
                 .getResponse();

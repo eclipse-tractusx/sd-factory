@@ -2,21 +2,16 @@ package net.catenax.sdhub.service;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.sdhub.dto.GetSelfDescriptionRequest;
-import net.catenax.sdhub.repo.DBVerifiableCredential;
-import net.catenax.sdhub.util.KeystoreProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,56 +20,40 @@ import java.util.stream.Collectors;
 public class SDRetriever {
     private final MongoTemplate mongoTemplate;
     private final SDFactory sdFactory;
-    private final ObjectMapper objectMapper;
-    private final KeystoreProperties keystoreProperties;
-    private final Signer signer;
 
     @Value("${app.db.sd.collectionName}")
     private String sdCollectionName;
 
-    public VerifiablePresentation getSelfDescriptions(GetSelfDescriptionRequest request) {
-        if (StringUtils.isEmpty(request.getChallenge())) {
-            throw new RuntimeException("Challenge is empty");
-        }
+    public VerifiablePresentation getSelfDescriptions(List<String> ids, List<String> companyNumbers,
+                                                      List<String> headquarterCountries, List<String> legalCountries,
+                                                      String challenge) {
         var query = new Query();
-        if (!StringUtils.isEmpty(request.getId())) {
-            query = query.addCriteria(Criteria.where("credentialSubject.id").is(request.getId()));
+        if (listIsNotEmpty(ids)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.id").in(ids));
         }
-        if (!StringUtils.isEmpty(request.getCompanyNumber())) {
-            query = query.addCriteria(Criteria.where("credentialSubject.company_number").is(request.getCompanyNumber()));
+        if (listIsNotEmpty(companyNumbers)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.company_number").in(companyNumbers));
         }
-        if (!StringUtils.isEmpty(request.getHeadquarterCountry())) {
-            query = query.addCriteria(Criteria.where("credentialSubject.headquarter_country").is(request.getHeadquarterCountry()));
+        if (listIsNotEmpty(headquarterCountries)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.headquarter_country").in(headquarterCountries));
         }
-        if (!StringUtils.isEmpty(request.getLegalCountry())) {
-            query = query.addCriteria(Criteria.where("credentialSubject.legal_country").is(request.getLegalCountry()));
+        if (listIsNotEmpty(legalCountries)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
         }
 
-        var res = mongoTemplate.find(query, DBVerifiableCredential.class, sdCollectionName)
+        var res = mongoTemplate.find(query, BasicDBObject.class, sdCollectionName)
                 .stream()
-                .map(this::convertDBVcToVC)
-                .map(it -> {
-                    try {
-                        return (VerifiableCredential) signer.getSigned(keystoreProperties.getCatenax().getKeyId().iterator().next(), request.getChallenge(), it);
-                    } catch (Exception e) {
-                        log.error("unable to sign VC", e);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
+                .peek(it -> it.remove("_id"))
+                .map(it -> VerifiableCredential.fromJson(it.toJson()))
                 .collect(Collectors.toList());
         try {
-            return sdFactory.createVP(res, request.getChallenge());
+            return sdFactory.createVP(res, challenge);
         } catch (Exception e) {
             throw new RuntimeException("Exception during creating VP", e);
         }
     }
 
-    private VerifiableCredential convertDBVcToVC(DBVerifiableCredential dvc) {
-        try {
-            return VerifiableCredential.fromJson(objectMapper.writeValueAsString(dvc));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("unable to convert DB VC to VC", e);
-        }
+    private boolean listIsNotEmpty(List<?> lst) {
+        return lst != null && !lst.isEmpty();
     }
 }
