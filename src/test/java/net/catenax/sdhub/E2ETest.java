@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,8 +35,10 @@ public class E2ETest {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    static MediaType JSON_LD_MEDIATYPE = new MediaType("application", "vc+ld+json") ;
+
     @Test
-    public void getByParams() throws Exception {
+    public void createAndRetrieveTest() throws Exception {
         var sdDocumentJson = """
                 {
                     "did" : "https://catalog.demo.supplytree.org/api/user/holder",
@@ -65,5 +68,21 @@ public class E2ETest {
         Assert.assertNotNull(resVP.getVerifiableCredential());
         Assert.assertEquals(resVP.getLdProof().getChallenge(), challenge);
         System.out.println(resVP.toJson(true));
+    }
+
+    @Test
+    public void tryToSaveUntrustedFailedTest() throws Exception {
+        var sdUrl = "https://catalog.demo.supplytree.org/api/user/5673c857d0/selfdescription";
+        var vp = WebClient.create(sdUrl)
+                .get()
+                .header("no-cache", Boolean.toString(true))
+                .accept(JSON_LD_MEDIATYPE)
+                .retrieve()
+                .bodyToMono(VerifiablePresentation.class)
+                .block();
+        var untrustedVC = vp.getVerifiableCredential();
+        getMockMvc().perform(post("/selfdescription/vc")
+                .contentType(JSON_LD_MEDIATYPE)
+                .content(untrustedVC.toJson())).andExpect(status().isForbidden());
     }
 }
