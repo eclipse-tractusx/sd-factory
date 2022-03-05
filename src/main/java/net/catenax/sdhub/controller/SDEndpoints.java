@@ -1,5 +1,6 @@
 package net.catenax.sdhub.controller;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,11 @@ public class SDEndpoints {
         sdMap.remove("did");
         var verifiedCredentials = sdFactory.createVC(sdMap, URI.create(sdDocumentDto.getDid()));
         sdFactory.storeVC(verifiedCredentials);
+    }
+
+    @PostMapping(value = "/vc",consumes = {"application/vc+ld+json"})
+    public void publishSelfDescription(@RequestBody VerifiableCredential verifiableCredential) throws Exception {
+        sdFactory.storeVCWithCheck(verifiableCredential);
     }
 
     @GetMapping(value = "/by-params", produces = {"application/vp+ld+json"})

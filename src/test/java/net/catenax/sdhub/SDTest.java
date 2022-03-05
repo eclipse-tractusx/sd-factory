@@ -1,15 +1,19 @@
 package net.catenax.sdhub;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.service.SDFactory;
 import net.catenax.sdhub.service.VerifierService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -30,9 +34,9 @@ public class SDTest {
 
     @Autowired
     SDFactory sdFactory;
-/*
+
     @Test
-    public void validateSDTest() throws JsonLDException, GeneralSecurityException, IOException {
+    public void validateSDTest() throws Exception {
         var vp = WebClient.create(sdUrl)
                 .get()
                 .header("no-cache", Boolean.toString(true))
@@ -40,18 +44,18 @@ public class SDTest {
                 .retrieve()
                 .bodyToMono(VerifiablePresentation.class)
                 .block();
-        var verifier = verifiableCredentialService.createVerifier(vp);
+        var verifier = verifierService.createVerifier(vp);
         Assert.assertNotNull(verifier);
         Assert.assertTrue(verifier.verifier().verify(vp));
         System.out.printf("VP is authentic and signed by %s\n", verifier.controller());
         var vc = vp.getVerifiableCredential();
-        verifier = verifiableCredentialService.createVerifier(vc);
+        verifier = verifierService.createVerifier(vc);
         Assert.assertNotNull(verifier);
         Assert.assertTrue(verifier.verifier().verify(vc));
         System.out.println(vc.getCredentialSubject().toJson(true));
         System.out.printf("VC is authentic and signed by %s\n", verifier.controller());
     }
- */
+
 
     @Test
     public void VPCreateTest() throws Exception {
