@@ -6,6 +6,8 @@ import net.catenax.sdhub.service.DidResolver;
 import org.apache.commons.codec.binary.Base64;
 import org.bitcoinj.core.Base58;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class Uniresolver implements DidResolver {
 
     @Value("${uniresolver.url:https://dev.uniresolver.io/1.0}")

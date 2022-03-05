@@ -1,27 +1,23 @@
 package net.catenax.sdhub.controller;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.VerifiablePresentation;
-import com.mongodb.DBObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.sdhub.service.VerifiableCredentialService;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.util.StreamUtils;
-import org.springframework.http.HttpStatus;
+import net.catenax.sdhub.dto.SDDocumentDto;
+import net.catenax.sdhub.service.SDFactory;
+import net.catenax.sdhub.service.SDRetriever;
+import net.catenax.sdhub.util.BeanAsMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("selfdescription")
@@ -29,44 +25,30 @@ import java.util.stream.Stream;
 @Slf4j
 public class SDEndpoints {
 
-    private final VerifiableCredentialService verifiableCredentialService;
-    private final MongoTemplate mongoTemplate;
+    private final SDRetriever sdRetriever;
+    private final SDFactory sdFactory;
 
-    @Value("${app.db.sd.collectionName}")
-    private String sdCollectionName;
-
-    @PostMapping(consumes = {"application/vp+ld+json"})
-    public void publishSelfDescription(@RequestBody VerifiablePresentation verifiablePresentation) throws Exception{
-        var verifier = verifiableCredentialService.createVerifier(verifiablePresentation);
-        if (verifier.verifier().verify(verifiablePresentation)) {
-            log.debug("Verifiable Presentation is authentic for controller {}", verifier.controller());
-            var vc = verifiablePresentation.getVerifiableCredential();
-            verifier = verifiableCredentialService.createVerifier(vc);
-            if (verifier.verifier().verify(vc)) {
-                log.debug("Verifiable Credential is authentic for controller {}", verifier.controller());
-                Document doc = Document.parse(verifiablePresentation.toJson());
-                mongoTemplate.save(doc, sdCollectionName);
-                return;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Self-Description is not authentic");
+    @PostMapping(consumes = {"application/json"})
+    public void publishSelfDescription(@RequestBody SDDocumentDto sdDocumentDto) throws Exception {
+        var sdMap = new HashMap<>(BeanAsMap.asMap(sdDocumentDto));
+        sdMap.remove("did");
+        var verifiedCredentials = sdFactory.createVC(sdMap, URI.create(sdDocumentDto.getDid()));
+        sdFactory.storeVC(verifiedCredentials);
     }
 
-    @GetMapping(value = "/id/{id}", produces = {"application/vp+ld+json"})
-    public DBObject getById( @PathVariable("id") String id) {
-        var query = new Query();
-        query.addCriteria(Criteria.where("id").is(id));
-        return Optional.ofNullable(mongoTemplate.findOne(query, DBObject.class, sdCollectionName))
-                .stream()
-                .peek(dbObj -> dbObj.removeField("_id"))
-                .findAny().orElse(null);
+    @PostMapping(value = "/vc",consumes = {"application/vc+ld+json"})
+    public void publishSelfDescription(@RequestBody VerifiableCredential verifiableCredential) throws Exception {
+        sdFactory.storeVCWithCheck(verifiableCredential);
     }
 
-    @GetMapping(produces = {"application/vp+ld+json"})
-    public Stream<DBObject> getAll() {
-        var query = new Query();
-        var sdIterator = mongoTemplate.stream(query, DBObject.class, sdCollectionName);
-        return StreamUtils.createStreamFromIterator(sdIterator)
-                .peek(dbObj -> dbObj.removeField("_id"));
+    @GetMapping(value = "/by-params", produces = {"application/vp+ld+json"})
+    public VerifiablePresentation getSelfDescriptions(
+            @RequestParam(value = "id", required = false) List<String> ids,
+            @RequestParam(value = "companyNumbers", required = false) List<String> companyNumbers,
+            @RequestParam(value = "headquarterCountries", required = false) List<String> headquarterCountries,
+            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries,
+            @RequestParam("challenge") String challenge
+    ) {
+        return sdRetriever.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, challenge);
     }
 }

@@ -1,0 +1,32 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "name": "https://schema.org/name",
+    "description": "https://schema.org/description",
+    "identifier": "https://schema.org/identifier",
+    "SD-document": {
+      "@id": "https://catena-x.net/selfdescription#SDdocument",
+      "@context": {
+        "company_number": {
+          "@id": "https://schema.org/taxID"
+        },
+        "headquarter_country": {
+          "@id": "https://schema.org/addressCountry"
+        },
+        "legal_country": {
+          "@id": "https://schema.org/addressCountry"
+        },
+        "service_provider": {
+          "@id": "https://schema.org/url"
+        },
+        "sd_type": {
+          "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+        },
+        "bpn" : {
+          "@id": "https://schema.org/name"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+app:
+  wallet:
+    catenax:
+      did: https://catalog.demo.supplytree.org/api/user/catenax
+      keyId:
+        - https://catalog.demo.supplytree.org/api/user/catenax/key
+        - did:web:catalog.demo.supplytree.org:api:user:catenax#key
+      keystoreAlias: catenax
+    sdhub:
+      did: https://catalog.demo.supplytree.org/api/user/sdhub
+      keyId:
+        - https://catalog.demo.supplytree.org/api/user/sdhub/key
+        - did:web:catalog.demo.supplytree.org:api:user:sdhub#key
+      keystoreAlias: sdhub
+  keystore:
+    path:
+    passwd: 123456
+  db:
+    sd:
+      collectionName: selfdescription
