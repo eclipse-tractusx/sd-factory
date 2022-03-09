@@ -10,6 +10,10 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.function.Function;
 
+/**
+ * A tool to decode a key based on the provided key format.
+ * Not full: a limited number of formats is supported currently.
+ */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class DecoderMap extends HashMap<String, Function<String, byte[]>> {

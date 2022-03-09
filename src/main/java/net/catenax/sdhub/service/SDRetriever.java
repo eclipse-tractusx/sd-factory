@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A query interface implementation of SD-hub
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,15 @@ public class SDRetriever {
     @Value("${app.db.sd.collectionName}")
     private String sdCollectionName;
 
+    /**
+     * Searches the VerifiableCredentials by the parameter to include them to the VerifiablePresentation
+     * @param ids Holder identities
+     * @param companyNumbers query parameter
+     * @param headquarterCountries query parameter
+     * @param legalCountries query parameter
+     * @param challenge a random string to be included to the proof for mitigating Recorder Attack
+     * @return
+     */
     public VerifiablePresentation getSelfDescriptions(List<String> ids, List<String> companyNumbers,
                                                       List<String> headquarterCountries, List<String> legalCountries,
                                                       String challenge) {

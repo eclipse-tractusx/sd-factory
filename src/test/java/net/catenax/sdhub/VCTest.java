@@ -25,7 +25,7 @@ public class VCTest {
     @Autowired
     private VerifierService verifierService;
 
-    private static String HOLDER_DID =  "https://catalog.demo.supplytree.org/api/user/holder";
+    private static final String HOLDER_DID =  "https://catalog.demo.supplytree.org/api/user/holder";
 
     @Test
     public void testVc() throws Exception{
@@ -62,7 +62,7 @@ public class VCTest {
     }
 
     @Test
-    public void testJsonLd() throws Exception{
+    public void testJsonLd() {
 
         JsonLDObject jsonLDObject = JsonLDObject.fromJson("""
                 {

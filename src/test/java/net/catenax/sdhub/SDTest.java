@@ -44,6 +44,7 @@ public class SDTest {
                 .retrieve()
                 .bodyToMono(VerifiablePresentation.class)
                 .block();
+        Assert.assertNotNull(vp);
         var verifier = verifierService.createVerifier(vp);
         Assert.assertNotNull(verifier);
         Assert.assertTrue(verifier.verifier().verify(vp));

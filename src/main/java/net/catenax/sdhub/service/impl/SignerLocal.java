@@ -13,6 +13,9 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * A local implementation of the Signer. The keys are taken from local java Keystore
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

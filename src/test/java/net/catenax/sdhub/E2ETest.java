@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@DirtiesContext
 public class E2ETest {
 
     @Autowired
@@ -46,8 +48,8 @@ public class E2ETest {
                     "headquarter_country" : "RU",
                     "legal_country" : "RU",
                     "bpn" : "123ABC"
-                }          
-                """;
+                }
+        """;
         //mongoTemplate.save(BasicDBObject.parse(vc), sdCollectionName);
 
         getMockMvc().perform(post("/selfdescription")
@@ -80,6 +82,7 @@ public class E2ETest {
                 .retrieve()
                 .bodyToMono(VerifiablePresentation.class)
                 .block();
+        Assert.assertNotNull(vp);
         var untrustedVC = vp.getVerifiableCredential();
         getMockMvc().perform(post("/selfdescription/vc")
                 .contentType(JSON_LD_MEDIATYPE)

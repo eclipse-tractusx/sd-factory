@@ -19,6 +19,9 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Objects;
 
+/**
+ * An implementation of the resolver for the public key
+ */
 @Service
 @RequiredArgsConstructor
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)

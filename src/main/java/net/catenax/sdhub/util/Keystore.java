@@ -23,6 +23,10 @@ import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * A service for accessing local java Keystore
+ *  It is assumed the keys are of Ed25519 type
+ */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor

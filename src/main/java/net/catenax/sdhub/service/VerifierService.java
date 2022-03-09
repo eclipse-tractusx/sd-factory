@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.util.Objects;
 
+/**
+ * A service used for the verification of the signed JSON-LD documents.
+ * A limited amount of signatures is supported.
+ * Currently Ed25519Signature2018 and Ed25519Signature2020 only.
+ */
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
