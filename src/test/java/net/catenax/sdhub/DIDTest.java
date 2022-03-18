@@ -10,6 +10,7 @@ import net.catenax.sdhub.service.DidResolver;
 import net.catenax.sdhub.util.Keystore;
 import net.catenax.sdhub.util.KeystoreProperties;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+@Ignore
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class DIDTest {

@@ -10,8 +10,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SDRetriever {
+public class DBService {
     private final MongoTemplate mongoTemplate;
     private final SDFactory sdFactory;
 
@@ -52,7 +54,22 @@ public class SDRetriever {
         if (listIsNotEmpty(legalCountries)) {
             query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
         }
+        return retriveVp(query, challenge);
+    }
 
+    public VerifiablePresentation getSelfDescriptions(List<String> ids, String challenge) {
+        var query = new Query();
+        if (listIsNotEmpty(ids)) {
+            query = query.addCriteria(Criteria.where("id").in(ids));
+        }
+        return retriveVp(query, challenge);
+    }
+
+    public void removeSelfDescriptions(List<String> ids) {
+        mongoTemplate.remove(Query.query(Criteria.where("id").in(ids)), sdCollectionName);
+    }
+
+    private VerifiablePresentation retriveVp(Query query, String challenge) {
         var res = mongoTemplate.find(query, Document.class, sdCollectionName)
                 .stream()
                 .peek(it -> it.remove("_id"))
@@ -67,5 +84,21 @@ public class SDRetriever {
 
     private boolean listIsNotEmpty(List<?> lst) {
         return lst != null && !lst.isEmpty();
+    }
+
+    public VerifiableCredential getVc(String id) {
+        var query = Query.query(
+                new Criteria().orOperator(
+                        Criteria.where("id").is(id),
+                        Criteria.where("id").is(ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/selfdescription/vc/" + id).build().toString())
+                )
+        );
+        var document = mongoTemplate.findOne(query, Document.class, sdCollectionName);
+        if (Objects.nonNull(document)) {
+            document.remove("_id");
+            return VerifiableCredential.fromJson(document.toJson());
+        } else {
+            return null;
+        }
     }
 }

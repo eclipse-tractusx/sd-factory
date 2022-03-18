@@ -17,12 +17,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -63,6 +65,7 @@ public class SDFactory {
      * @param verifiableCredential credential to be saved
      */
     public void storeVC(VerifiableCredential verifiableCredential) {
+        //verifiableCredential.getId()
         Document doc = Document.parse(verifiableCredential.toJson());
         mongoTemplate.save(doc, sdCollectionName);
     }
@@ -73,7 +76,7 @@ public class SDFactory {
      * @param verifiableCredential credential to be saved
      * @throws Exception
      */
-    public void storeVCWithCheck(VerifiableCredential verifiableCredential) throws Exception {
+    public URI storeVCWithCheck(VerifiableCredential verifiableCredential) throws Exception {
         var issuer = verifiableCredential.getIssuer();
         var query = new Query();
         query = query.addCriteria(Criteria.where("credentialSubject.id").is(issuer.toString()));
@@ -82,6 +85,7 @@ public class SDFactory {
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The Issuer is not trusted");
         }
+        return null;
     }
 
     /**
@@ -99,6 +103,7 @@ public class SDFactory {
         Date issuanceDate = new Date();
         VerifiableCredential verifiableCredential = VerifiableCredential.builder()
                 .context(SD_VOC_URI)
+                .id(ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/selfdescription/vc/" + UUID.randomUUID()).build().toUri())
                 .issuer(URI.create(keystoreProperties.getCatenax().getDid()))
                 .issuanceDate(issuanceDate)
                 .type("SD-document")
