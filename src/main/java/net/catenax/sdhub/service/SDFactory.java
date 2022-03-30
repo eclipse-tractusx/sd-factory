@@ -51,66 +51,8 @@ public class SDFactory {
         }
     }
 
-    @Value("${app.db.sd.collectionName}")
-    private String sdCollectionName;
-
     private final KeystoreProperties keystoreProperties;
     private final Signer signer;
-    private final MongoTemplate mongoTemplate;
-    private final VerifierService verifierService;
-
-
-    /**
-     * Stores VerifiableCredential in Mongo DB without checks
-     * @param verifiableCredential credential to be saved
-     */
-    public void storeVC(VerifiableCredential verifiableCredential) {
-        //verifiableCredential.getId()
-        Document doc = Document.parse(verifiableCredential.toJson());
-        mongoTemplate.save(doc, sdCollectionName);
-    }
-
-    /**
-     * Stores VerifiableCredential in Mongo DB with checks for the Issuer:
-     * only trusted issuers are allowed
-     * @param verifiableCredential credential to be saved
-     * @throws Exception
-     */
-    public URI storeVCWithCheck(VerifiableCredential verifiableCredential) throws Exception {
-        var issuer = verifiableCredential.getIssuer();
-        var query = new Query();
-        query = query.addCriteria(Criteria.where("credentialSubject.id").is(issuer.toString()));
-        if (mongoTemplate.exists(query, Document.class, sdCollectionName) && verifierService.createVerifier(verifiableCredential).verifier().verify(verifiableCredential)) {
-            storeVC(verifiableCredential);
-        } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The Issuer is not trusted");
-        }
-        return null;
-    }
-
-    /**
-     * Creates a VerifiableCredential on base of provided claims
-     * @param claims claims to be included to the VerifiableCredentials
-     * @param holderId DID of the Holder for given claims
-     * @return VerifiableCredential signed by CatenaX authority
-     * @throws Exception
-     */
-    public VerifiableCredential createVC(Map<String, Object> claims, URI holderId) throws Exception {
-        CredentialSubject credentialSubject = CredentialSubject.builder()
-                .id(holderId)
-                .claims(claims)
-                .build();
-        Date issuanceDate = new Date();
-        VerifiableCredential verifiableCredential = VerifiableCredential.builder()
-                .context(SD_VOC_URI)
-                .id(ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/selfdescription/vc/" + UUID.randomUUID()).build().toUri())
-                .issuer(URI.create(keystoreProperties.getCatenax().getDid()))
-                .issuanceDate(issuanceDate)
-                .type("SD-document")
-                .credentialSubject(credentialSubject)
-                .build();
-        return (VerifiableCredential) signer.getSigned(keystoreProperties.getCatenax().getKeyId().iterator().next(), null, verifiableCredential);
-    }
 
     /**
      * Creates VerifiablePresentation from the list of VerifiableCredential and given challenge
