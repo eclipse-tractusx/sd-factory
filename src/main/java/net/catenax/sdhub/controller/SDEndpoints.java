@@ -36,23 +36,16 @@ public class SDEndpoints {
             @RequestParam(value = "id", required = false) List<String> ids,
             @RequestParam(value = "companyNumbers", required = false) List<String> companyNumbers,
             @RequestParam(value = "headquarterCountries", required = false) List<String> headquarterCountries,
-            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries,
-            @RequestParam("challenge") String challenge
+            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries
     ) {
-        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, challenge);
+        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries);
     }
 
     @GetMapping(value = "/by-id", produces = {"application/vp+ld+json"})
     public VerifiablePresentation getSelfDescriptions(
-            @RequestParam(value = "id", required = false) List<String> ids,
-            @RequestParam("challenge") String challenge
+            @RequestParam(value = "id", required = false) List<String> ids
     ) {
-        return DBService.getSelfDescriptions(ids, challenge);
-    }
-
-    @DeleteMapping(value = "/by-id")
-    public void removeSelfDescriptions(@RequestParam(value = "id", required = true) List<String> ids) {
-        DBService.removeSelfDescriptions(ids);
+        return DBService.getSelfDescriptions(ids);
     }
 
 }

@@ -3,23 +3,19 @@ spring:
     mongodb:
       host: localhost
       port: 27017
+keycloak:
+  auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+  realm: CX-Central
 app:
-  wallet:
-    catenax:
-      did: https://catalog.demo.supplytree.org/api/user/catenax
-      keyId:
-        - https://catalog.demo.supplytree.org/api/user/catenax/key
-        - did:web:catalog.demo.supplytree.org:api:user:catenax#key
-      keystoreAlias: catenax
-    sdhub:
-      did: https://catalog.demo.supplytree.org/api/user/sdhub
-      keyId:
-        - https://catalog.demo.supplytree.org/api/user/sdhub/key
-        - did:web:catalog.demo.supplytree.org:api:user:sdhub#key
-      keystoreAlias: sdhub
-  keystore:
-    path:
-    passwd: 123456
+  build:
+    version: ^project.version^
+  sdhubId: BPNL000000000000
+  custodianWallet:
+    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
+    clientId: Client005-CustodianTest
+    clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
+    username: custodian@catenax.de
+    password: changeme
   db:
     sd:
-      collectionName: selfdescription
+      collectionName: selfdescription4

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DBService {
     private final MongoTemplate mongoTemplate;
-    private final SDFactory sdFactory;
+    private final SDHub sdHub;
 
     @Value("${app.db.sd.collectionName}")
     private String sdCollectionName;
@@ -35,12 +35,10 @@ public class DBService {
      * @param companyNumbers query parameter
      * @param headquarterCountries query parameter
      * @param legalCountries query parameter
-     * @param challenge a random string to be included to the proof for mitigating Recorder Attack
-     * @return
+     * @return Verifiable Presentation
      */
     public VerifiablePresentation getSelfDescriptions(List<String> ids, List<String> companyNumbers,
-                                                      List<String> headquarterCountries, List<String> legalCountries,
-                                                      String challenge) {
+                                                      List<String> headquarterCountries, List<String> legalCountries) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
             query = query.addCriteria(Criteria.where("credentialSubject.id").in(ids));
@@ -54,29 +52,25 @@ public class DBService {
         if (listIsNotEmpty(legalCountries)) {
             query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
         }
-        return retriveVp(query, challenge);
+        return retriveVp(query);
     }
 
-    public VerifiablePresentation getSelfDescriptions(List<String> ids, String challenge) {
+    public VerifiablePresentation getSelfDescriptions(List<String> ids) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
             query = query.addCriteria(Criteria.where("id").in(ids));
         }
-        return retriveVp(query, challenge);
+        return retriveVp(query);
     }
 
-    public void removeSelfDescriptions(List<String> ids) {
-        mongoTemplate.remove(Query.query(Criteria.where("id").in(ids)), sdCollectionName);
-    }
-
-    private VerifiablePresentation retriveVp(Query query, String challenge) {
+    private VerifiablePresentation retriveVp(Query query) {
         var res = mongoTemplate.find(query, Document.class, sdCollectionName)
                 .stream()
                 .peek(it -> it.remove("_id"))
                 .map(it -> VerifiableCredential.fromJson(it.toJson()))
                 .collect(Collectors.toList());
         try {
-            return sdFactory.createVP(res, challenge);
+            return sdHub.createVP(res);
         } catch (Exception e) {
             throw new RuntimeException("Exception during creating VP", e);
         }

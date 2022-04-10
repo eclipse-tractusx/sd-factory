@@ -2,31 +2,53 @@
   "@context": {
     "id": "@id",
     "type": "@type",
-    "name": "https://schema.org/name",
-    "description": "https://schema.org/description",
-    "identifier": "https://schema.org/identifier",
+    "ctx" : "https://catena-x.net/selfdescription#",
     "SD-document": {
-      "@id": "https://catena-x.net/selfdescription#SDdocument",
-      "@context": {
-        "company_number": {
-          "@id": "https://schema.org/taxID"
-        },
-        "headquarter_country": {
-          "@id": "https://schema.org/addressCountry"
-        },
-        "legal_country": {
-          "@id": "https://schema.org/addressCountry"
-        },
-        "service_provider": {
-          "@id": "https://schema.org/url"
-        },
-        "sd_type": {
-          "@id": "http://www.w3.org/2000/01/rdf-schema#label"
-        },
-        "bpn" : {
-          "@id": "https://schema.org/name"
+        "@id": "ctx:SD-document",
+        "@context": {
+            "company_number": {
+                "@id": "ctx:company_number"
+            },
+            "headquarter_country": {
+                "@id": "ctx:headquarter_country"
+            },
+            "legal_country": {
+                "@id": "ctx:legal_country"
+            },
+            "service_provider": {
+                "@id": "ctx:service_provider"
+            },
+            "sd_type": {
+                "@id": "ctx:sd_type"
+            },
+            "bpn": {
+                "@id": "ctx:bpn"
+            }
         }
-      }
+    },
+    "company_number" : {
+        "@id": "ctx:company_number",
+        "@type": "https://schema.org/taxID"
+    },
+    "headquarter_country": {
+        "@id": "ctx:headquarter_country",
+        "@type": "https://schema.org/addressCountry"
+    },
+    "legal_country": {
+        "@id": "ctx:legal_country",
+        "@type": "https://schema.org/addressCountry"
+    },
+    "service_provider": {
+        "@id": "ctx:service_provider",
+        "@type": "https://schema.org/url"
+    },
+    "sd_type": {
+        "@id": "ctx:sd_type",
+        "@type": "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "bpn": {
+        "@id": "ctx:bpn",
+        "@type": "https://schema.org/name"
     }
   }
 }
