@@ -55,6 +55,11 @@ public class DBService {
         return retriveVp(query);
     }
 
+    /**
+     * Searches the VerifiableCredentials by the parameter to include them to the VerifiablePresentation
+     * @param ids VC identities
+     * @return Verifiable Presentation
+     */
     public VerifiablePresentation getSelfDescriptions(List<String> ids) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
