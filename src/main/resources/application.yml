@@ -1,8 +1,9 @@
 spring:
   data:
     mongodb:
-      host: localhost
+      host:  mongo
       port: 27017
+      database: sdhub-mongo
 keycloak:
   auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
   realm: CX-Central
