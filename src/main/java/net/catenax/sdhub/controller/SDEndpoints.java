@@ -44,7 +44,7 @@ public class SDEndpoints {
     "id": "http://localhost:8080/selfdescription/vc/a5d1ae5b-ec91-45f3-a145-2d263ab5a676",
     "@context": [
         "https://www.w3.org/2018/credentials/v1",
-        "http://atom.outlan.tk/sd-document-v0.1.jsonld"
+        "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
     ],
     "type": [
         "VerifiableCredential",
@@ -101,7 +101,7 @@ public class SDEndpoints {
                      "id": "http://localhost:8080/selfdescription/vc/b034c9ab-c099-4a55-a0a9-26113c29dc2f",
              "@context": [
                          "https://www.w3.org/2018/credentials/v1",
-                         "http://atom.outlan.tk/sd-document-v0.1.jsonld"
+                         "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
                      ],
                      "type": [
                          "VerifiableCredential",
@@ -169,7 +169,7 @@ public class SDEndpoints {
                      "id": "http://localhost:8080/selfdescription/vc/b034c9ab-c099-4a55-a0a9-26113c29dc2f",
              "@context": [
                          "https://www.w3.org/2018/credentials/v1",
-                         "http://atom.outlan.tk/sd-document-v0.1.jsonld"
+                         "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
                      ],
                      "type": [
                          "VerifiableCredential",
