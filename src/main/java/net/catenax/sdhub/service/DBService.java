@@ -31,14 +31,17 @@ public class DBService {
 
     /**
      * Searches the VerifiableCredentials by the parameter to include them to the VerifiablePresentation
-     * @param ids Holder identities
-     * @param companyNumbers query parameter
+     *
+     * @param ids                  Holder identities
+     * @param companyNumbers       query parameter
      * @param headquarterCountries query parameter
-     * @param legalCountries query parameter
+     * @param legalCountries       query parameter
+     * @param bpns                 query parameter
      * @return Verifiable Presentation
      */
     public VerifiablePresentation getSelfDescriptions(List<String> ids, List<String> companyNumbers,
-                                                      List<String> headquarterCountries, List<String> legalCountries) {
+                                                      List<String> headquarterCountries, List<String> legalCountries,
+                                                      List<String> bpns) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
             query = query.addCriteria(Criteria.where("credentialSubject.id").in(ids));
@@ -52,11 +55,15 @@ public class DBService {
         if (listIsNotEmpty(legalCountries)) {
             query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
         }
+        if (listIsNotEmpty(bpns)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.bpn").in(bpns));
+        }
         return retriveVp(query);
     }
 
     /**
      * Searches the VerifiableCredentials by the parameter to include them to the VerifiablePresentation
+     *
      * @param ids VC identities
      * @return Verifiable Presentation
      */

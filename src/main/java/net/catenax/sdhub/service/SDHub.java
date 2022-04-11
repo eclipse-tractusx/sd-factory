@@ -25,7 +25,7 @@ import java.util.List;
 public class SDHub {
 
     // Namespace for the Self-Description document context
-    static final URI SD_VOC_URI = URI.create("http://atom.outlan.tk/sd-document-v0.1.jsonld");
+    static final URI SD_VOC_URI = URI.create("https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld");
     // Namespace for the Traceability context, used for the test in conjunction with https://catalog.demo.supplytree.org project
     static final URI TRACEABILITY_VOC_URI = URI.create("https://w3id.org/traceability/v1");
 

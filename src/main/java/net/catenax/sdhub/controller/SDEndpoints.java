@@ -140,9 +140,10 @@ public class SDEndpoints {
             @RequestParam(value = "id", required = false) List<String> ids,
             @RequestParam(value = "companyNumbers", required = false) List<String> companyNumbers,
             @RequestParam(value = "headquarterCountries", required = false) List<String> headquarterCountries,
-            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries
+            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries,
+            @RequestParam(value = "bpns", required = false) List<String> bpns
     ) {
-        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries);
+        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, bpns);
     }
 
     @Operation(

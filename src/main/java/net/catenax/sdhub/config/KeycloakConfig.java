@@ -28,14 +28,14 @@ public class KeycloakConfig {
     @ApplicationScope
     public TokenManager tokenManager() {
         var keycloak = KeycloakBuilder.builder()
-                    .serverUrl(serverUrl)
-                    .realm(realm)
-                    .username(username)
-                    .password(password)
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
-                    .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-                    .build();
+                .serverUrl(serverUrl)
+                .realm(realm)
+                .username(username)
+                .password(password)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
+                .build();
         return keycloak.tokenManager();
     }
 
