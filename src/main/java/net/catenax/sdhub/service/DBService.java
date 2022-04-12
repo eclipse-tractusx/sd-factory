@@ -41,6 +41,7 @@ public class DBService {
      */
     public VerifiablePresentation getSelfDescriptions(List<String> ids, List<String> companyNumbers,
                                                       List<String> headquarterCountries, List<String> legalCountries,
+                                                      List<String> serviceProviders, List<String> sdTypes,
                                                       List<String> bpns) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
@@ -54,6 +55,12 @@ public class DBService {
         }
         if (listIsNotEmpty(legalCountries)) {
             query = query.addCriteria(Criteria.where("credentialSubject.legal_country").in(legalCountries));
+        }
+        if (listIsNotEmpty(serviceProviders)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.service_provider").in(serviceProviders));
+        }
+        if (listIsNotEmpty(legalCountries)) {
+            query = query.addCriteria(Criteria.where("credentialSubject.sd_type").in(sdTypes));
         }
         if (listIsNotEmpty(bpns)) {
             query = query.addCriteria(Criteria.where("credentialSubject.bpn").in(bpns));

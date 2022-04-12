@@ -72,7 +72,7 @@ public class SDEndpoints {
 }
     """ )))})
     @GetMapping(value = "/vc/{id}", produces = {"application/vc+ld+json"})
-    public VerifiableCredential getSelfDescription(@PathVariable String id) throws Exception {
+    public VerifiableCredential getSelfDescription(@PathVariable String id) {
         return Optional.ofNullable(DBService.getVc(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Verifiable Credential not found"));
     }
@@ -141,9 +141,11 @@ public class SDEndpoints {
             @RequestParam(value = "companyNumbers", required = false) List<String> companyNumbers,
             @RequestParam(value = "headquarterCountries", required = false) List<String> headquarterCountries,
             @RequestParam(value = "legalCountries", required = false) List<String> legalCountries,
+            @RequestParam(value = "serviceProviders", required = false) List<String> serviceProviders,
+            @RequestParam(value = "sdTypes", required = false) List<String> sdTypes,
             @RequestParam(value = "bpns", required = false) List<String> bpns
     ) {
-        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, bpns);
+        return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, serviceProviders, sdTypes, bpns);
     }
 
     @Operation(
