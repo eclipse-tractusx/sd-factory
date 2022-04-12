@@ -19,4 +19,4 @@ app:
     password: changeme
   db:
     sd:
-      collectionName: selfdescription4
+      collectionName: selfdescription6
