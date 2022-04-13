@@ -99,6 +99,12 @@ public class DBService {
         return lst != null && !lst.isEmpty();
     }
 
+    /**
+     * Searches the VerifiableCredential by the id
+     *
+     * @param id VC id
+     * @return Verifiable Presentation
+     */
     public VerifiableCredential getVc(String id) {
         var query = Query.query(
                 new Criteria().orOperator(
