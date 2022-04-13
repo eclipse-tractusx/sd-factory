@@ -11,7 +11,7 @@
     <groupId>com.tsystems</groupId>
     <artifactId>sd-factory</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>factory</name>
     <description>Self-Description Hub Prototype</description>
     <packaging>jar</packaging>
     <properties>
