@@ -1,0 +1,26 @@
+    apiVersion: apps/v1           # API version
+    kind: Deployment              # Type of kubernetes resource
+    metadata:
+      name: "{{ .Values.name }}"
+      namespace: sd-hub   # Name of the kubernetes resource
+      labels:                     # Labels that will be applied to this resource
+        app: "{{ .Values.name }}"
+    spec:
+      replicas: 1                 # No. of replicas/pods to run in this deployment
+      selector:
+        matchLabels:              # The deployment applies to any pods mayching the specified labels
+          app: "{{ .Values.name }}"
+      template:                   # Template for creating the pods in this deployment
+        metadata:
+          labels:                 # Labels that will be applied to each Pod in this deployment
+            app: "{{ .Values.name }}"
+        spec:                     # Spec for the containers that will be run in the Pods
+          imagePullSecrets:
+          - name: registrypullsecret       
+          containers:
+          - name: "{{ .Values.name }}"
+            image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}  # Image from docker hub and check for the updated version of image
+            imagePullPolicy: Always
+            ports:
+              - name: http
+                containerPort: 8080 # The port that the container exposes
