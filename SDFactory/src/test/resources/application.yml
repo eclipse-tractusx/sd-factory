@@ -1,0 +1,31 @@
+spring:
+  mongodb:
+    embedded:
+      version: 5.0.2
+  data:
+    mongodb:
+      host: localhost
+      port: 0
+keycloak:
+  auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+  realm: CX-Central
+  resource: Client005-CustodianTest
+  bearer-only: true
+  use-resource-role-mappings: true
+  principal-attribute: preferred_username
+app:
+  build:
+    version: ^project.version^
+  verifiableCredentials:
+    holder: BPNL000000000000
+    issuer: BPNL000000000000
+    durationDays: 90
+  custodianWallet:
+    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
+    clientId: Client005-CustodianTest
+    clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
+    username: custodian@catenax.de
+    password: changeme
+  db:
+    sd:
+      collectionName: selfdescription4
