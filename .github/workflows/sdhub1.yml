@@ -41,5 +41,7 @@ jobs:
         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
     - name: Building and pusing docker image to acr
       run: |
-        #cd product-sd-hub/sdhub && docker build -f Dockerfile-azure-pipeline -t ${{ env.ACR_NAME }}/sdhub:latest .
-        #docker push ${{ env.ACR_NAME }}/sdhub:latest
+        sudo cp -r product-sd-hub/sdhub/Dockerfile-azure-pipeline sdhub
+        sudo rm -rf product-sd-hub
+        cd sdhub && docker build -f Dockerfile-azure-pipeline -t ${{ env.ACR_NAME }}/sdhub:latest .
+        docker push ${{ env.ACR_NAME }}/sdhub:latest
