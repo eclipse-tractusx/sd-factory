@@ -42,5 +42,5 @@ jobs:
         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
     - name: Building and pusing docker image to acr
       run: |
-        cd SDFactory && docker build -f Dockerfile -t ${{ env.ACR_NAME }}/SDFactory:latest .
+        cd SDFactory && docker build -f Dockerfile -t ${{ env.ACR_NAME }}/sdfactory:latest .
         docker push ${{ env.ACR_NAME }}/SDFactory:latest 
