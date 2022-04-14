@@ -35,8 +35,7 @@ jobs:
        owner: 'catenax-ng'
        repository: 'product-sd-hub'
      
-    - name: Log into registry
-      uses: docker/login-action@v1
+    - uses: azure/docker-login@v1
       with:
         login-server: ${{ env.ACR_NAME }}
         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
