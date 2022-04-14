@@ -1,4 +1,4 @@
-name: sdhub-GitHub-actions-pipeline
+name: Docker Image CI
 
 # Controls when the workflow will run
 on:
@@ -7,6 +7,8 @@ on:
     branches: [ master ]
     paths:
       - 'SDFactory/**'
+  pull_request:
+    branches: [ master ]
        
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
