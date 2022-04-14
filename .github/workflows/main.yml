@@ -30,9 +30,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       
     - name: Clone public product-sd-hub PUBLIC repository
-      uses: actions/checkout@v2
+      uses: GuillaumeFalourd/clone-github-repo-action@v1
       with:
-       owner: 'catenax-ng'
+       owner: 'Catena-X (ng)'
        repository: 'product-sd-hub'
      
     - name: Log into registry
