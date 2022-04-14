@@ -32,7 +32,7 @@ jobs:
     - name: Clone public product-sd-hub PUBLIC repository
       uses: GuillaumeFalourd/clone-github-repo-action@v1
       with:
-       owner: 'Catena-X (ng)'
+       owner: 'catenax-ng'
        repository: 'product-sd-hub'
      
     - name: Log into registry
