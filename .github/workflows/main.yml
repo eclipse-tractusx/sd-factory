@@ -29,7 +29,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Clone public product-sd-hub PUBLIC repository
-      uses: GuillaumeFalourd/clone-github-repo-action@v1
       with:
        owner: 'catenax-ng'
        repository: 'product-sd-hub'
