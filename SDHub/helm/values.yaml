@@ -1,6 +1,5 @@
-deployment:
-  image: "cxtsiacr.azurecr.io/sdhub"
-  tag: "1.0.0"
+image: "cxtsiacr.azurecr.io/sdhub:1.0.0"
 name: sdhub
-imagePullSecrets:
-  name: registrypullsecret
+imagePullSecrets: "registrypullsecret"
+portContainer: 80
+replicaCount: 1
