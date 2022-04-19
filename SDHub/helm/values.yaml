@@ -1,5 +1,6 @@
 deployment:
   image: "cxtsiacr.azurecr.io/sdhub"
   tag: "1.0.0"
-  imagePullSecrets: "registrypullsecret"
 name: sdhub
+imagePullSecrets:
+  - name: registrypullsecret
