@@ -1,14 +1,14 @@
     apiVersion: v1                # API version
     kind: Service                 # Type of the kubernetes resource
     metadata: 
-      annotations:
-         service.beta.kubernetes.io/azure-dns-label-name: selfdescriptionhub                    
+#      annotations:
+#         service.beta.kubernetes.io/azure-dns-label-name: selfdescriptionhub                    
       name: "{{ .Values.name }}"  
       namespace: product-essential-services # Name of the kubernetes resource
       labels:                     # Labels that will be applied to this resource
         app: "{{ .Values.name }}"
     spec:                         
-      type: LoadBalancer             # The service will be exposed by opening a Port on each node and proxying it. 
+      type: ClusterIp             # The service will be exposed by opening a Port on each node and proxying it. 
       selector:
         app: "{{ .Values.name }}"   # The service exposes Pods with label `app idss-sdhub`
       ports:                      # Forward incoming connections on port 9092 to the target port 9092
