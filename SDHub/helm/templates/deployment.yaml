@@ -16,10 +16,10 @@
             app: {{ .Values.name }}
         spec:                     # Spec for the containers that will be run in the Pods
           imagePullSecrets:
-          - name: {{ .Values.imagepullSecrets.name }}       
+          - name: {{ .Values.imagepullSecrets }}       
           containers:
           - name: {{ .Values.name }}
-            image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}  # Image from docker hub and check for the updated version of image
+            image: {{ .Values.image }}  # Image from docker hub and check for the updated version of image
             imagePullPolicy: Always
             ports:
               - name: http
