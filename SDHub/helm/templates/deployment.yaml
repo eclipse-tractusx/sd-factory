@@ -6,7 +6,7 @@
       labels:                     # Labels that will be applied to this resource
         app: {{ .Values.name }}
     spec:
-      replicas: 1                 # No. of replicas/pods to run in this deployment
+      replicas: {{ .Values.replicaCount }}                # No. of replicas/pods to run in this deployment
       selector:
         matchLabels:              # The deployment applies to any pods mayching the specified labels
           app: {{ .Values.name }}
@@ -23,4 +23,4 @@
             imagePullPolicy: Always
             ports:
               - name: http
-                containerPort: 8080 # The port that the container exposes
+                containerPort: {{ .Values.portContainer }} # The port that the container exposes
