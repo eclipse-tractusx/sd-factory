@@ -4,7 +4,7 @@
       annotations:
          service.beta.kubernetes.io/azure-dns-label-name: selfdescriptionfactory                     
       name: "{{ .Values.name }}"  
-      namespace: sd-hub # Name of the kubernetes resource
+      namespace: product-essential-services # Name of the kubernetes resource
       labels:                     # Labels that will be applied to this resource
         app: "{{ .Values.name }}"
     spec:                         
