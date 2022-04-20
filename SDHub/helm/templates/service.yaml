@@ -1,14 +1,14 @@
     apiVersion: v1                # API version
     kind: Service                 # Type of the kubernetes resource
     metadata:                     
-      name: "{{ .Values.name }}"  
-      namespace: product-essential-services # Name of the kubernetes resource
+      name: {{ .Values.name }}  
+      namespace: {{ .Values.namespace }} # Name of the kubernetes resource
       labels:                     # Labels that will be applied to this resource
-        app: "{{ .Values.name }}"
+        app: {{ .Values.name }}
     spec:                         
       type: ClusterIP             # The service will be exposed by opening a Port on each node and proxying it. 
       selector:
-        app: "{{ .Values.name }}"   # The service exposes Pods with label `app idss-sdhub`
+        app: {{ .Values.name }}   # The service exposes Pods with label `app idss-sdhub`
       ports:                      # Forward incoming connections on port 9092 to the target port 9092
       - name: http
         port: {{ .Values.portService }}
