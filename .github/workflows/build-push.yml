@@ -36,7 +36,14 @@ jobs:
         REGISTRY: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.USER_TOKEN }}
+    
     - name: Building and pusing docker image to acr
       run: |
-        cd product-sd-hub/SDHub && docker build -f Dockerfile -t ${{ env.REGISTRY}}/sdhub:v1.0.0 .
-        docker push ${{ env.REGISTRY }}/sdhub:v1.0.0
+        cd product-sd-hub/SDHub && docker build -f Dockerfile -t ${{ env.REGISTRY}}/sdhub:latest .
+    
+    - name: Push image
+      uses: docker/build-push-action@v2
+      with:
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          file: ./Dockerfile      
