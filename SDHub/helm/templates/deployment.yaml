@@ -2,7 +2,7 @@
     kind: Deployment              # Type of kubernetes resource
     metadata:
       name: {{ .Values.name }}
-      namespace: product-essential-services   # Name of the kubernetes resource
+      namespace: {{ .Values.namespace }}   # Name of the kubernetes resource
       labels:                     # Labels that will be applied to this resource
         app: {{ .Values.name }}
     spec:
