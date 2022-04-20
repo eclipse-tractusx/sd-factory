@@ -16,9 +16,7 @@
         metadata:
           labels:                 # Labels that will be applied to each Pod in this deployment
             app: {{ .Values.name }}
-        spec:                     # Spec for the containers that will be run in the Pods
-          imagePullSecrets:
-          - name: {{ .Values.imagepullSecrets }}       
+        spec:                     # Spec for the containers that will be run in the Pods       
           containers:
           - name: {{ .Values.name }}
             image: {{ .Values.image }}  # Image from docker hub and check for the updated version of image
