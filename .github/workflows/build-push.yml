@@ -1,0 +1,42 @@
+name: SDHub Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    paths:
+      - 'SDHub/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+env:
+  REGISTRY: ghcr.io
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      
+    - name: Clone public product-sd-hub PUBLIC repository
+      uses: GuillaumeFalourd/clone-github-repo-action@v1
+      with:
+       owner: 'catenax-ng'
+       repository: 'product-sd-hub'
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        REGISTRY: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.USER_TOKEN }}
+    - name: Building and pusing docker image to acr
+      run: |
+        cd product-sd-hub/SDHub && docker build -f Dockerfile -t ${{ env.REGISTRY}}/sdhub:v1.0.0 .
+        docker push ${{ env.REGISTRY }}/sdhub:v1.0.0
