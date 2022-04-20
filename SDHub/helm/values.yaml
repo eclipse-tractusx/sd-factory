@@ -1,5 +1,5 @@
 image: "cxtsiacr.azurecr.io/sdhub:1.0.0"
-name: sdhub
+name: "sdhub"
 imagePullSecrets: "registrypullsecret"
 portContainer: 8080
 replicaCount: 1
