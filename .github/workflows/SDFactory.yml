@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: SDFactory Pipeline
 
 # Controls when the workflow will run
@@ -12,12 +10,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
-env:
-  HELM_EXPERIMENTAL_OCI: 1
-  ACR_NAME: cxtsiacr.azurecr.io
-  version: 0.0.1
-  
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -34,34 +26,15 @@ jobs:
       with:
        owner: 'catenax-ng'
        repository: 'product-sd-hub'
-     
-    - uses: azure/docker-login@v1
-      with:
-        login-server: ${{ env.ACR_NAME }}
-        username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-        password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
-    - name: Building and pusing docker image to acr
-      run: |
-        cd product-sd-hub/SDFactory && docker build -f Dockerfile -t ${{ env.ACR_NAME }}/sdfactory:v1.0.0 .
-        docker push ${{ env.ACR_NAME }}/sdfactory:v1.0.0
-        
-        
-    - name: install helm
-      uses: Azure/setup-helm@v1
-      with:
-        version: 3.5.0
-    - name: Clone public product-sd-hub PUBLIC repository
-      uses: GuillaumeFalourd/clone-github-repo-action@v1
-      with:
-        owner: 'catenax-ng'
-        repository: 'product-sd-hub'
 
-    - name: login to acr using helm
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        REGISTRY: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.USER_TOKEN }}
+
+    - name: Building and pusing docker image to ghr
       run: |
-        echo ${{ secrets.AZURE_REGISTRY_PASSWORD }} | helm registry login  ${{ env.ACR_NAME }} --username ${{ secrets.AZURE_REGISTRY_USERNAME }} --password-stdin 
-    - name: save helm chart to local registry
-      run: |
-        helm chart save product-sd-hub/SDFactory/helm ${{ env.ACR_NAME }}/helm/sdfactory:${{ env.version }}
-    - name: publish chart to acr
-      run: |
-       helm chart push ${{ env.ACR_NAME }}/helm/sdfactory:${{ env.version }}
+         cd product-sd-hub/SDFactory && docker build -f Dockerfile -t ghcr.io/catenax-ng/product-sd-hub/sdfactory:v1.0.0 .
+         docker push ghcr.io/catenax-ng/product-sd-hub/sdfactory:v1.0.0
