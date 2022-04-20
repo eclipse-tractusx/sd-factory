@@ -1,5 +1,5 @@
 image: "cxtsiacr.azurecr.io/sdfactory:1.0.0"
-name: sdfactory
+name: "sdfactory"
 imagePullSecrets: "registrypullsecret"
 portContainer: 8080
 replicaCount: 1
