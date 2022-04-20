@@ -1,4 +1,5 @@
-image: "cxtsiacr.azurecr.io/sdhub:latest"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.0"
 name: "sdhub"
 portContainer: 8080
+replicaCount: 1
 replicaCount: 1
