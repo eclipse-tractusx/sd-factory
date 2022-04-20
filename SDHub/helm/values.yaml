@@ -1,5 +1,5 @@
 image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.0"
 name: "sdhub"
 portContainer: 8080
-replicaCount: 1
+portService: 80
 replicaCount: 1
