@@ -2,8 +2,6 @@
     kind: Deployment              # Type of kubernetes resource
     metadata:
       name: {{ .Values.name }}
-      annotations:
-            checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       namespace: product-essential-services   # Name of the kubernetes resource
       labels:                     # Labels that will be applied to this resource
         app: {{ .Values.name }}
