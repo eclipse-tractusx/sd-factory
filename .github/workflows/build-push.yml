@@ -40,10 +40,4 @@ jobs:
     - name: Building and pusing docker image to acr
       run: |
         cd product-sd-hub/SDHub && docker build -f Dockerfile -t ${{ env.REGISTRY}}/sdhub:latest .
-    
-    - name: Push image
-      uses: docker/build-push-action@v2
-      with:
-          push: true
-          tags: ${{ env.REGISTRY}}/sdhub:latest
-          file: ./Dockerfile      
+        docker push ${{ env.REGISTRY }}/sdhub:latest
