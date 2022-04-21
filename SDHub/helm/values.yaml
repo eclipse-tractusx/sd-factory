@@ -1,4 +1,4 @@
-image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.0"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.1"
 name: "sdhub"
 portContainer: 8080
 portService: 80
