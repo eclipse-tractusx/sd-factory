@@ -3,7 +3,7 @@ server:
 spring:
   data:
     mongodb:
-      host: mongo
+      host: mongodb-sdhub
       port: 27017
       database: sdhub-mongo
 keycloak:
