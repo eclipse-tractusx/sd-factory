@@ -3,4 +3,4 @@ name: "sdhub"
 portContainer: 8080
 portService: 80
 replicaCount: 1
-namespace: "product-essential-services"
+#namespace: "product-essential-services"
