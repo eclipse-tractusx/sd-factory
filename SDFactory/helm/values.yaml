@@ -1,4 +1,4 @@
-image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:v1.0.0"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:v1.0.1"
 name: "sdfactory"
 portContainer: 8080
 portService: 80
