@@ -36,5 +36,5 @@ jobs:
 
     - name: Building and pusing docker image to ghr
       run: |
-         cd product-sd-hub/SDHub && docker build -f Dockerfile -t ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.0 .
-         docker push ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.0
+         cd product-sd-hub/SDHub && docker build -f Dockerfile -t ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.1 .
+         docker push ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.1
