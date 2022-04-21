@@ -1,24 +1,20 @@
-    apiVersion: apps/v1           # API version
-    kind: Deployment              # Type of kubernetes resource
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
     metadata:
-      name: {{ .Values.name }}
-      namespace: {{ .Values.namespace }}   # Name of the kubernetes resource
-      labels:                     # Labels that will be applied to this resource
+      labels:
         app: {{ .Values.name }}
     spec:
-      replicas: {{ .Values.replicaCount }}                # No. of replicas/pods to run in this deployment
-      selector:
-        matchLabels:              # The deployment applies to any pods mayching the specified labels
-          app: {{ .Values.name }}
-      template:                   # Template for creating the pods in this deployment
-        metadata:
-          labels:                 # Labels that will be applied to each Pod in this deployment
-            app: {{ .Values.name }}
-        spec:                     # Spec for the containers that will be run in the Pods       
-          containers:
-          - name: {{ .Values.name }}
-            image: {{ .Values.image }}  # Image from docker hub and check for the updated version of image
-            imagePullPolicy: Always
-            ports:
-              - name: http
-                containerPort: {{ .Values.portContainer }} # The port that the container exposes
+      containers:
+      - name: {{ .Values.name }}
+        image: {{ .Values.image }}
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: {{ .Values.portContainer }}
