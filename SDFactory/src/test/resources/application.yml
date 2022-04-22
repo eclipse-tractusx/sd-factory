@@ -17,6 +17,7 @@ app:
   build:
     version: ^project.version^
   verifiableCredentials:
+    idPrefix: http://localhost:8080
     holder: BPNL000000000000
     issuer: BPNL000000000000
     durationDays: 90

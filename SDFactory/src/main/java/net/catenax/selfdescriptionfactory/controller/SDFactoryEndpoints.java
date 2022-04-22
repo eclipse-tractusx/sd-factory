@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class SDFactoryEndpoints {
         var sdMap = new HashMap<>(BeanAsMap.asMap(sdDocumentDto));
         sdMap.remove("issuer");
         sdMap.remove("holder");
+        sdMap.values().removeAll(Collections.singleton(null));
         var verifiedCredentials = sdFactory.createVC(sdMap,
                 sdDocumentDto.getHolder(), sdDocumentDto.getIssuer());
         sdFactory.storeVC(verifiedCredentials);
