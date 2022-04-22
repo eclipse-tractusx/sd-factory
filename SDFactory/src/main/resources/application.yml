@@ -18,7 +18,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    idPrefix: http://localhost:8081
+    idPrefix: http://sdhub.int.demo.catena-x.net/
   custodianWallet:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
     clientId: Client005-CustodianTest
