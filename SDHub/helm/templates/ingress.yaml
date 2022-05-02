@@ -8,7 +8,6 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, OPTIONS"
     nginx.ingress.kubernetes.io/cors-allow-origin: "idses-fe.demo.catena-x.net"
 spec:
-  ingressClassName: nginx
   rules:
   - host: {{ .Values.domain }}
     http:
