@@ -9,6 +9,10 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: {{ .Values.name }}.{{ .Values.domain }}-tls
   rules:
   - host: {{ .Values.domain }}
     http:
