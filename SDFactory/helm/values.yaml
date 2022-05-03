@@ -4,4 +4,5 @@ name: "sdfactory"
 portContainer: 8080
 portService: 80
 replicaCount: 1
+issuer: "letsencrypt-prod"
 #namespace: product-essential-services
