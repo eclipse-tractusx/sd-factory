@@ -5,16 +5,16 @@ import com.danubetech.verifiablecredentials.VerifiablePresentation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A query interface implementation of SD-hub
@@ -106,18 +106,11 @@ public class DBService {
      * @return Verifiable Presentation
      */
     public VerifiableCredential getVc(String id) {
-        var query = Query.query(
-                new Criteria().orOperator(
-                        Criteria.where("id").is(id),
-                        Criteria.where("id").is(ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/selfdescription/vc/" + id).build().toString())
-                )
-        );
-        var document = mongoTemplate.findOne(query, Document.class, sdCollectionName);
-        if (Objects.nonNull(document)) {
-            document.remove("_id");
-            return VerifiableCredential.fromJson(document.toJson());
-        } else {
-            return null;
-        }
+        return Stream.ofNullable(mongoTemplate.findById(new ObjectId(id), Document.class, sdCollectionName))
+                .peek(document -> document.remove("_id"))
+                .map(Document::toJson)
+                .map(VerifiableCredential::fromJson)
+                .findFirst()
+                .orElse(null);
     }
 }

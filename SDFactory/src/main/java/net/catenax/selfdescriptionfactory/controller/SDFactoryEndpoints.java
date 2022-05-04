@@ -11,9 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.catenax.selfdescriptionfactory.dto.SDDocumentDto;
 import net.catenax.selfdescriptionfactory.service.SDFactory;
 import net.catenax.selfdescriptionfactory.util.BeanAsMap;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -76,9 +83,10 @@ public class SDFactoryEndpoints {
         sdMap.remove("issuer");
         sdMap.remove("holder");
         sdMap.values().removeAll(Collections.singleton(null));
-        var verifiedCredentials = sdFactory.createVC(sdMap,
+        var objectId = ObjectId.get();
+        var verifiedCredentials = sdFactory.createVC(objectId.toHexString(), sdMap,
                 sdDocumentDto.getHolder(), sdDocumentDto.getIssuer());
-        sdFactory.storeVC(verifiedCredentials);
+        sdFactory.storeVC(verifiedCredentials, objectId);
         return verifiedCredentials;
     }
 

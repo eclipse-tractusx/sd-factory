@@ -3,6 +3,7 @@ package net.catenax.selfdescriptionfactory;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import foundation.identity.jsonld.JsonLDObject;
 import net.catenax.selfdescriptionfactory.service.SDFactory;
+import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +37,14 @@ public class VCTest {
         System.out.println(representation);
     }
 
-
     private VerifiableCredential createVc() {
+        var objectID = ObjectId.get();
         Map<String, Object> claims = new LinkedHashMap<>();
         claims.put("company_number", "DE-123");
         claims.put("headquarter_country", "DE");
         claims.put("legal_country", "DE");
         claims.put("bpn", "12345678");
-        return sdFactory.createVC(claims, holder, issuer);
+        return sdFactory.createVC(objectID.toHexString(), claims, holder, issuer);
     }
 
     @Test

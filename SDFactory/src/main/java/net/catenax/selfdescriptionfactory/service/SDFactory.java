@@ -8,6 +8,7 @@ import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import net.catenax.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +25,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -66,8 +66,9 @@ public class SDFactory {
      *
      * @param verifiableCredential credential to be saved
      */
-    public void storeVC(VerifiableCredential verifiableCredential) {
+    public void storeVC(VerifiableCredential verifiableCredential, ObjectId objectId) {
         Document doc = Document.parse(verifiableCredential.toJson());
+        doc.append("_id", objectId);
         mongoTemplate.save(doc, sdCollectionName);
     }
 
@@ -79,14 +80,14 @@ public class SDFactory {
      * @param issuerBpn DID or BPN of the Issuer for the signature
      * @return VerifiableCredential signed by CatenaX authority
      */
-    public VerifiableCredential createVC(Map<String, Object> claims, String holderBpn, String issuerBpn) {
+    public VerifiableCredential createVC(String id, Map<String, Object> claims, String holderBpn, String issuerBpn) {
         CredentialSubject credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
         Date issuanceDate = new Date();
         VerifiableCredential verifiableCredential = VerifiableCredential.builder()
                 .context(SD_VOC_URI)
-                .id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + UUID.randomUUID()).build().toUri())
+                .id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + id).build().toUri())
                 .issuanceDate(issuanceDate)
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
                 .type("SD-document")
