@@ -5,9 +5,13 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.issuer }}
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "https://idses-fe.demo.catena-x.net"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($http_origin ~* "http.?:\/\/(.*\.)?(localhost:3000|catena-x\.net|example\.com).*$") {
+        add_header "Access-Control-Allow-Origin" "$http_origin" always;
+        add_header "Access-Control-Allow-Methods" "GET, PUT, POST, OPTIONS" always;
+        add_header "Access-Control-Allow-Headers" "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" always;
+        add_header "Access-Control-Expose-Headers" "Content-Length,Content-Range" always;
+      }
 spec:
   tls:
   - hosts:
