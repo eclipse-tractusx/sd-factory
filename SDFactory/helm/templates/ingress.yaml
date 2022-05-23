@@ -5,20 +5,23 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.issuer }}
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/configuration-snippet: |
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
       if ($http_origin ~* "http.?:\/\/(.*\.)?(localhost:3000|catena-x\.net|example\.com|idses-fe\.demo\.catena-x\.net).*$") {
         set $allow_origin $http_origin;
       }
 
-      more_set_headers "Access-Control-Allow-Origin" "$http_origin" always;
-      more_set_headers "Access-Control-Allow-Methods" "GET, PUT, POST, OPTIONS, DELETE" always;
-      more_set_headers "Access-Control-Allow-Headers" "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" always;
-      more_set_headers "Access-Control-Expose-Headers" "Content-Range";
+      add_header "Access-Control-Allow-Origin" "$http_origin" always;
+      add_header "Access-Control-Allow-Methods" "GET, PUT, POST, OPTIONS, DELETE" always;
+      add_header "Access-Control-Allow-Headers" "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" always;
+      add_header "Access-Control-Expose-Headers" "Content-Range";
 
       if ($request_method = 'OPTIONS') {
-        more_set_headers 'Access-Control-Max-Age: 1728000';
-        more_set_headers 'Content-Type: text/plain charset=UTF-8';
-        more_set_headers 'Content-Length: 0';
+        add_header "Access-Control-Allow-Origin" "$http_origin" always;
+        add_header "Access-Control-Allow-Methods" "GET, PUT, POST, OPTIONS, DELETE" always;
+        add_header "Access-Control-Allow-Headers" "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" always;
+        add_header "Access-Control-Max-Age" "1728000" always;
+        add_header "Content-Type" "text/plain charset=UTF-8";
+        add_header "Content-Length" 0;
         return 204;
       }
 spec:
