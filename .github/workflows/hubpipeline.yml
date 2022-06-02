@@ -1,0 +1,61 @@
+name: SDHub Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'SDHub/**'
+    tags:
+      - 'v*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout
+      uses: actions/checkout@v2
+
+#    - name: Clone public product-sd-hub PUBLIC repository
+#      uses: GuillaumeFalourd/clone-github-repo-action@v1
+#      with:
+#       owner: 'catenax-ng'
+#       repository: 'product-sd-hub'
+       
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: |
+          name/sdhub
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        REGISTRY: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.USER_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}    
