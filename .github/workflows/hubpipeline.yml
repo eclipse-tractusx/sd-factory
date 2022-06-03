@@ -50,7 +50,7 @@ jobs:
       with:
         REGISTRY: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.USER_TOKEN }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push
       uses: docker/build-push-action@v3
