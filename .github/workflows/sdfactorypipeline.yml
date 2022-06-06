@@ -38,7 +38,7 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: |
-          ghcr.io/catenax-ng/product-sd-hub/SDHub
+          ghcr.io/catenax-ng/product-sd-hub/sdfactory
         tags: |
           type=ref,event=branch
           type=ref,event=pr
