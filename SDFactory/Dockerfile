@@ -1,4 +1,5 @@
-FROM openjdk:17-alpine
+#FROM openjdk:17-alpine
+FROM openjdk:19-alpine3.16
 
 RUN apk update && apk add --upgrade libsodium && apk add maven && apk add --upgrade maven
   
