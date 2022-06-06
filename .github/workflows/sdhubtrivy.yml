@@ -12,14 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build an image from Dockerfile
-        run: |
-          docker build -t ghcr.io/catenax-ng/product-sd-hub/SDHub:${{ github.sha }} .
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          image-ref: 'ghcr.io/catenax-ng/product-sd-hub/sdhub:master'
           format: 'sarif'
           output: 'trivyhub-results.sarif'
 
