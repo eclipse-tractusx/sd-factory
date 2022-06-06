@@ -1,4 +1,4 @@
-name: SDfactory Pipeline
+name: SDfactorypipeline
 
 # Controls when the workflow will run
 on:
