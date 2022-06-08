@@ -12,9 +12,9 @@ import org.springframework.web.context.annotation.ApplicationScope;
 @Configuration
 public class KeycloakConfig {
 
-    @Value("${keycloak.auth-server-url}")
+    @Value("${app.custodianWallet.auth-server-url}")
     private String serverUrl;
-    @Value("${keycloak.realm}")
+    @Value("${app.custodianWallet.realm}")
     private String realm;
     @Value("${app.custodianWallet.username}")
     private String username;

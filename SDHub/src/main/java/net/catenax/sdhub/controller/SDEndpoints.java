@@ -138,12 +138,12 @@ public class SDEndpoints {
     @GetMapping(value = "/by-params", produces = {"application/vp+ld+json"})
     public VerifiablePresentation getSelfDescriptions(
             @RequestParam(value = "id", required = false) List<String> ids,
-            @RequestParam(value = "companyNumbers", required = false) List<String> companyNumbers,
-            @RequestParam(value = "headquarterCountries", required = false) List<String> headquarterCountries,
-            @RequestParam(value = "legalCountries", required = false) List<String> legalCountries,
-            @RequestParam(value = "serviceProviders", required = false) List<String> serviceProviders,
-            @RequestParam(value = "sdTypes", required = false) List<String> sdTypes,
-            @RequestParam(value = "bpns", required = false) List<String> bpns
+            @RequestParam(value = "company_number", required = false) List<String> companyNumbers,
+            @RequestParam(value = "headquarter_country", required = false) List<String> headquarterCountries,
+            @RequestParam(value = "legal_country", required = false) List<String> legalCountries,
+            @RequestParam(value = "service_provider", required = false) List<String> serviceProviders,
+            @RequestParam(value = "sd_type", required = false) List<String> sdTypes,
+            @RequestParam(value = "bpn", required = false) List<String> bpns
     ) {
         return DBService.getSelfDescriptions(ids, companyNumbers, headquarterCountries, legalCountries, serviceProviders, sdTypes, bpns);
     }
