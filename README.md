@@ -181,8 +181,9 @@ as JSON and https://sdhub.int.demo.catena-x.net/swagger-ui/index.html in human-r
 
 # Configuration
 SD-Factory and SD-Hub are two microservices, each of them has its own configuration file.
-The default the configuration property file is incorporated into the fat jar during build
-process, but its location can be overridden:
+The configuration property file is located under `resources` folder and is incorporated 
+into the fat jar during build process. It can be customized before building if needed.
+Or,the another one can be used as its location can be overridden:
 ```shell
 java -jar myproject.jar --spring.config.location=file:./custom-config/
 ```
@@ -287,6 +288,6 @@ SD-Hub and SD-Factory use Maven for building process. To build a service from so
 need to go to corresponding directory and trigger building process:
 ```shell
 cd SDHub
-
-
+./mvnw clean install
 ```
+Then fat jar file can be found in `target` folder as well as in local Maven repository.
