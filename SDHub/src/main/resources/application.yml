@@ -14,10 +14,10 @@ app:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
     auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
     realm: CX-Central
-    clientId: Client005-CustodianTest
-    clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
-    username: custodian@catenax.de
-    password: changeme
+    clientId:
+    clientSecret:
+    username:
+    password:
   db:
     sd:
       collectionName: selfdescription
