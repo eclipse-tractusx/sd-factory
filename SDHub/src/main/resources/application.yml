@@ -13,7 +13,7 @@ app:
   sdhubId: BPNL000000000000
   custodianWallet:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
-    clientId: Client005-CustodianTest
+    clientId: 
     clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
     username: custodian@catenax.de
     password: changeme
