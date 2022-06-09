@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.selfdescriptionfactory.dto.SDDocumentDto;
@@ -36,7 +37,8 @@ public class SDFactoryEndpoints {
 
     @Operation(
             method = "POST",
-            description = "Creates a Verifiable Credential and saves in the DB from the DTO"
+            description = "Creates a Verifiable Credential and saves in the DB from the DTO",
+            security = {@SecurityRequirement(name = "bearerAuth")}
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
@@ -45,36 +47,58 @@ public class SDFactoryEndpoints {
                             mediaType = "application/vc+ld+json",
                             examples = @ExampleObject("""
 {
-    "id": "http://localhost:8080/selfdescription/vc/a5d1ae5b-ec91-45f3-a145-2d263ab5a676",
-    "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
-    ],
-    "type": [
-        "VerifiableCredential",
-        "SD-document"
-    ],
-    "issuer": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh",
-    "issuanceDate": "2022-04-05T21:16:05Z",
-    "expirationDate": "2022-07-04T21:16:05Z",
-    "credentialSubject": {
-        "type": [
-            "SD-document"
-        ],
-        "company_number": "did:web:www.aa.com",
-        "headquarter_country": "DE",
-        "legal_country": "DE",
-        "id": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh"
-    },
-    "proof": {
-        "type": "Ed25519Signature2018",
-        "created": "2022-04-09T22:19:36Z",
-        "proofPurpose": "assertionMethod",
-        "verificationMethod": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh#key-1",
-        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..eQR2Nxdzuv5oEhJ0Te0buRTyVUjXUxudnY28iIuXipU5_QKsKG3GgQDJpKg1zHVGJW49Ksf1siZf1EmXjtkyCw"
-    }
+  "id": "http://sdhub.int.demo.catena-x.net/selfdescription/vc/62a22d735c6fb508ce9088c8",
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "SD-document"
+  ],
+  "issuer": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh",
+  "issuanceDate": "2022-06-09T17:27:15Z",
+  "expirationDate": "2022-09-07T17:27:15Z",
+  "credentialSubject": {
+    "bpn": "BPNL000000000000",
+    "company_number": "123456",
+    "headquarter_country": "DE",
+    "legal_country": "DE",
+    "sd_type": "connector",
+    "service_provider": "http://test.d.com",
+    "id": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh"
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2022-06-09T17:27:19Z",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh#key-1",
+    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..0gCJd2wVGvUM-UwVvoIRVlUUgODI5CSFkazyOQlClg4AaxhMH3pcDhvO_UxU1uo3wBU5ArxvKAil3gxOBgE1Aw"
+  }
 }
-    """ )))})
+""" ))), @ApiResponse(responseCode = "403",
+            description = "Access is forbidden",
+            content = @Content(
+                    mediaType = "application/vc+ld+json",
+                    examples = @ExampleObject("""
+{
+  "timestamp": "2022-06-09T17:29:02.235+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "path": "/selfdescription"
+}
+"""))), @ApiResponse(responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(
+                    mediaType = "application/vc+ld+json",
+                    examples = @ExampleObject("""
+{
+  "timestamp": "2022-06-09T17:35:39.926+00:00",
+  "status": 401,
+  "error": "Unauthorized",
+  "path": "/selfdescription"
+}
+""")))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/vc+ld+json"})
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole(@securityRoles.createRole)")
@@ -92,13 +116,38 @@ public class SDFactoryEndpoints {
 
     @Operation(
             method = "DELETE",
-            description = "Delete a list of Verifiable Credentials from DB"
+            description = "Delete a list of Verifiable Credentials from DB",
+            security = {@SecurityRequirement(name = "bearerAuth")}
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
-                    description = "Verifiable Credentials were deleted successfully")})
+                    description = "Verifiable Credentials were deleted successfully"),
+            @ApiResponse(responseCode = "403",
+                    description = "Access is forbidden",
+                    content = @Content(
+                            mediaType = "application/vc+ld+json",
+                            examples = @ExampleObject("""
+{
+  "timestamp": "2022-06-09T17:29:02.235+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "path": "/selfdescription"
+}
+"""))), @ApiResponse(responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(
+                    mediaType = "application/vc+ld+json",
+                    examples = @ExampleObject("""
+{
+  "timestamp": "2022-06-09T17:35:39.926+00:00",
+  "status": 401,
+  "error": "Unauthorized",
+  "path": "/selfdescription"
+}
+""")))})
     @DeleteMapping
     @PreAuthorize("hasRole(@securityRoles.deleteRole)")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeSelfDescriptions(@RequestParam(value = "id", required = true) List<String> ids) {
         sdFactory.removeSelfDescriptions(ids);
     }

@@ -41,7 +41,7 @@ this context is published as a JSON-LD document at
 https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld
 
 This context is going to be changed when corresponding vocabulary will be available in 
-Trusted Framework. Currently the vocabulary is defined in this file:
+Trusted Framework. Currently, the vocabulary is defined in this file:
 ```json
 {
   "@context": {
@@ -283,7 +283,6 @@ As SD-Hub signs the Verifiable Presentation it needs to know which wallet shall 
 to sign the Presentation. Parameter `sdhubId` specifies the ID of this wallet.
 
 # Building
-
 SD-Hub and SD-Factory use Maven for building process. To build a service from sources one
 need to go to corresponding directory and trigger building process:
 ```shell
@@ -291,3 +290,31 @@ cd SDHub
 ./mvnw clean install
 ```
 Then fat jar file can be found in `target` folder as well as in local Maven repository.
+it can be ryn with this command:
+```shell
+java -jar target/sd-factory-1.0.0-SNAPSHOT.jar
+```
+for factory and
+```shell
+java -jar target/sd-hub-1.0.0-SNAPSHOT.jar
+```
+Please note the name of jar-file as it may differ if version is changed.
+
+<a name="docker"></a>To build a Docker image one can use this command:
+```shell
+./mvnw spring-boot:build-image
+```
+A Docker image will be built and installed to the local repository.
+
+# Testing
+SD-Hub and SD-Factory can be fired up locally in Docker environment. Before that
+the images need to be created as it is [described here](#docker). Pay attention 
+to the image names as they may change if the version of the sources was bumped up,
+but the `docker-compose.yml` has not been updated. Being in root directory of the
+repository type this:
+```shell
+docker-compose up -d
+```
+Then you can call SD-Hub and SD-Factory API or see Swagger documentation by address
+http://localhost:8080/swagger-ui/index.html for SD-hub and http://localhost:8081/swagger-ui/index.html
+for SD-Factory.

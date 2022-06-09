@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   data:
     mongodb:
@@ -29,7 +29,7 @@ app:
     password: changeme
   security:
     createRole: add_self_descriptions
-    deleteRole: remove_self_description
+    deleteRole: delete_tech_user_management
   db:
     sd:
       collectionName: selfdescription

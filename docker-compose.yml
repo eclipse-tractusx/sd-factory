@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  mongodb-sdhub:
+    image: mongo
+    restart: always
+  sd-hub:
+    image: docker.io/library/sd-hub:1.0.0-SNAPSHOT
+    ports:
+      - "8080:8080"
+  sd-factory:
+    image: docker.io/library/sd-factory:1.0.0-SNAPSHOT
+    ports:
+      - "8081:8081"

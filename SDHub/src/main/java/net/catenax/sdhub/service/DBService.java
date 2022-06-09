@@ -12,9 +12,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A query interface implementation of SD-hub
@@ -68,6 +69,13 @@ public class DBService {
         return retriveVp(query);
     }
 
+    private List<ObjectId> transformId(List<String> ids) {
+        return ids.stream()
+                .filter(ObjectId::isValid)
+                .map(ObjectId::new)
+                .toList();
+    }
+
     /**
      * Searches the VerifiableCredentials by the parameter to include them to the VerifiablePresentation
      *
@@ -77,9 +85,8 @@ public class DBService {
     public VerifiablePresentation getSelfDescriptions(List<String> ids) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
-            query = query.addCriteria(Criteria.where("_id").in(
-                    ids.stream().map(ObjectId::new).collect(Collectors.toList()))
-            );
+            var oids = transformId(ids);
+            query = query.addCriteria(Criteria.where("_id").in(oids));
         }
         return retriveVp(query);
     }
@@ -108,7 +115,9 @@ public class DBService {
      * @return Verifiable Presentation
      */
     public VerifiableCredential getVc(String id) {
-        return Stream.ofNullable(mongoTemplate.findById(new ObjectId(id), Document.class, sdCollectionName))
+        return transformId(Collections.singletonList(id)).stream()
+                .map(oid ->mongoTemplate.findById(oid, Document.class, sdCollectionName))
+                .filter(Objects::nonNull)
                 .peek(document -> document.remove("_id"))
                 .map(Document::toJson)
                 .map(VerifiableCredential::fromJson)

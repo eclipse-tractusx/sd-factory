@@ -99,11 +99,19 @@ public class SDFactory {
         return custodianWallet.getSignedVC(verifiableCredential);
     }
 
+    private List<ObjectId> transformId(List<String> ids) {
+        return ids.stream()
+                .filter(ObjectId::isValid)
+                .map(ObjectId::new)
+                .toList();
+    }
+
     /***
      * Deletes Verifiable Credentials from DB
      * @param ids list of VC identities
      */
     public void removeSelfDescriptions(List<String> ids) {
-        mongoTemplate.remove(Query.query(Criteria.where("id").in(ids)), sdCollectionName);
+        var oidsToRevove = transformId(ids);
+        mongoTemplate.remove(Query.query(Criteria.where("_id").in(oidsToRevove, sdCollectionName)));
     }
 }
