@@ -34,8 +34,8 @@ spec:
             secretKeyRef:
               name: avp-sdhub-secret
               key: Username
-           - name: CUST-PASS
-            valueFrom: 
-              secretKeyRef:
-                name: avp-sdhub-secret
-                key: Password
+        - name: CUST-PASS
+          valueFrom: 
+            secretKeyRef:
+              name: avp-sdhub-secret
+              key: Password
