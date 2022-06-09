@@ -47,7 +47,7 @@ public class DatabaseTest {
     String issuer;
 
     @Test
-    @WithMockUser(username = "test", roles = "access")
+    @WithMockUser(username = "test", roles = "add_self_descriptions")
     public void testDB() throws Exception {
         var sdDTO = SDDocumentDto.builder()
                 .issuer(issuer)

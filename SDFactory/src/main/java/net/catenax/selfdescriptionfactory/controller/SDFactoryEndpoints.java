@@ -77,7 +77,7 @@ public class SDFactoryEndpoints {
     """ )))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/vc+ld+json"})
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('access')")
+    @PreAuthorize("hasRole(@securityRoles.createRole)")
     public VerifiableCredential publishSelfDescription(@RequestBody SDDocumentDto sdDocumentDto) throws Exception {
         var sdMap = new HashMap<>(BeanAsMap.asMap(sdDocumentDto));
         sdMap.remove("issuer");
@@ -98,7 +98,7 @@ public class SDFactoryEndpoints {
             @ApiResponse(responseCode = "204",
                     description = "Verifiable Credentials were deleted successfully")})
     @DeleteMapping
-    @PreAuthorize("hasRole('access')")
+    @PreAuthorize("hasRole(@securityRoles.deleteRole)")
     public void removeSelfDescriptions(@RequestParam(value = "id", required = true) List<String> ids) {
         sdFactory.removeSelfDescriptions(ids);
     }

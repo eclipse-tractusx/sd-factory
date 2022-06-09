@@ -7,9 +7,9 @@ spring:
       port: 27017
       database: sdhub-mongo
 keycloak:
-  auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+  auth-server-url: https://centralidp.demo.catena-x.net/auth
   realm: CX-Central
-  resource: Client005-CustodianTest
+  resource: Cl2-CX-Portal
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
@@ -21,10 +21,15 @@ app:
     idPrefix: http://sdhub.int.demo.catena-x.net/
   custodianWallet:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
+    auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+    realm: CX-Central
     clientId: Client005-CustodianTest
     clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
     username: custodian@catenax.de
     password: changeme
+  security:
+    createRole: add_self_descriptions
+    deleteRole: remove_self_description
   db:
     sd:
-      collectionName: selfdescription6
+      collectionName: selfdescription

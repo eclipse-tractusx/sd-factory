@@ -77,7 +77,9 @@ public class DBService {
     public VerifiablePresentation getSelfDescriptions(List<String> ids) {
         var query = new Query();
         if (listIsNotEmpty(ids)) {
-            query = query.addCriteria(Criteria.where("id").in(ids));
+            query = query.addCriteria(Criteria.where("_id").in(
+                    ids.stream().map(ObjectId::new).collect(Collectors.toList()))
+            );
         }
         return retriveVp(query);
     }
