@@ -17,7 +17,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk
 
 ENV PATH $PATH:$JAVA_HOME/bin
 
-RUN mv sd-hub-0.0.1-SNAPSHOT.jar sd-hub.jar 
+RUN mv sd-hub-1.0.0-SNAPSHOT.jar sd-hub.jar 
 
 ENTRYPOINT ["java", "-jar", "sd-hub.jar"]
 
