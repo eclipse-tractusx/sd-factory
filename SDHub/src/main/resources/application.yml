@@ -14,7 +14,7 @@ app:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
     auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
     realm: CX-Central
-    clientId: ${CUST-CLIENT}
+    clientId: ${CLIENTID}
     clientSecret: ${CLIENTSECRET}
     username: ${USERNAME}
     password: ${PASSWORD}
