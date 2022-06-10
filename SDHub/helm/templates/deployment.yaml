@@ -19,22 +19,22 @@ spec:
         ports:
         - containerPort: {{ .Values.portContainer }}
         env:
-        - name: CUST-CLIENT
+        - name: CLIENTID
           valueFrom: 
             secretKeyRef:
               name: avp-sdhub-secret
               key: ClientID
-        - name: CUST-SECRET
+        - name: CLIENTSECRET
           valueFrom: 
             secretKeyRef:
               name: avp-sdhub-secret
               key: ClientSecret
-        - name: CUST-USER
+        - name: USERNAME
           valueFrom: 
             secretKeyRef:
               name: avp-sdhub-secret
               key: Username
-        - name: CUST-PASS
+        - name: PASSWORD
           valueFrom: 
             secretKeyRef:
               name: avp-sdhub-secret
