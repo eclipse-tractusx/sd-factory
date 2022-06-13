@@ -1,4 +1,4 @@
-image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:v1.0.2"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdhub:master"
 domain: "sdhub.int.demo.catena-x.net"
 name: "sdhub"
 portContainer: 8080
