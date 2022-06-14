@@ -5,7 +5,7 @@ COPY . /sdhub/
 WORKDIR /sdhub
 
 RUN dos2unix mvnw
-
+RUN chmod +x mvnw
 RUN dos2unix .mvn/wrapper/maven-wrapper.properties
 
 RUN ./mvnw clean install -Dmaven.test.skip=true 
