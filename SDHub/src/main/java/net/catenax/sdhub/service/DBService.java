@@ -60,7 +60,7 @@ public class DBService {
         if (listIsNotEmpty(serviceProviders)) {
             query = query.addCriteria(Criteria.where("credentialSubject.service_provider").in(serviceProviders));
         }
-        if (listIsNotEmpty(legalCountries)) {
+        if (listIsNotEmpty(sdTypes)) {
             query = query.addCriteria(Criteria.where("credentialSubject.sd_type").in(sdTypes));
         }
         if (listIsNotEmpty(bpns)) {
