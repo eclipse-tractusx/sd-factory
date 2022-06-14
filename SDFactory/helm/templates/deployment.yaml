@@ -18,3 +18,24 @@ spec:
         imagePullPolicy: "Always"
         ports:
         - containerPort: {{ .Values.portContainer }}
+        env:
+        - name: CLIENTID
+          valueFrom: 
+            secretKeyRef:
+              name: avp-sdfactory-secret
+              key: ClientID
+        - name: CLIENTSECRET
+          valueFrom: 
+            secretKeyRef:
+              name: avp-sdfactory-secret
+              key: ClientSecret
+        - name: USERNAME
+          valueFrom: 
+            secretKeyRef:
+              name: avp-sdfactory-secret
+              key: Username
+        - name: PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: avp-sdfactory-secret
+              key: Password
