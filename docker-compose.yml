@@ -7,14 +7,9 @@ services:
     image: catenax/sdhub:1.0.0
     ports:
       - "8080:8080"
-    secrets:
-      - custodian
+    env_file: test-env
   sd-factory:
     image: catenax/sdfactory:1.0.0
     ports:
       - "8081:8080"
-    secrets:
-      - custodian
-secrets:
-  custodian:
-    file: test-secret.txt
+    env_file: test-env

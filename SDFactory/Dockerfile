@@ -19,6 +19,6 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-ENTRYPOINT ["/bin/sh", "-c", "[ -f /run/secrets/custodian ]  &&  eval `cat /run/secrets/custodian | dos2unix` ; java -cp app:app/lib/* net.catenax.selfdescriptionfactory.SelfDescriptionFactoryApplication"]
+ENTRYPOINT ["java", "-cp", "app:app/lib/*", "net.catenax.selfdescriptionfactory.SelfDescriptionFactoryApplication"]
 
 EXPOSE 8080
