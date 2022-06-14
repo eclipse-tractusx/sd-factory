@@ -1,24 +1,26 @@
-#FROM openjdk:17-alpine
-FROM openjdk:19-alpine3.16
+FROM openjdk:17-alpine as build
 
-RUN apk update && apk add --upgrade libsodium && apk add maven && apk add --upgrade maven
-  
+COPY . /sdhub/
+
 WORKDIR /sdhub
 
-COPY . /sdhub
+RUN dos2unix mvnw
 
-RUN mvn clean install -Dmaven.test.skip=true 
+RUN dos2unix .mvn/wrapper/maven-wrapper.properties
 
-WORKDIR /sdhub/target
+RUN ./mvnw clean install -Dmaven.test.skip=true 
 
-ENV JDK_HOME /usr/lib/jvm/java-17-openjdk
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk
+FROM bellsoft/liberica-openjdk-alpine:17.0.3.1-2
 
-ENV PATH $PATH:$JAVA_HOME/bin
+ARG DEPENDENCY=/sdhub/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-RUN mv sd-hub-1.0.0-SNAPSHOT.jar sd-hub.jar 
-
-ENTRYPOINT ["java", "-jar", "sd-hub.jar"]
+ENTRYPOINT ["/bin/sh", "-c", "[ -f /run/secrets/custodian ]  &&  eval `cat /run/secrets/custodian | dos2unix` ; java -cp app:app/lib/* net.catenax.sdhub.SelfDescriptionHubApplication"]
 
 EXPOSE 8080
+
+

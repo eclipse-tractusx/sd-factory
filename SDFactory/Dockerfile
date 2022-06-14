@@ -1,24 +1,24 @@
-FROM openjdk:17-alpine
-#FROM openjdk:19-alpine3.16
+FROM openjdk:17-alpine as build
 
-RUN apk update && apk add --upgrade libsodium && apk add maven && apk add --upgrade maven
-  
-WORKDIR /sdhub
+COPY . /sdfactory/
 
-COPY . /sdhub
+WORKDIR /sdfactory
 
-RUN mvn clean install -Dmaven.test.skip=true 
+RUN dos2unix mvnw
 
-WORKDIR /sdhub/target
+RUN dos2unix .mvn/wrapper/maven-wrapper.properties
 
-ENV JDK_HOME /usr/lib/jvm/java-17-openjdk
+RUN ./mvnw clean install -Dmaven.test.skip=true
 
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-ENV PATH $PATH:$JAVA_HOME/bin
+FROM bellsoft/liberica-openjdk-alpine:17.0.3.1-2
 
-RUN mv sd-factory-0.0.1-SNAPSHOT.jar sdfactory.jar 
+ARG DEPENDENCY=/sdfactory/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-ENTRYPOINT ["java", "-jar", "sdfactory.jar"]
+ENTRYPOINT ["/bin/sh", "-c", "[ -f /run/secrets/custodian ]  &&  eval `cat /run/secrets/custodian | dos2unix` ; java -cp app:app/lib/* net.catenax.selfdescriptionfactory.SelfDescriptionFactoryApplication"]
 
 EXPOSE 8080

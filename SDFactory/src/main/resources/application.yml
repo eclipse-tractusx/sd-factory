@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   data:
     mongodb:
@@ -23,10 +23,10 @@ app:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
     auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
     realm: CX-Central
-    clientId: Client005-CustodianTest
-    clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
-    username: custodian@catenax.de
-    password: changeme
+    clientId: ${CLIENTID}
+    clientSecret: ${CLIENTSECRET}
+    username: ${USERNAME}
+    password: ${PASSWORD}
   security:
     createRole: add_self_descriptions
     deleteRole: delete_tech_user_management
