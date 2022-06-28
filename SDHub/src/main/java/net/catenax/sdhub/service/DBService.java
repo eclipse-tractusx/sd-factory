@@ -110,7 +110,7 @@ public class DBService {
 
     /**
      * Searches the VerifiableCredential by the id
-     * Sonar
+     * 
      * @param id VC id
      * @return Verifiable Presentation
      */
