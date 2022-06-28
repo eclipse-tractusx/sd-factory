@@ -96,13 +96,6 @@
 			<artifactId>keycloak-admin-client</artifactId>
 			<version>18.0.0</version>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>NA-identity</groupId>
-			<artifactId>did-NA-java</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		-->
 	</dependencies>
 
 	<repositories>
