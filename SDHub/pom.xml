@@ -91,6 +91,13 @@
 			<version>1.0.0</version>
 		</dependency>
 		-->
+		<!--
+		<dependency>
+			<groupId>NA-identity</groupId>
+			<artifactId>did-NA-java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
