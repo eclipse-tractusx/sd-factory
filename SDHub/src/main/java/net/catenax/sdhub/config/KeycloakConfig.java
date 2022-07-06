@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import java.util.Objects;
+
 @Configuration
 public class KeycloakConfig {
 
@@ -15,9 +17,9 @@ public class KeycloakConfig {
     private String serverUrl;
     @Value("${app.custodianWallet.realm}")
     private String realm;
-    @Value("${app.custodianWallet.username}")
+    @Value("${app.custodianWallet.username:#{null}}")
     private String username;
-    @Value("${app.custodianWallet.password}")
+    @Value("${app.custodianWallet.password:#{null}}")
     private String password;
     @Value("${app.custodianWallet.clientId}")
     private String clientId;
@@ -34,9 +36,11 @@ public class KeycloakConfig {
                 .password(password)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
-                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build())
-                .build();
-        return keycloak.tokenManager();
+                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(20).build());
+        if (Objects.isNull(username)) {
+            keycloak.grantType("client_credentials");
+        }
+        return keycloak.build().tokenManager();
     }
 
 }

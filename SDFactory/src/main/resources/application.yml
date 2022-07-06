@@ -20,13 +20,11 @@ app:
     durationDays: 90
     idPrefix: http://sdhub.int.demo.catena-x.net/
   custodianWallet:
-    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
-    auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+    uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+    auth-server-url: https://centralidp.demo.catena-x.net/auth
     realm: CX-Central
     clientId: ${CLIENTID}
     clientSecret: ${CLIENTSECRET}
-    username: ${USERNAME}
-    password: ${PASSWORD}
   security:
     createRole: add_self_descriptions
     deleteRole: delete_tech_user_management

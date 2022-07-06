@@ -114,7 +114,7 @@ POST /selfdescription
 ```
 where body is
 ```json
-{    
+{
     "bpn" : "BPNL000000000000",
     "company_number" : "123456",
     "legal_country" : "DE",

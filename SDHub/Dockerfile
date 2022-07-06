@@ -1,9 +1,10 @@
-FROM openjdk:17-alpine as build
+FROM openjdk:17 as build
 
 COPY . /sdhub/
 
 WORKDIR /sdhub
 
+RUN microdnf install dos2unix
 RUN dos2unix mvnw
 RUN chmod +x mvnw
 RUN dos2unix .mvn/wrapper/maven-wrapper.properties
