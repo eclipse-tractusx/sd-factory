@@ -29,13 +29,3 @@ spec:
             secretKeyRef:
               name: avp-sdhub-secret
               key: ClientSecret
-        - name: USERNAME
-          valueFrom: 
-            secretKeyRef:
-              name: avp-sdhub-secret
-              key: Username
-        - name: PASSWORD
-          valueFrom: 
-            secretKeyRef:
-              name: avp-sdhub-secret
-              key: Password
