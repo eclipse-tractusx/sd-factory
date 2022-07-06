@@ -29,13 +29,3 @@ spec:
             secretKeyRef:
               name: avp-sdfactory-secret
               key: ClientSecret
-        - name: USERNAME
-          valueFrom: 
-            secretKeyRef:
-              name: avp-sdfactory-secret
-              key: Username
-        - name: PASSWORD
-          valueFrom: 
-            secretKeyRef:
-              name: avp-sdfactory-secret
-              key: Password
