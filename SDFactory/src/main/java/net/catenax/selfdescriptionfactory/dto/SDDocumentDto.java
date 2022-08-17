@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SDDocumentDto {
-    String company_number;
-    String headquarter_country;
-    String legal_country;
-    String service_provider;
-    String sd_type;
-    String bpn;
+//    String company_number;
+//    String headquarter_country;
+//    String legal_country;
+//    String service_provider;
+//    String sd_type;
+//    String bpn;
     String holder;
     String issuer;
 }

@@ -224,9 +224,6 @@ app:
   security:
     createRole: add_self_descriptions
     deleteRole: remove_self_description
-  db:
-    sd:
-      collectionName: selfdescription
 ```
 
 Here `keycloak` section defines keycloak's parameters for authentication client requests.
@@ -275,9 +272,6 @@ app:
     clientSecret: <client secret>
     username: <username>
     password: <password>
-  db:
-    sd:
-      collectionName: selfdescription
 ```
 As SD-Hub signs the Verifiable Presentation it needs to know which wallet shall to be used
 to sign the Presentation. Parameter `sdhubId` specifies the ID of this wallet.

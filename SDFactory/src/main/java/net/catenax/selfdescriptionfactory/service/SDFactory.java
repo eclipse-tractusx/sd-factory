@@ -7,14 +7,9 @@ import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import net.catenax.selfdescriptionfactory.service.wallet.CustodianWallet;
-import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,7 +18,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,26 +45,12 @@ public class SDFactory {
         }
     }
 
-    @Value("${app.db.sd.collectionName}")
-    private String sdCollectionName;
     @Value("${app.verifiableCredentials.durationDays:90}")
     private int duration;
     @Value("${app.verifiableCredentials.idPrefix}")
     private String idPrefix;
 
-    private final MongoTemplate mongoTemplate;
     private final CustodianWallet custodianWallet;
-
-    /**
-     * Stores VerifiableCredential in Mongo DB without checks
-     *
-     * @param verifiableCredential credential to be saved
-     */
-    public void storeVC(VerifiableCredential verifiableCredential, ObjectId objectId) {
-        Document doc = Document.parse(verifiableCredential.toJson());
-        doc.append("_id", objectId);
-        mongoTemplate.save(doc, sdCollectionName);
-    }
 
     /**
      * Creates a VerifiableCredential on base of provided claims
@@ -80,15 +60,14 @@ public class SDFactory {
      * @param issuerBpn DID or BPN of the Issuer for the signature
      * @return VerifiableCredential signed by CatenaX authority
      */
-    public VerifiableCredential createVC(String id, Map<String, Object> claims, String holderBpn, String issuerBpn) {
-        CredentialSubject credentialSubject = CredentialSubject.builder()
+    public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn) {
+        var credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
-        Date issuanceDate = new Date();
-        VerifiableCredential verifiableCredential = VerifiableCredential.builder()
+        var verifiableCredential = VerifiableCredential.builder()
                 .context(SD_VOC_URI)
                 .id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + id).build().toUri())
-                .issuanceDate(issuanceDate)
+                .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
                 .type("SD-document")
                 .credentialSubject(credentialSubject)
@@ -97,21 +76,5 @@ public class SDFactory {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holderBpn);
 
         return custodianWallet.getSignedVC(verifiableCredential);
-    }
-
-    private List<ObjectId> transformId(List<String> ids) {
-        return ids.stream()
-                .filter(ObjectId::isValid)
-                .map(ObjectId::new)
-                .toList();
-    }
-
-    /***
-     * Deletes Verifiable Credentials from DB
-     * @param ids list of VC identities
-     */
-    public void removeSelfDescriptions(List<String> ids) {
-        var oidsToRevove = transformId(ids);
-        mongoTemplate.remove(Query.query(Criteria.where("_id").in(oidsToRevove, sdCollectionName)));
     }
 }

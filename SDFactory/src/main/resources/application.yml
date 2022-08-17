@@ -1,11 +1,5 @@
 server:
   port: 8080
-spring:
-  data:
-    mongodb:
-      host: mongodb-sdhub
-      port: 27017
-      database: sdhub-mongo
 keycloak:
   auth-server-url: https://centralidp.demo.catena-x.net/auth
   realm: CX-Central
@@ -28,6 +22,3 @@ app:
   security:
     createRole: add_self_descriptions
     deleteRole: delete_tech_user_management
-  db:
-    sd:
-      collectionName: selfdescription
