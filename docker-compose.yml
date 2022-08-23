@@ -1,10 +1,5 @@
 version: "3.9"
 services:
-  sd-hub:
-    image: catenax/sdhub:1.0.0
-    ports:
-      - "8080:8080"
-    env_file: test-env
   sd-factory:
     image: catenax/sdfactory:1.0.0
     ports:

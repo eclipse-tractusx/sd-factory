@@ -132,11 +132,6 @@ The fields are parameters of the Connector, holder is BPN or DID of
 the Connector wallet and issuer is BPN or DID of the wallet which signs
 the Verifiable Credential for this SD Document.
 
-```http request
-DELETE /selfdescription?id=...&id=...
-```
-removes Self Descriptions by their IDs.
-
 SD-Factory is installed on integration environment and available 
 at https://sdfactory.int.demo.catena-x.net/
 
@@ -144,40 +139,6 @@ The Swagger documentation for SD-Factory is available at
 https://sdfactory.int.demo.catena-x.net/v3/api-docs as JSON and 
 https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html
 in human-readable format. 
-
-## SD-Hub
-The self-description Hub provides a public interface to allow querying 
-of self-descriptions. It also provides a method to retrieve Verifiable 
-Credential for SD Document by its ID. All methods in this service are public.
-
-```http request
-GET /selfdescription/vc/{id}
-```
-returns Verifiable Credential by its ID
-
-```http request
-GET /selfdescription/by-params?id=...&company_number=...&headquarter_country=...&...
-```
-where `id`, `company_number`, `headquarter_country`, `legal_country`, `service_provider`,
-`sd_type` and `bpn` are collections of parameters used as a filter to select the 
-Verifiable Credentials kept in SD-Hub into the final document in format of 
-Verifiable Presentation. The parameters need to match corresponding values in the 
-selected SD-Documents The method returns Verifiable Presentation.
-The SD-Documents which do not match the filter parameters are filtered. An empty
-filter results the all documents be included to the Verifiable Presentation.
-
-```http request
-GET /selfdescription/by-id?id=...&id=...
-```
-returns the Verifiable Presentation where the list of the Verifiable Credentials 
-to include is provided as a list. **Note:** here `id` is id of the VC to include,
-not an id in Verifiable Credential subject. 
-
-SD-Hub is installed on the integration environment and available 
-at https://sdhub.int.demo.catena-x.net/ 
-
-The Swagger documentation for SD-Hub is available at https://sdhub.int.demo.catena-x.net/v3/api-docs 
-as JSON and https://sdhub.int.demo.catena-x.net/swagger-ui/index.html in human-readable format.
 
 # Configuration
 SD-Factory and SD-Hub are two microservices, each of them has its own configuration file.
@@ -194,12 +155,6 @@ An example of `application.yaml` for SD-Factory is given bellow:
 ```yaml
 server:
   port: 8080
-spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: sdhub-mongo
 keycloak:
   auth-server-url: https://centralidp.demo.catena-x.net/auth
   realm: CX-Central
@@ -247,50 +202,17 @@ Self-Description to/from SD-Hub.
 
 `app.db.sd.collectionName` sets MongoDB collection nname for storing Self-Descriptions
 
-## Self-Description Hub Property file
-SD-Hub has similar format for the configuration file. The difference is that SD-Hub
-is a public service and does not require authentication of the client requests. Thus
-keycloak section is omitted:
-```yaml
-server:
-  port: 8081
-spring:
-  data:
-    mongodb:
-      host:  localhost
-      port: 27017
-      database: sdhub-mongo
-app:
-  build:
-    version: ^project.version^
-  sdhubId: BPNL000000000000
-  custodianWallet:
-    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
-    auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
-    realm: CX-Central
-    clientId: Client005-CustodianTest
-    clientSecret: <client secret>
-    username: <username>
-    password: <password>
-```
-As SD-Hub signs the Verifiable Presentation it needs to know which wallet shall to be used
-to sign the Presentation. Parameter `sdhubId` specifies the ID of this wallet.
-
 # Building
-SD-Hub and SD-Factory use Maven for building process. To build a service from sources one
+SD-Factory use Maven for building process. To build a service from sources one
 need to go to corresponding directory and trigger building process:
 ```shell
-cd SDHub
+cd SDFactory
 ./mvnw clean install
 ```
 Then fat jar file can be found in `target` folder as well as in local Maven repository.
 it can be ryn with this command:
 ```shell
 java -jar target/sd-factory-1.0.0-SNAPSHOT.jar
-```
-for factory and
-```shell
-java -jar target/sd-hub-1.0.0-SNAPSHOT.jar
 ```
 Please note the name of jar-file as it may differ if version is changed.
 
@@ -301,7 +223,7 @@ Please note the name of jar-file as it may differ if version is changed.
 A Docker image will be built and installed to the local repository.
 
 # Testing
-SD-Hub and SD-Factory can be fired up locally in Docker environment. Before that
+SD-Factory can be fired up locally in Docker environment. Before that
 the images need to be created as it is [described here](#docker). Pay attention 
 to the image names as they may change if the version of the sources was bumped up,
 but the `docker-compose.yml` has not been updated. Being in root directory of the
@@ -309,7 +231,6 @@ repository type this:
 ```shell
 docker-compose up -d
 ```
-Then you can call SD-Hub and SD-Factory API or see Swagger documentation by address
-http://localhost:8080/swagger-ui/index.html for SD-hub and http://localhost:8081/swagger-ui/index.html
-for SD-Factory.
+Then you can call SD-Factory API or see Swagger documentation by address
+http://localhost:8081/swagger-ui/index.html for SD-Factory.
 
