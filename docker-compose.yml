@@ -1,8 +1,5 @@
 version: "3.9"
 services:
-  mongodb-sdhub:
-    image: mongo
-    restart: always
   sd-hub:
     image: catenax/sdhub:1.0.0
     ports:
