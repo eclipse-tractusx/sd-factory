@@ -32,7 +32,7 @@ public class SDFactoryEndpoints {
 
     @Operation(
             method = "POST",
-            description = "Creates a Verifiable Credential and saves in the DB from the DTO",
+            description = "Creates a Verifiable Credential and returns it",
             security = {@SecurityRequirement(name = "bearerAuth")}
     )
     @ApiResponses(value = {
