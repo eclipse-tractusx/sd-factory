@@ -9,6 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Getter @Setter
 public class SecurityRoles {
     private String createRole;
-    private String deleteRole;
 }
 

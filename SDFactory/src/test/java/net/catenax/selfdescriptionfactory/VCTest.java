@@ -22,12 +22,6 @@ public class VCTest {
     @Autowired
     private SDFactory sdFactory;
 
-    @Value("${app.verifiableCredentials.holder}")
-    String holder;
-
-    @Value("${app.verifiableCredentials.issuer}")
-    String issuer;
-
     @Test
     public void testVc() {
         VerifiableCredential verifiableCredential = createVc();
@@ -44,12 +38,11 @@ public class VCTest {
         claims.put("headquarter_country", "DE");
         claims.put("legal_country", "DE");
         claims.put("bpn", "12345678");
-        return sdFactory.createVC(uuid.toString(), claims, holder, issuer);
+        return sdFactory.createVC(uuid.toString(), claims, "holder", "issuer");
     }
 
     @Test
     public void testJsonLd() {
-
         JsonLDObject jsonLDObject = JsonLDObject.fromJson("""
                 {
                     "@context" : {

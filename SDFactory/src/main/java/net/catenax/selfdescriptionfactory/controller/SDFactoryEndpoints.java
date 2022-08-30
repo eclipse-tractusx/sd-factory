@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.BadRequestException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -97,13 +96,7 @@ public class SDFactoryEndpoints {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole(@securityRoles.createRole)")
     public VerifiableCredential createSelfDescription(@RequestBody Map<String, Object> sdDocumentDto) {
-        var uuid = UUID.randomUUID();
-        var holder = sdDocumentDto.remove("holder");
-        var issuer = sdDocumentDto.remove("issuer");
-        if (holder == null || issuer == null) {
-            throw new BadRequestException("holder and issuer should be defined in request");
-        }
         sdDocumentDto.values().removeAll(Collections.singleton(null));
-        return sdFactory.createVC(uuid.toString(), sdDocumentDto, holder, issuer);
+        return sdFactory.createVC(UUID.randomUUID().toString(), sdDocumentDto);
     }
 }

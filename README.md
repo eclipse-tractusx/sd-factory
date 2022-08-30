@@ -178,7 +178,6 @@ app:
     password: <password>
   security:
     createRole: add_self_descriptions
-    deleteRole: remove_self_description
 ```
 
 Here `keycloak` section defines keycloak's parameters for authentication client requests.

@@ -9,10 +9,8 @@ app:
   build:
     version: ^project.version^
   verifiableCredentials:
-    idPrefix: http://localhost:8080
-    holder: BPNL000000000000
-    issuer: BPNL000000000000
     durationDays: 90
+    idPrefix: http://localhost:8080
   custodianWallet:
     uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
     auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
@@ -23,4 +21,3 @@ app:
     password: changeme
   security:
     createRole: add_self_descriptions
-    deleteRole: remove_self_description
