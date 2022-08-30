@@ -10,15 +10,17 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import net.catenax.selfdescriptionfactory.service.SDFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.BadRequestException;
 import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -92,11 +94,16 @@ public class SDFactoryEndpoints {
                               "path": "/selfdescription"
                             }
                             """)))})
-    @PostMapping(consumes = {"application/json"}, produces = {"application/vc+ld+json"})
+    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {"application/vc+ld+json"})
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole(@securityRoles.createRole)")
-    public VerifiableCredential createSelfDescription(@RequestBody Map<String, Object> sdDocumentDto) {
+    public VerifiableCredential createSelfDescription(@RequestBody MultiValueMap<String, Object> sdDocumentDto) {
+        var holder = sdDocumentDto.remove("holder");
+        var issuer = sdDocumentDto.remove("issuer");
+        if (holder == null || issuer == null) {
+            throw new BadRequestException("holder and issuer should be defined in request");
+        }
         sdDocumentDto.values().removeAll(Collections.singleton(null));
-        return sdFactory.createVC(UUID.randomUUID().toString(), sdDocumentDto);
+        return sdFactory.createVC(UUID.randomUUID().toString(), sdDocumentDto.toSingleValueMap(), holder, issuer);
     }
 }

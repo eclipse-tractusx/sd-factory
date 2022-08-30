@@ -4,6 +4,7 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import net.catenax.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,10 +55,13 @@ public class SDFactory {
     /**
      * Creates a VerifiableCredential on base of provided claims
      *
-     * @param claims claims to be included to the VerifiableCredentials
+     * @param claims    claims to be included to the VerifiableCredentials
+     * @param holderBpn DID or BPN of the Holder for given claims
+     * @param issuerBpn DID or BPN of the Issuer for the signature
+     * @param claims    claims to be included to the VerifiableCredentials
      * @return VerifiableCredential signed by CatenaX authority
      */
-    public VerifiableCredential createVC(String id, Map<String, Object> claims) {
+    public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn) {
         var credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
@@ -69,6 +73,8 @@ public class SDFactory {
                 .type("SD-document")
                 .credentialSubject(credentialSubject)
                 .build();
+        JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuerBpn);
+        JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holderBpn);
 
         return custodianWallet.getSignedVC(verifiableCredential);
     }
