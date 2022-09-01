@@ -98,12 +98,17 @@ public class SDFactoryEndpoints {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole(@securityRoles.createRole)")
     public VerifiableCredential createSelfDescription(@RequestBody MultiValueMap<String, Object> sdDocumentDto) {
-        var holder = sdDocumentDto.remove("holder");
-        var issuer = sdDocumentDto.remove("issuer");
+        var map = sdDocumentDto.toSingleValueMap();
+        var holder = map.remove("holder");
+        var issuer = map.remove("issuer");
         if (holder == null || issuer == null) {
             throw new BadRequestException("holder and issuer should be defined in request");
         }
-        sdDocumentDto.values().removeAll(Collections.singleton(null));
-        return sdFactory.createVC(UUID.randomUUID().toString(), sdDocumentDto.toSingleValueMap(), holder, issuer);
+        var type = map.remove("type");
+        if (type == null) {
+            throw new BadRequestException("Field type (type of document) should be defined in request");
+        }
+        map.values().removeAll(Collections.singleton(null));
+        return sdFactory.createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
     }
 }

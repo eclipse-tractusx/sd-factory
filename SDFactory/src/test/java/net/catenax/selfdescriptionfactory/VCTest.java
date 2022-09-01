@@ -38,7 +38,7 @@ public class VCTest {
         claims.put("headquarter_country", "DE");
         claims.put("legal_country", "DE");
         claims.put("bpn", "12345678");
-        return sdFactory.createVC(uuid.toString(), claims, "holder", "issuer");
+        return sdFactory.createVC(uuid.toString(), claims, "holder", "issuer", "");
     }
 
     @Test

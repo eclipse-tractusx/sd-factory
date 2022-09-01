@@ -61,7 +61,7 @@ public class SDFactory {
      * @param claims    claims to be included to the VerifiableCredentials
      * @return VerifiableCredential signed by CatenaX authority
      */
-    public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn) {
+    public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
         var credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
@@ -75,6 +75,7 @@ public class SDFactory {
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuerBpn);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holderBpn);
+        JsonLDUtils.jsonLdAdd(verifiableCredential, "type", documentType);
 
         return custodianWallet.getSignedVC(verifiableCredential);
     }
