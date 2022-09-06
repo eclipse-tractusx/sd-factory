@@ -1,4 +1,4 @@
-image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:master"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:latest"
 domain: "sdfactory.int.demo.catena-x.net"
 name: "sdfactory"
 portContainer: 8080
