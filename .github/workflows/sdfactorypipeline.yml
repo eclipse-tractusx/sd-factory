@@ -40,7 +40,8 @@ jobs:
         images: |
           ghcr.io/catenax-ng/product-sd-hub/SDFactory
         tags: |
-          type=ref,event=tag
+          type=ref,event=branch
+          type=raw,value=latest,enable={{is_default_branch}}
           type=ref,event=pr
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
