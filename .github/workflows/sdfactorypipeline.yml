@@ -41,10 +41,7 @@ jobs:
           ghcr.io/catenax-ng/product-sd-hub/SDFactory
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
-          type=ref,event=branch
-          type=ref,event=pr
           type=semver,pattern={{version}},value=v1.0.4
-          type=semver,pattern={{major}}.{{minor}}
     - name: Log in to the Container registry
       uses: docker/login-action@v1
       with:
