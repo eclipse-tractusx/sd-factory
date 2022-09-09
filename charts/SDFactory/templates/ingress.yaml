@@ -27,8 +27,8 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.ingress.hosts.domain }}
-    secretName: {{ .Values.name }}.{{ .Values.ingress.hosts.domain }}-tls
+    - {{ .Values.ingress.domain }}
+    secretName: {{ .Values.name }}.{{ .Values.ingress.domain }}-tls
   rules:
   - host: {{ .Values.domain }}
     http:
