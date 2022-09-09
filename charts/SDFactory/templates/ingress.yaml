@@ -27,8 +27,8 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.domain }}
-    secretName: {{ .Values.name }}.{{ .Values.domain }}-tls
+    - {{ .Values.ingress.hosts.domain }}
+    secretName: {{ .Values.name }}.{{ .Values.ingress.hosts.domain }}-tls
   rules:
   - host: {{ .Values.domain }}
     http:
@@ -40,3 +40,5 @@ spec:
             name: {{ .Values.name }}
             port:
               number: {{ .Values.portService }}
+              
+              
