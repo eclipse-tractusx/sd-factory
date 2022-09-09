@@ -2,7 +2,7 @@ name: trivyfactoryscan
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/catenax-ng/product-sd-hub/sdfactory:master'
+          image-ref: 'ghcr.io/catenax-ng/product-sd-hub/sdfactory:latest'
           format: 'sarif'
           output: 'trivyhub-results.sarif'
 
