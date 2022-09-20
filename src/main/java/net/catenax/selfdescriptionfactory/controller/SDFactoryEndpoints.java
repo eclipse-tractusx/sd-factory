@@ -114,6 +114,70 @@ public class SDFactoryEndpoints {
         return sdFactory.createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
     }
 
+    @Operation(
+            method = "POST",
+            description = "Creates a Verifiable Credential using old request and returns it",
+            security = {@SecurityRequirement(name = "bearerAuth")}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Verifiable Credential was created successfully",
+                    content = @Content(
+                            mediaType = "application/vc+ld+json",
+                            examples = @ExampleObject("""
+                                    {
+                                      "id": "http://sdhub.int.demo.catena-x.net/selfdescription/vc/62a22d735c6fb508ce9088c8",
+                                      "@context": [
+                                        "https://www.w3.org/2018/credentials/v1",
+                                        "https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld"
+                                      ],
+                                      "type": [
+                                        "VerifiableCredential",
+                                        "SD-document"
+                                      ],
+                                      "issuer": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh",
+                                      "issuanceDate": "2022-06-09T17:27:15Z",
+                                      "expirationDate": "2022-09-07T17:27:15Z",
+                                      "credentialSubject": {
+                                        "bpn": "BPNL000000000000",
+                                        "company_number": "123456",
+                                        "headquarter_country": "DE",
+                                        "legal_country": "DE",
+                                        "sd_type": "connector",
+                                        "service_provider": "http://test.d.com",
+                                        "id": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh"
+                                      },
+                                      "proof": {
+                                        "type": "Ed25519Signature2018",
+                                        "created": "2022-06-09T17:27:19Z",
+                                        "proofPurpose": "assertionMethod",
+                                        "verificationMethod": "did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh#key-1",
+                                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..0gCJd2wVGvUM-UwVvoIRVlUUgODI5CSFkazyOQlClg4AaxhMH3pcDhvO_UxU1uo3wBU5ArxvKAil3gxOBgE1Aw"
+                                      }
+                                    }
+                                    """))), @ApiResponse(responseCode = "403",
+            description = "Access is forbidden",
+            content = @Content(
+                    mediaType = "application/vc+ld+json",
+                    examples = @ExampleObject("""
+                            {
+                              "timestamp": "2022-06-09T17:29:02.235+00:00",
+                              "status": 403,
+                              "error": "Forbidden",
+                              "path": "/selfdescription/old"
+                            }
+                            """))), @ApiResponse(responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(
+                    mediaType = "application/vc+ld+json",
+                    examples = @ExampleObject("""
+                            {
+                              "timestamp": "2022-06-09T17:35:39.926+00:00",
+                              "status": 401,
+                              "error": "Unauthorized",
+                              "path": "/selfdescription/old"
+                            }
+                            """)))})
     @PostMapping(value = "/old", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {"application/vc+ld+json"})
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole(@securityRoles.createRole)")
