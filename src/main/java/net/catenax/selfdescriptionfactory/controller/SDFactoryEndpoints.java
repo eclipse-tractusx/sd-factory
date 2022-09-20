@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import net.catenax.selfdescriptionfactory.dto.SDDocumentDto;
 import net.catenax.selfdescriptionfactory.service.SDFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -110,5 +112,21 @@ public class SDFactoryEndpoints {
         }
         map.values().removeAll(Collections.singleton(null));
         return sdFactory.createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
+    }
+
+    @PostMapping(value = "/old", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {"application/vc+ld+json"})
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(@securityRoles.createRole)")
+    public VerifiableCredential createSelfDescriptionOld(@RequestBody SDDocumentDto dto) {
+        var map = new LinkedMultiValueMap<String, Object>();
+        map.add("company_number", dto.getCompany_number());
+        map.add("headquarter_country", dto.getHeadquarter_country());
+        map.add("legal_country", dto.getLegal_country());
+        map.add("service_provider", dto.getService_provider());
+        map.add("type", dto.getSd_type());
+        map.add("bpn", dto.getBpn());
+        map.add("holder", dto.getHolder());
+        map.add("issuer", dto.getIssuer());
+        return createSelfDescription(map);
     }
 }
