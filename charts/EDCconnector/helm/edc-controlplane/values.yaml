@@ -139,7 +139,7 @@ ingresses:
   ## Public / Internet facing Ingress
   - enabled: true
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "edc-cp-provider-pen.int.demo.catena-x.net"
+    hostname: "edc-cp-provider-pen1.int.demo.catena-x.net"
     # -- Additional ingress annotations to add
     annotations:
       nginx.ingress.kubernetes.io/use-regex: "true"
