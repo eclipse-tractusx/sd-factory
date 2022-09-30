@@ -77,7 +77,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: dbpass
+                  key: password
             - name: EDC_DATASOURCE_CONTRACTDEFINITION_URL
               valueFrom:
                 secretKeyRef:
@@ -92,7 +92,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: dbpass
+                  key: password
             - name: EDC_DATASOURCE_CONTRACTNEGOTIATION_URL
               valueFrom:
                 secretKeyRef:
@@ -107,7 +107,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: dbpass
+                  key: password
             - name: EDC_DATASOURCE_POLICY_URL
               valueFrom:
                 secretKeyRef:
@@ -122,7 +122,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: dbpass
+                  key: password
             - name: EDC_DATASOURCE_TRANSFERPROCESS_URL
               valueFrom:
                 secretKeyRef:
@@ -137,7 +137,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: dbpass
+                  key: password
                   
                                  
           {{- if .Values.livenessProbe.enabled }}
