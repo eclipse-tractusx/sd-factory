@@ -18,7 +18,7 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
-image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:1.4.0"
+image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:1.0.4"
 ingress:
   enabled: false
   domain: "sdfactory.int.demo.catena-x.net"
