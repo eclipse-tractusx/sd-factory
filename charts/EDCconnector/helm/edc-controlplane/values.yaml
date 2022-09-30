@@ -279,7 +279,7 @@ configuration:
     edc.transfer.proxy.token.signer.privatekey.alias=pen-data-plane-private-key
     edc.public.key.alias=pen-data-plane-public-key
     edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
-    edc.vault.hashicorp.token=hvs.u7IJXyRxVi7iwjnnjR3ozeFR
+    edc.vault.hashicorp.token=s.QbpWZOa9BPub38ZoYtRml54d
     edc.vault.hashicorp.timeout.seconds=30
     edc.vault.hashicorp.api.secret.path=/v1/essential-services/data
     edc.vault.hashicorp.health.check.standby.ok=true
@@ -287,7 +287,7 @@ configuration:
     # Azure vault related configuration
     #edc.vault.clientid=fbedd445-6aa2-48cb-a855-0f62a28f923c
     #edc.vault.clientsecret=K65PAD3xzGUECJ2ybo6C_pjAVIUd4H.M~p
-    #edc.vault.name=edc1vault
+    #edc.vault.name=edc1vault hvs.Xm008gacVljiT7aLLJK0bJpO
     #edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     #  Postgresql related configuration
     edc.datasource.asset.name=asset
