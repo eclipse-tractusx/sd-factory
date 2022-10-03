@@ -66,7 +66,7 @@ spec:
             - name: EDC_DATASOURCE_ASSET_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-url-secret
+                  name: db-secrets
                   key: dburl
             - name: EDC_DATASOURCE_ASSET_USER
               valueFrom:
@@ -81,7 +81,7 @@ spec:
             - name: EDC_DATASOURCE_CONTRACTDEFINITION_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-url-secret
+                  name: db-secrets
                   key: dburl
             - name: EDC_DATASOURCE_CONTRACTDEFINITION_USER
               valueFrom:
@@ -96,7 +96,7 @@ spec:
             - name: EDC_DATASOURCE_CONTRACTNEGOTIATION_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-url-secret
+                  name: db-secrets
                   key: dburl
             - name: EDC_DATASOURCE_CONTRACTNEGOTIATION_USER
               valueFrom:
@@ -111,7 +111,7 @@ spec:
             - name: EDC_DATASOURCE_POLICY_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-url-secret
+                  name: db-secrets
                   key: dburl
             - name: EDC_DATASOURCE_POLICY_USER
               valueFrom:
@@ -126,7 +126,7 @@ spec:
             - name: EDC_DATASOURCE_TRANSFERPROCESS_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-url-secret
+                  name: db-secrets
                   key: dburl
             - name: EDC_DATASOURCE_TRANSFERPROCESS_USER
               valueFrom:
