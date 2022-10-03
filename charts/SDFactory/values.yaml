@@ -18,7 +18,13 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
-image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:1.0.4"
+#image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:1.0.4"
+image:
+  repository: "ghcr.io/catenax-ng/product-sd-hub/sdfactory" 
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1.0.4"
+  
 ingress:
   enabled: false
   domain: "sdfactory.int.demo.catena-x.net"
