@@ -266,13 +266,13 @@ configuration:
     edc.ids.title=Eclipse Dataspace Connector
     ids.webhook.address=http://edc-cp-cons-pen.int.demo.catena-x.net/ids
     # DAPS Properties
-    edc.oauth.client.id=60:F5:14:3C:7E:4D:7F:12:7D:8C:10:0A:7D:40:FF:C3:BB:97:FB:29:keyid:60:F5:14:3C:7E:4D:7F:12:7D:8C:10:0A:7D:40:FF:C3:BB:97:FB:29
+    edc.oauth.client.id=B1:32:47:48:37:60:5C:8F:26:2D:DC:1D:D3:B2:8A:9E:2F:6B:2A:F9:keyid:B1:32:47:48:37:60:5C:8F:26:2D:DC:1D:D3:B2:8A:9E:2F:6B:2A:F9
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
     edc.oauth.provider.jwks.url=https://daps-pen.int.demo.catena-x.net/.well-known/jwks.json
     edc.oauth.token.url=https://daps-pen.int.demo.catena-x.net/token
     # OAUTH Properties
-    edc.oauth.public.key.alias=edc-cp-provider-pen-crt
-    edc.oauth.private.key.alias=edc-cp-provider-pen-key
+    edc.oauth.public.key.alias=edc-cp-consumer-pen-crt
+    edc.oauth.private.key.alias=edc-cp-consumer-pen-key
     edc.transfer.dataplane.sync.endpoint=http://edc-dp-cons-pen.int.demo.catena-x.net/public
     edc.transfer.proxy.endpoint=http://edc-dp-cons-pen.int.demo.catena-x.net/public
     edc.transfer.proxy.token.verifier.publickey.alias=pen-data-plane-public-key
