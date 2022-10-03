@@ -64,7 +64,8 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: |
-          ghcr.io/catenax-ng/product-sd-hub/SDFactory
+          #ghcr.io/catenax-ng/product-sd-hub/SDFactory
+          ghcr.io/catenax-ng/product-sd-hub/sdfactory
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
           type=semver,pattern={{version}},value=1.0.4
