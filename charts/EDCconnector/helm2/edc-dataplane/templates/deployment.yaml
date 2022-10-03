@@ -76,6 +76,17 @@ spec:
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
           {{- end }}
+          env:
+            - name: EDC_VAULT_HASHICORP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vault-secret
+                  key: vaulturl
+            - name: EDC_VAULT_HASHICORP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vault-secret
+                  key: vaulttoken
           envFrom:
             - configMapRef:
                 name: {{ include "edc-dataplane.fullname" . }}-env

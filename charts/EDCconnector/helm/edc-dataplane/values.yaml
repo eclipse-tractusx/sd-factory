@@ -210,8 +210,8 @@ configuration:
   properties: |-
     edc.controlplane.validation-endpoint=http://edc-cp-prv-pen.int.demo.catena-x.net/validation/token
     edc.hostname=localhost
-    edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
-    edc.vault.hashicorp.token=s.QbpWZOa9BPub38ZoYtRml54d
+    edc.vault.hashicorp.url=
+    edc.vault.hashicorp.token=
     edc.vault.hashicorp.timeout.seconds=30
     edc.vault.hashicorp.api.secret.path=/v1/essential-services/data
     edc.vault.hashicorp.health.check.standby.ok=true

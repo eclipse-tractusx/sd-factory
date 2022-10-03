@@ -10,11 +10,11 @@ replicaCount: 1
 image:
   # -- Which derivate of the edc data-plane to use.
   # One of: [ghcr.io/catenax-ng/product-edc/edc-dataplane-hashicorp-vault, ghcr.io/catenax-ng/product-edc/edc-dataplane-azure-vault]
-  repository: ghcr.io/catenax-ng/product-edc/edc-dataplane
+  repository: ghcr.io/catenax-ng/product-edc/edc-dataplane-hashicorp-vault
   # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion
-  tag: ""
+  tag: "0.0.6"
 
 imagePullSecret:
   # -- Image pull secret to create to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
@@ -127,14 +127,18 @@ ingresses:
   ## Public / Internet facing Ingress
   - enabled: true
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "edc-dp-consumer-pen.int.demo.catena-x.net"
+    hostname: "edc-dp-cons-pen.int.demo.catena-x.net"
     # -- Additional ingress annotations to add
-    annotations: {}
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
     # -- EDC endpoints exposed by this ingress resource
     endpoints:
+      - default
       - public
+      - control
+      - metrics
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
-    className: ""
+    className: "nginx"
     # -- Enables TLS on the ingress resource
     tls: false
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
@@ -204,12 +208,13 @@ opentelemetry:
 configuration:
   # -- EDC configuration.properties configuring aspects of the [eclipse-dataspaceconnector](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector)
   properties: |-
-    edc.controlplane.validation-endpoint=http://edc-controlplane-consumer.pen:8182/validation/token
+    edc.controlplane.validation-endpoint=http://edc-cp-cons-pen.int.demo.catena-x.net/validation/token
     edc.hostname=localhost
-    edc.vault.clientid=fbedd445-6aa2-48cb-a855-0f62a28f923c
-    edc.vault.clientsecret=K65PAD3xzGUECJ2ybo6C_pjAVIUd4H.M~p
-    edc.vault.name=edc1vault
-    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+    edc.vault.hashicorp.url=
+    edc.vault.hashicorp.token=
+    edc.vault.hashicorp.timeout.seconds=30
+    edc.vault.hashicorp.api.secret.path=/v1/essential-services/data
+    edc.vault.hashicorp.health.check.standby.ok=true
     # edc.api.control.auth.apikey.key=
     # edc.api.control.auth.apikey.value=
     # edc.atomikos.checkpoint.interval=

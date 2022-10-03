@@ -65,7 +65,7 @@ spec:
               serviceName: {{ $fullName }}
               servicePort: {{ $mapping.port }}
               {{- end }}
-        {{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}{{- /* end: if .enabled */}}
 {{- end }}{{- /* end: range .Values.ingresses */}}
