@@ -208,12 +208,12 @@ opentelemetry:
 configuration:
   # -- EDC configuration.properties configuring aspects of the [eclipse-dataspaceconnector](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector)
   properties: |-
-    edc.controlplane.validation-endpoint=http://edc-cp-provider-pen.int.demo.catena-x.net/validation/token
+    edc.controlplane.validation-endpoint=http://edc-cp-prv-pen.int.demo.catena-x.net/validation/token
     edc.hostname=localhost
     edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
-    edc.vault.hashicorp.token=hvs.u7IJXyRxVi7iwjnnjR3ozeFR
+    edc.vault.hashicorp.token=s.QbpWZOa9BPub38ZoYtRml54d
     edc.vault.hashicorp.timeout.seconds=30
-    edc.vault.hashicorp.api.secret.path=/v1/secret/data
+    edc.vault.hashicorp.api.secret.path=/v1/essential-services/data
     edc.vault.hashicorp.health.check.standby.ok=true
     # edc.api.control.auth.apikey.key=
     # edc.api.control.auth.apikey.value=

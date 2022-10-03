@@ -139,7 +139,7 @@ ingresses:
   ## Public / Internet facing Ingress
   - enabled: true
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "edc-cp-provider-pen1.int.demo.catena-x.net"
+    hostname: "edc-cp-prv-pen.int.demo.catena-x.net"
     # -- Additional ingress annotations to add
     annotations:
       nginx.ingress.kubernetes.io/use-regex: "true"
@@ -256,7 +256,7 @@ configuration:
     edc.api.control.auth.apikey.key=X-Api-Key
     edc.api.control.auth.apikey.value=password
     edc.ids.catalog.id=urn:catalog:default
-    edc.hostname=edc-cp-provider-pen.int.demo.catena-x.net
+    edc.hostname=edc-cp-prv-pen.int.demo.catena-x.net
     # edc.ids.curator=http://20.113.137.169
     edc.ids.description=Eclipse Dataspace Connector
     # edc.ids.endpoint=http://20.113.137.169:8282/api/v1/ids
@@ -264,7 +264,7 @@ configuration:
     # edc.ids.maintainer=http://20.113.137.169
     edc.ids.security.profile=base
     edc.ids.title=Eclipse Dataspace Connector
-    ids.webhook.address=http://edc-cp-provider-pen.int.demo.catena-x.net/ids
+    ids.webhook.address=http://edc-cp-prv-pen.int.demo.catena-x.net/ids
     # DAPS Properties
     edc.oauth.client.id=60:F5:14:3C:7E:4D:7F:12:7D:8C:10:0A:7D:40:FF:C3:BB:97:FB:29:keyid:60:F5:14:3C:7E:4D:7F:12:7D:8C:10:0A:7D:40:FF:C3:BB:97:FB:29
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
@@ -273,8 +273,8 @@ configuration:
     # OAUTH Properties
     edc.oauth.public.key.alias=edc-cp-provider-pen-crt
     edc.oauth.private.key.alias=edc-cp-provider-pen-key
-    edc.transfer.dataplane.sync.endpoint=http://edc-dp-provider-pen.int.demo.catena-x.net/public
-    edc.transfer.proxy.endpoint=http://edc-dp-provider-pen.int.demo.catena-x.net/public
+    edc.transfer.dataplane.sync.endpoint=http://edc-dp-prv-pen.int.demo.catena-x.net/public
+    edc.transfer.proxy.endpoint=http://edc-dp-prv-pen.int.demo.catena-x.net/public
     edc.transfer.proxy.token.verifier.publickey.alias=pen-data-plane-public-key
     edc.transfer.proxy.token.signer.privatekey.alias=pen-data-plane-private-key
     edc.public.key.alias=pen-data-plane-public-key
