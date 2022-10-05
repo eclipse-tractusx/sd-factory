@@ -24,6 +24,7 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -57,6 +58,13 @@ public class SDFactoryEndpoints {
             description = "Creates a Verifiable Credential and returns it",
             security = {@SecurityRequirement(name = "bearerAuth")}
     )
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Details required for Verifiable Credential",
+            required = true,
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                    schema = @Schema(ref ="#/components/schemas/sdDocumentReq")
+            ))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Verifiable Credential was created successfully",
