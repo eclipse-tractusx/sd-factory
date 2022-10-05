@@ -20,15 +20,21 @@
 
 package net.catenax.selfdescriptionfactory.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
+@OpenAPIDefinition
 public class OpenApiConfiguration {
 
     @Value("${app.build.version}")
@@ -45,13 +51,26 @@ public class OpenApiConfiguration {
 
     @Bean
     Components components() {
+
+        Schema sdDocumentReq = new Schema<Map<String,Object>>()
+                .addProperty("company_number",new StringSchema().example("123456"))
+                .addProperty("headquarter_country",new StringSchema().example("DE"))
+                .addProperty("legal_country",new StringSchema().example("DE"))
+                .addProperty("service_provider",new StringSchema().example("http://www.test.d.com"))
+                .addProperty("type",new StringSchema().example("connector"))
+                .addProperty("bpn",new StringSchema().example("BPNL000000000000"))
+                .addProperty("holder",new StringSchema().example("BPNL000000000000"))
+                .addProperty("issuer",new StringSchema().example("did:indy:idunion:test:JFcJRR9NSmtZaQGFMJuEjh"))
+                .type("object");
+
         return new Components()
                 .addSecuritySchemes("bearerAuth", new SecurityScheme()
                         .name("bearerAuth")
                         .type(SecurityScheme.Type.HTTP)
                         .scheme("bearer")
                         .bearerFormat("JWT")
-                );
+                )
+                .addSchemas("sdDocumentReq", sdDocumentReq);
     }
 
     @Bean
