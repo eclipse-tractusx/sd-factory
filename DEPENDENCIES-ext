@@ -1,0 +1,11 @@
+openjdk:17
+bellsoft/liberica-openjdk-alpine:17.0.3.1-2
+https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.1/apache-maven-3.8.1-bin.zip
+https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.1.1/maven-wrapper-3.1.1.jar
+actions/checkout@v2
+docker/metadata-action@v4
+docker/login-action@v1
+docker/build-push-action@v3
+docker/metadata-action@v4
+dos2unix;7.4.0-3.el8;x86_64;ol8_baseos_latest
+https://repo.maven.apache.org/maven2/
