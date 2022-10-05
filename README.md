@@ -223,13 +223,5 @@ A Docker image will be built and installed to the local repository.
 
 # Testing
 SD-Factory can be fired up locally in Docker environment. Before that
-the images need to be created as it is [described here](#docker). Pay attention 
-to the image names as they may change if the version of the sources was bumped up,
-but the `docker-compose.yml` has not been updated. Being in root directory of the
-repository type this:
-```shell
-docker-compose up -d
-```
-Then you can call SD-Factory API or see Swagger documentation by address
-http://localhost:8081/swagger-ui/index.html for SD-Factory.
+the images need to be created as it is [described here](#docker). 
 
