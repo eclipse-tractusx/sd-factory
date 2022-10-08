@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory.config;
+package org.eclipse.tractusx.selfdescriptionfactory.config;
 
 import lombok.Getter;
 import lombok.Setter;

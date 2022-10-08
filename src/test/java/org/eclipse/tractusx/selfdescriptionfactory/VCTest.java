@@ -18,12 +18,13 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory;
+package org.eclipse.tractusx.selfdescriptionfactory;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import foundation.identity.jsonld.JsonLDObject;
-import net.catenax.selfdescriptionfactory.service.SDFactory;
+import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @SpringBootTest
+@Ignore
 @RunWith(SpringRunner.class)
 public class VCTest {
 

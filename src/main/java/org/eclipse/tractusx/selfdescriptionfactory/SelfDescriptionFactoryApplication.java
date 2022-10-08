@@ -18,26 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory.dto;
+package org.eclipse.tractusx.selfdescriptionfactory;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class SDDocumentDto {
-    String company_number;
-    String headquarter_country;
-    String legal_country;
-    String service_provider;
-    String sd_type;
-    String bpn;
-    String holder;
-    String issuer;
+@SpringBootApplication
+public class SelfDescriptionFactoryApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SelfDescriptionFactoryApplication.class, args);
+    }
+
 }

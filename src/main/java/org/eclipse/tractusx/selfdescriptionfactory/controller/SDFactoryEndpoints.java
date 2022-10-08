@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory.controller;
+package org.eclipse.tractusx.selfdescriptionfactory.controller;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,8 +29,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import net.catenax.selfdescriptionfactory.dto.SDDocumentDto;
-import net.catenax.selfdescriptionfactory.service.SDFactory;
+import org.eclipse.tractusx.selfdescriptionfactory.dto.SDDocumentDto;
+import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;

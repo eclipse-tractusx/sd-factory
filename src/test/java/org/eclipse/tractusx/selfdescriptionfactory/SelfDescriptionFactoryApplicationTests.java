@@ -18,16 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory;
+package org.eclipse.tractusx.selfdescriptionfactory;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootApplication
-public class SelfDescriptionFactoryApplication {
+@SpringBootTest
+class SelfDescriptionFactoryApplicationTests {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SelfDescriptionFactoryApplication.class, args);
+    @Test
+    void contextLoads() {
     }
 
 }

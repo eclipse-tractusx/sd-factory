@@ -209,7 +209,7 @@ cd SDFactory
 ./mvnw clean install
 ```
 Then fat jar file can be found in `target` folder as well as in local Maven repository.
-it can be ryn with this command:
+it can be run with this command:
 ```shell
 java -jar target/sd-factory-1.0.0-SNAPSHOT.jar
 ```

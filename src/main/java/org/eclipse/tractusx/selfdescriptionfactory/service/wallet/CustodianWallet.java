@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory.service.wallet;
+package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;

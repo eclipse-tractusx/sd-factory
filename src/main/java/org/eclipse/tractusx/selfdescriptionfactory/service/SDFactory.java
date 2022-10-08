@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package net.catenax.selfdescriptionfactory.service;
+package org.eclipse.tractusx.selfdescriptionfactory.service;
 
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
@@ -26,7 +26,7 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
 import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
-import net.catenax.selfdescriptionfactory.service.wallet.CustodianWallet;
+import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -49,17 +49,12 @@ import java.util.Map;
 public class SDFactory {
 
     // Namespace for the Self-Description document context
-    static final URI SD_VOC_URI = URI.create("https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld");
-    // Namespace for the Traceability context, used for the test in conjunction with https://catalog.demo.supplytree.org project
-    static final URI TRACEABILITY_VOC_URI = URI.create("https://w3id.org/traceability/v1");
+    static final URI SD_VOC_URI = URI.create("https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld");
 
     static {
-        try (InputStream sdVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/sd-document-v0.1.jsonld");
-             InputStream trVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/traceability-v1.jsonld")) {
+        try (InputStream sdVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/sd-document-v0.1.jsonld")) {
             assert sdVocIs != null;
             VerifiableCredentialContexts.CONTEXTS.put(SD_VOC_URI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, sdVocIs));
-            assert trVocIs != null;
-            VerifiableCredentialContexts.CONTEXTS.put(TRACEABILITY_VOC_URI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, trVocIs));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -75,10 +70,11 @@ public class SDFactory {
     /**
      * Creates a VerifiableCredential on base of provided claims
      *
+     * @param id        VC identity
      * @param claims    claims to be included to the VerifiableCredentials
      * @param holderBpn DID or BPN of the Holder for given claims
      * @param issuerBpn DID or BPN of the Issuer for the signature
-     * @param claims    claims to be included to the VerifiableCredentials
+     * @param documentType type of the document in the credentialSubject
      * @return VerifiableCredential signed by CatenaX authority
      */
     public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
@@ -87,10 +83,10 @@ public class SDFactory {
                 .build();
         var verifiableCredential = VerifiableCredential.builder()
                 .context(SD_VOC_URI)
-                .id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + id).build().toUri())
+                //.id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + id).build().toUri())
                 .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
-                .type("SD-document")
+                //.type("SD-document")
                 .credentialSubject(credentialSubject)
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuerBpn);
