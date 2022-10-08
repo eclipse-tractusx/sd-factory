@@ -1,54 +1,152 @@
 {
-  "@context": {
-    "id": "@id",
-    "type": "@type",
-    "ctx" : "https://catena-x.net/selfdescription#",
-    "SD-document": {
-        "@id": "ctx:SD-document",
-        "@context": {
-            "company_number": {
-                "@id": "ctx:company_number"
+   "@context":{
+      "id":"@id",
+      "type":"@type",
+      "ctx":"https://catena-x.net/selfdescription#",
+      "SD-document":{
+         "@id":"ctx:SD-document",
+         "@context":{
+            "company_number":{
+               "@id":"ctx:company_number"
             },
-            "headquarter_country": {
-                "@id": "ctx:headquarter_country"
+            "headquarter_country":{
+               "@id":"ctx:headquarter_country"
             },
-            "legal_country": {
-                "@id": "ctx:legal_country"
+            "legal_country":{
+               "@id":"ctx:legal_country"
             },
-            "service_provider": {
-                "@id": "ctx:service_provider"
+            "service_provider":{
+               "@id":"ctx:service_provider"
             },
-            "sd_type": {
-                "@id": "ctx:sd_type"
+            "sd_type":{
+               "@id":"ctx:sd_type"
             },
-            "bpn": {
-                "@id": "ctx:bpn"
+            "bpn":{
+               "@id":"ctx:bpn"
+            },
+            "providedBy":{
+               "@id":"ctx:providedBy"
+            },
+            "aggregationOf":{
+               "@id":"ctx:aggregationOf"
+            },
+            "termsAndConditions":{
+               "@id":"ctx:termsAndConditions"
+            },
+            "policies":{
+               "@id":"ctx:policies"
+            },
+            "maintainedBy":{
+               "@id":"ctx:maintainedBy"
+            },
+            "locationAddress.country":{
+               "@id":"ctx:locationAddress.country"
+            },
+            "copyrightOwnedBy":{
+               "@id":"ctx:copyrightOwnedBy"
+            },
+            "license":{
+               "@id":"ctx:license"
+            },
+            "hostedOn":{
+               "@id":"ctx:hostedOn"
+            },
+            "tenantOwnedBy":{
+               "@id":"ctx:tenantOwnedBy"
+            },
+            "endpoint":{
+               "@id":"ctx:endpoint"
+            }
+         }
+      },
+      "LegalPerson":{
+        "@id":"ctx:LegalPerson",
+        "@context":{
+            "registration_number":{
+               "@id":"ctx:registration_number"
+            },
+            "headquarter_country":{
+                "@id":"ctx:headquarter_country"
+            },
+            "legal_country":{
+                "@id":"ctx:legal_country"
+            },
+            "bpn":{
+                "@id":"ctx:bpn"
             }
         }
-    },
-    "company_number" : {
-        "@id": "ctx:company_number",
-        "@type": "https://schema.org/taxID"
-    },
-    "headquarter_country": {
-        "@id": "ctx:headquarter_country",
-        "@type": "https://schema.org/addressCountry"
-    },
-    "legal_country": {
-        "@id": "ctx:legal_country",
-        "@type": "https://schema.org/addressCountry"
-    },
-    "service_provider": {
-        "@id": "ctx:service_provider",
-        "@type": "https://schema.org/url"
-    },
-    "sd_type": {
-        "@id": "ctx:sd_type",
-        "@type": "http://www.w3.org/2000/01/rdf-schema#label"
-    },
-    "bpn": {
-        "@id": "ctx:bpn",
-        "@type": "https://schema.org/name"
-    }
-  }
+      },
+      "company_number":{
+         "@id":"ctx:company_number",
+         "@type":"https://schema.org/taxID"
+      },
+      "headquarter_country":{
+         "@id":"ctx:headquarter_country",
+         "@type":"https://schema.org/addressCountry"
+      },
+      "legal_country":{
+         "@id":"ctx:legal_country",
+         "@type":"https://schema.org/addressCountry"
+      },
+      "service_provider":{
+         "@id":"ctx:service_provider",
+         "@type":"https://schema.org/url"
+      },
+      "sd_type":{
+         "@id":"ctx:sd_type",
+         "@type":"http://www.w3.org/2000/01/rdf-schema#label"
+      },
+      "bpn":{
+         "@id":"ctx:bpn",
+         "@type":"https://schema.org/name"
+      },
+      "providedBy":{
+         "@id":"ctx:providedBy",
+         "@type":"https://schema.org/url"
+      },
+      "aggregationOf":{
+         "@id":"ctx:aggregationOf",
+         "@type":"https://schema.org/url"
+      },
+      "termsAndConditions":{
+         "@id":"ctx:termsAndConditions",
+         "@type":"https://schema.org/url"
+      },
+      "policies":{
+         "@id":"ctx:policies",
+         "@type":"https://schema.org/name"
+      },
+      "maintainedBy":{
+         "@id":"ctx:maintainedBy",
+         "@type":"https://schema.org/name"
+      },
+      "locationAddress.country":{
+         "@id":"ctx:locationAddress.country",
+         "@type":"https://schema.org/name"
+      },
+      "copyrightOwnedBy":{
+         "@id":"ctx:copyrightOwnedBy",
+         "@type":"https://schema.org/name"
+      },
+      "license":{
+         "@id":"ctx:license",
+         "@type":"https://schema.org/url"
+      },
+      "hostedOn":{
+         "@id":"ctx:hostedOn",
+         "@type":"https://schema.org/name"
+      },
+      "tenantOwnedBy":{
+         "@id":"ctx:tenantOwnedBy",
+         "@type":"https://schema.org/name"
+      },
+      "endpoint":{
+         "@id":"ctx:endpoint",
+         "@type":"https://schema.org/url"
+      },
+      "registration_number":{
+         "@id":"ctx:registration_number",
+         "@type":"https://schema.org/name"
+      }
+   }
 }
