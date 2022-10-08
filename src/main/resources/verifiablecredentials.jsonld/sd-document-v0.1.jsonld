@@ -76,6 +76,23 @@
             }
         }
       },
+      "ServiceOffering":{
+        "@id":"ctx:ServiceOffering",
+        "@context":{
+            "provided_by":{
+                "@id": "ctx:provided_by"
+            },
+            "aggregation_of":{
+                "@id": "ctx:aggregation_of"
+            },
+            "termsAndConditions":{
+                "@id": "ctx:termsAndConditions"
+            },
+            "policies":{
+                "@id": "ctx:policies"
+            }
+         }
+      },
       "company_number":{
          "@id":"ctx:company_number",
          "@type":"https://schema.org/taxID"
@@ -100,12 +117,12 @@
          "@id":"ctx:bpn",
          "@type":"https://schema.org/name"
       },
-      "providedBy":{
-         "@id":"ctx:providedBy",
+      "provided_by":{
+         "@id":"ctx:provided_by",
          "@type":"https://schema.org/url"
       },
-      "aggregationOf":{
-         "@id":"ctx:aggregationOf",
+      "aggregation_of":{
+         "@id":"ctx:aggregation_of",
          "@type":"https://schema.org/url"
       },
       "termsAndConditions":{
