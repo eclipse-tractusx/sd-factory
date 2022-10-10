@@ -22,13 +22,18 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CustodianWallet {
 
@@ -38,13 +43,18 @@ public class CustodianWallet {
     private final TokenManager tokenManager;
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
-        return WebClient.create(uri).post()
-                .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
-                .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
-                .bodyValue(objToSign)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(VerifiableCredential.class)
-                .block();
+        try {
+            return WebClient.create(uri).post()
+                    .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
+                    .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
+                    .bodyValue(objToSign)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(VerifiableCredential.class)
+                    .block();
+        } catch (WebClientResponseException e) {
+            log.error(e.getResponseBodyAsString());
+            throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
+        }
     }
 }

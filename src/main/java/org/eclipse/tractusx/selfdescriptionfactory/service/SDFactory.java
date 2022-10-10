@@ -31,8 +31,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
@@ -49,23 +49,27 @@ import java.util.Map;
 public class SDFactory {
 
     // Namespace for the Self-Description document context
-    static final URI SD_VOC_URI = URI.create("https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld");
 
-    static {
+    @Value("${app.verifiableCredentials.schemaUrl}")
+    private String schemaUrl;
+
+    private URI sdVocURI;
+
+    @Value("${app.verifiableCredentials.durationDays:90}")
+    private int duration;
+
+    private final CustodianWallet custodianWallet;
+
+    @PostConstruct
+    private void init() {
         try (InputStream sdVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/sd-document-v0.1.jsonld")) {
             assert sdVocIs != null;
-            VerifiableCredentialContexts.CONTEXTS.put(SD_VOC_URI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, sdVocIs));
+            sdVocURI = URI.create(schemaUrl);
+            VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, sdVocIs));
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
-
-    @Value("${app.verifiableCredentials.durationDays:90}")
-    private int duration;
-    @Value("${app.verifiableCredentials.idPrefix}")
-    private String idPrefix;
-
-    private final CustodianWallet custodianWallet;
 
     /**
      * Creates a VerifiableCredential on base of provided claims
@@ -82,11 +86,9 @@ public class SDFactory {
                 .claims(claims)
                 .build();
         var verifiableCredential = VerifiableCredential.builder()
-                .context(SD_VOC_URI)
-                //.id(UriComponentsBuilder.fromUriString(idPrefix).path("/selfdescription/vc/" + id).build().toUri())
+                .context(sdVocURI)
                 .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
-                //.type("SD-document")
                 .credentialSubject(credentialSubject)
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuerBpn);
