@@ -7,13 +7,13 @@
            "@id":"ctx:SD-document",
            "@context": {
               "company_number": {
-                 "@id": "ctx:registrationNumber"
+                 "@id": "ctx:company_number"
               },
               "headquarter_country": {
-                 "@id": "ctx:headquarterAddress.country"
+                 "@id": "ctx:headquarter_country"
               },
               "legal_country": {
-                 "@id": "ctx:legalAddress.country"
+                 "@id": "ctx:legal_country"
               },
               "service_provider": {
                  "@id": "ctx:service_provider"
@@ -56,6 +56,18 @@
                     "@id": "ctx:policies"
                 }
             }
+        },
+        "company_number": {
+            "@id": "ctx:company_number",
+            "@type": "https://schema.org/name"
+        },
+        "headquarter_country": {
+            "@id": "ctx:headquarter_country",
+            "@type": "https://schema.org/addressCountry"
+        },
+        "legal_country": {
+            "@id": "ctx:legal_country",
+            "@type": "https://schema.org/addressCountry"
         },
         "registrationNumber": {
             "@id": "ctx:registrationNumber",
