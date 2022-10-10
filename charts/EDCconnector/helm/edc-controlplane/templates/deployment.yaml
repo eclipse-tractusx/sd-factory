@@ -141,12 +141,12 @@ spec:
             - name: EDC_VAULT_HASHICORP_URL
               valueFrom:
                 secretKeyRef:
-                  name: vault-secret
+                  name: vault-cp-secret
                   key: vaulturl
             - name: EDC_VAULT_HASHICORP_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: vault-secret
+                  name: vault-cp-secret
                   key: vaulttoken
 
                                  
