@@ -1,6 +1,6 @@
 ---
 # Default values for edc-controlplane.
-# This is a YAML-formatted file.
+# This is a YAML-formatted file.#
 # Declare variables to be passed into your templates.
 
 # -- Specifies how many replicas of a deployed pod shall be created during the deployment
