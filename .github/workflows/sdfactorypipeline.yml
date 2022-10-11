@@ -26,6 +26,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'eclipse_preparation'
     paths:
       - 'SDFactory/**'
     tags:
