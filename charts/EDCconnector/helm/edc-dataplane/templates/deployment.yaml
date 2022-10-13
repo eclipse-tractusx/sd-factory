@@ -80,12 +80,12 @@ spec:
             - name: EDC_VAULT_HASHICORP_URL
               valueFrom:
                 secretKeyRef:
-                  name: vault-secret
+                  name: vault-dp-secret
                   key: vaulturl
             - name: EDC_VAULT_HASHICORP_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: vault-secret
+                  name: vault-dp-secret
                   key: vaulttoken      
           envFrom:
             - configMapRef:
