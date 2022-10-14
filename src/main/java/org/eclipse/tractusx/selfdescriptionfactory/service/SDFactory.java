@@ -24,21 +24,30 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.tractusx.selfdescriptionfactory.api.SelfdescriptionApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -46,7 +55,7 @@ import java.util.Map;
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
-public class SDFactory {
+public class SDFactory implements SelfdescriptionApiDelegate {
 
     // Namespace for the Self-Description document context
 
@@ -59,6 +68,8 @@ public class SDFactory {
     private int duration;
 
     private final CustodianWallet custodianWallet;
+
+    private final ObjectMapper objectMapper;
 
     @PostConstruct
     private void init() {
@@ -97,4 +108,26 @@ public class SDFactory {
 
         return custodianWallet.getSignedVC(verifiableCredential);
     }
+
+
+    @SuppressWarnings("unchecked")
+    @PreAuthorize("hasRole(@securityRoles.createRole)")
+    public ResponseEntity<VerifiableCredential> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        Map<String, Object> map = objectMapper.convertValue(selfdescriptionPostRequest, Map.class);
+        var holder = map.remove("holder");
+        var issuer = map.remove("issuer");
+        if (holder == null || issuer == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "holder and issuer should be defined in request");
+        }
+        var type = map.remove("type");
+        if (type == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field type (type of document) should be defined in request");
+        }
+        map.values().removeAll(Collections.singleton(null));
+        var res = createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
+
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
+
+    }
+
 }

@@ -12,7 +12,7 @@ paths:
         required: true
         description: parameters to generate VC
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               oneOf:
                 - $ref: '#/components/schemas/LegalPersonSchema'
@@ -21,19 +21,19 @@ paths:
               LegalPerson:
                 description: payload to create LegalPerson
                 value:
-                  type: LegalPerson
-                  holder: BPNL000000000000
-                  issuer: CAXSDUMMYCATENAZZ
-                  registrationNumber: 12345678
-                  headquarterAddress.country: DE
-                  legalAddress.country: DE
-                  bpn: BPNL000000000000
+                    type: LegalPerson
+                    holder: BPNL000000000000
+                    issuer: CAXSDUMMYCATENAZZ
+                    registrationNumber: 12345678
+                    headquarterAddress.country: DE
+                    legalAddress.country: DE
+                    bpn: BPNL000000000000
               ServiceOffering:
                 description: payload to create ServiceOffering
                 value:
-                  type: ServiceOffering
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
+                  type: ServiceOffering
                   providedBy: https://participant.url
                   aggregationOf: to be clarified
                   termsAndConditions: to be clarified
@@ -127,7 +127,7 @@ components:
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
   schemas:
-    LegalPersonSchema:
+    SelfDescriptionSchema:
       type: object
       properties:
         type:
@@ -136,6 +136,15 @@ components:
           type: string
         issuer:
           type: string
+      required:
+        - type
+        - holder
+        - issuer
+    LegalPersonSchema:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SelfDescriptionSchema'
+      properties:
         registrationNumber:
           type: string
         headquarterAddress.country:
@@ -144,22 +153,29 @@ components:
           type: string
         bpn:
           type: string
+      required:
+        - type
+        - holder
+        - issuer
+        - bpn
     ServiceOfferingSchema:
       type: object
+      allOf:
+        - $ref: '#/components/schemas/SelfDescriptionSchema'
       properties:
-        type:
-          type: string
-        holder:
-          type: string
-        issuer:
-          type: string
         providedBy:
           type: string
+          format: uri
         aggregationOf:
           type: string
         termsAndConditions:
           type: string
         policies:
           type: string
+      required:
+        - type
+        - holder
+        - issuer
+        - providedBy
 security:
   - bearerAuth: []         # use the same name as above
