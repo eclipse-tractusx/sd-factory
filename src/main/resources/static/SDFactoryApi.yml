@@ -17,6 +17,11 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/LegalPersonSchema'
                 - $ref: '#/components/schemas/ServiceOfferingSchema'
+              discriminator:
+                propertyName: type
+                mapping:
+                  LegalPerson: '#/components/schemas/LegalPersonSchema'
+                  ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
             examples:
               LegalPerson:
                 description: payload to create LegalPerson
@@ -24,7 +29,7 @@ paths:
                     type: LegalPerson
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
-                    registrationNumber: 12345678
+                    registrationNumber: o12345678
                     headquarterAddress.country: DE
                     legalAddress.country: DE
                     bpn: BPNL000000000000
@@ -43,6 +48,9 @@ paths:
           description: Created
           content:
             application/vc+ld+json:
+              schema:
+                type: object
+                additionalProperties: {}
               examples:
                 jsonLegalPersonObject:
                   summary: A sample LegalPerson response

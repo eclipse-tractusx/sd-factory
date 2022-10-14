@@ -106,13 +106,13 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--
+<!--
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver-dns-native-macos</artifactId>
             <classifier>osx-aarch_64</classifier>
         </dependency>
-        -->
+-->
     </dependencies>
 
     <dependencyManagement>
@@ -170,7 +170,6 @@
                     <debuglevel>lines,vars,source</debuglevel>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -196,7 +195,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
         </plugins>
     </build>
 

@@ -82,17 +82,7 @@ public class SDFactory implements SelfdescriptionApiDelegate {
         }
     }
 
-    /**
-     * Creates a VerifiableCredential on base of provided claims
-     *
-     * @param id        VC identity
-     * @param claims    claims to be included to the VerifiableCredentials
-     * @param holderBpn DID or BPN of the Holder for given claims
-     * @param issuerBpn DID or BPN of the Issuer for the signature
-     * @param documentType type of the document in the credentialSubject
-     * @return VerifiableCredential signed by CatenaX authority
-     */
-    public VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
+    private VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
         var credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
@@ -112,7 +102,7 @@ public class SDFactory implements SelfdescriptionApiDelegate {
 
     @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole(@securityRoles.createRole)")
-    public ResponseEntity<VerifiableCredential> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+    public ResponseEntity<Map<String, Object>> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
         Map<String, Object> map = objectMapper.convertValue(selfdescriptionPostRequest, Map.class);
         var holder = map.remove("holder");
         var issuer = map.remove("issuer");
@@ -126,7 +116,7 @@ public class SDFactory implements SelfdescriptionApiDelegate {
         map.values().removeAll(Collections.singleton(null));
         var res = createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
 
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        return new ResponseEntity<>(res.toMap(), HttpStatus.CREATED);
 
     }
 
