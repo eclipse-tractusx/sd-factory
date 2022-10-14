@@ -8,6 +8,7 @@ paths:
   /selfdescription:
     post:
       summary: Creates a Verifiable Credential and returns it
+      operationId: selfdescriptionPost
       requestBody:
         required: true
         description: parameters to generate VC
