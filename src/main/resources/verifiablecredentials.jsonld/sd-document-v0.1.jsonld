@@ -1,54 +1,133 @@
 {
-  "@context": {
-    "id": "@id",
-    "type": "@type",
-    "ctx" : "https://catena-x.net/selfdescription#",
-    "SD-document": {
-        "@id": "ctx:SD-document",
-        "@context": {
-            "company_number": {
-                "@id": "ctx:company_number"
-            },
-            "headquarter_country": {
-                "@id": "ctx:headquarter_country"
-            },
-            "legal_country": {
-                "@id": "ctx:legal_country"
-            },
-            "service_provider": {
-                "@id": "ctx:service_provider"
-            },
-            "sd_type": {
-                "@id": "ctx:sd_type"
-            },
-            "bpn": {
-                "@id": "ctx:bpn"
+    "@context": {
+        "id":"@id",
+        "type":"@type",
+        "ctx":"https://catena-x.net/selfdescription#",
+        "SD-document": {
+           "@id":"ctx:SD-document",
+           "@context": {
+              "company_number": {
+                 "@id": "ctx:company_number"
+              },
+              "headquarter_country": {
+                 "@id": "ctx:headquarter_country"
+              },
+              "legal_country": {
+                 "@id": "ctx:legal_country"
+              },
+              "service_provider": {
+                 "@id": "ctx:service_provider"
+              },
+              "bpn": {
+                 "@id": "ctx:bpn"
+              }
+           }
+        },
+        "LegalPerson": {
+            "@id": "ctx:LegalPerson",
+            "@context": {
+                "registrationNumber": {
+                   "@id": "ctx:registrationNumber"
+                },
+                "headquarterAddress.country": {
+                    "@id": "ctx:headquarterAddress.country"
+                },
+                "legalAddress.country": {
+                    "@id": "ctx:legalAddress.country"
+                },
+                "bpn": {
+                    "@id": "ctx:bpn"
+                }
             }
+        },
+        "ServiceOffering": {
+            "@id":"ctx:ServiceOffering",
+            "@context": {
+                "providedBy": {
+                    "@id": "ctx:providedBy"
+                },
+                "aggregationOf": {
+                    "@id": "ctx:aggregationOf"
+                },
+                "termsAndConditions": {
+                    "@id": "ctx:termsAndConditions"
+                },
+                "policies": {
+                    "@id": "ctx:policies"
+                }
+            }
+        },
+        "company_number": {
+            "@id": "ctx:company_number",
+            "@type": "https://schema.org/name"
+        },
+        "headquarter_country": {
+            "@id": "ctx:headquarter_country",
+            "@type": "https://schema.org/addressCountry"
+        },
+        "legal_country": {
+            "@id": "ctx:legal_country",
+            "@type": "https://schema.org/addressCountry"
+        },
+        "registrationNumber": {
+            "@id": "ctx:registrationNumber",
+            "@type": "https://schema.org/name"
+        },
+        "headquarterAddress.country": {
+            "@id": "ctx:headquarterAddress.country",
+            "@type": "https://schema.org/addressCountry"
+        },
+        "legalAddress.country": {
+            "@id": "ctx:legalAddress.country",
+            "@type": "https://schema.org/addressCountry"
+        },
+        "bpn": {
+           "@id": "ctx:bpn",
+           "@type": "https://schema.org/name"
+        },
+        "service_provider": {
+            "@id": "ctx:service_provider",
+            "@type": "https://schema.org/url"
+        },
+        "providedBy": {
+            "@id": "ctx:providedBy",
+            "@type": "https://schema.org/url"
+        },
+        "aggregationOf": {
+            "@id": "ctx:aggregationOf",
+            "@type": "https://schema.org/url"
+        },
+        "termsAndConditions": {
+            "@id": "ctx:termsAndConditions",
+            "@type": "https://schema.org/url"
+        },
+        "policies": {
+            "@id": "ctx:policies",
+            "@type": "https://schema.org/name"
+        },
+        "maintainedBy": {
+            "@id": "ctx:maintainedBy",
+            "@type": "https://schema.org/url"
+        },
+        "copyrightOwnedBy": {
+            "@id": "ctx:copyrightOwnedBy",
+            "@type": "https://schema.org/name"
+        },
+        "license": {
+            "@id": "ctx:license",
+            "@type": "https://schema.org/url"
+        },
+        "hostedOn": {
+            "@id": "ctx:hostedOn",
+            "@type": "https://schema.org/name"
+        },
+        "tenantOwnedBy": {
+            "@id": "ctx:tenantOwnedBy",
+            "@type": "https://schema.org/name"
+        },
+        "endpoint": {
+            "@id": "ctx:endpoint",
+            "@type": "https://schema.org/url"
         }
-    },
-    "company_number" : {
-        "@id": "ctx:company_number",
-        "@type": "https://schema.org/taxID"
-    },
-    "headquarter_country": {
-        "@id": "ctx:headquarter_country",
-        "@type": "https://schema.org/addressCountry"
-    },
-    "legal_country": {
-        "@id": "ctx:legal_country",
-        "@type": "https://schema.org/addressCountry"
-    },
-    "service_provider": {
-        "@id": "ctx:service_provider",
-        "@type": "https://schema.org/url"
-    },
-    "sd_type": {
-        "@id": "ctx:sd_type",
-        "@type": "http://www.w3.org/2000/01/rdf-schema#label"
-    },
-    "bpn": {
-        "@id": "ctx:bpn",
-        "@type": "https://schema.org/name"
     }
-  }
 }
