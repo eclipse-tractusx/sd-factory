@@ -140,7 +140,7 @@ https://sdfactory.int.demo.catena-x.net/v3/api-docs as JSON and
 https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html
 in human-readable format. 
 
-# Configuration
+# Configuration#
 SD-Factory and SD-Hub are two microservices, each of them has its own configuration file.
 The configuration property file is located under `resources` folder and is incorporated 
 into the fat jar during build process. It can be customized before building if needed.
