@@ -23,7 +23,8 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 #RUN adduser -DH sdf && addgroup sdf sdf
 #USER sdf
-RUN useradd -g sdf && groupadd -f sdf
+RUN groupadd sdf
+RUN useradd -g sdf -G sdf
 USER sdf
 
 ENTRYPOINT ["java", "-cp", "app:app/lib/*", "org.eclipse.tractusx.selfdescriptionfactory.SelfDescriptionFactoryApplication"]
