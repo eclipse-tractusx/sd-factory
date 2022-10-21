@@ -1,4 +1,4 @@
-# <a id="introduction"></a>Catena-X Self-Description Hub
+# <a id="introduction"></a>Self-Description Hub
 
 In Catena-X we provide self-descriptions for any participant of this data space.
 The Self Descriptions are stored inside the Self Description Hub, but need to be
@@ -6,8 +6,8 @@ created first. Self-Description Factory component is responsible for the creatio
 Self Descriptions. This component gets all necessary parameters and
 information from the Onboarding Tool, which prepares the data for the SD-Factory,
 and uses the
-[CX-Wallet](https://github.com/catenax-ng/product-core-managed-identity-wallets)
-based on custodians to sign the Self Descriptions.
+[Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallets)
+based on custodian to sign the Self Descriptions.
 
 # Solution Strategy 
 
