@@ -2,8 +2,8 @@
 
 In Catena-X we provide self-descriptions for any participant of this data space.
 The Self Descriptions are stored inside the Self Description Hub, but need to be
-created first. Responsible for the creation of Self Descriptions is the Self
-Discription-Factory component. This components gets all necessary parameters and
+created first. Self-Description Factory component is responsible for the creation of 
+Self Descriptions. This component gets all necessary parameters and
 information from the Onboarding Tool, which prepares the data for the SD-Factory,
 and uses the
 [CX-Wallet](https://github.com/catenax-ng/product-core-managed-identity-wallets)
