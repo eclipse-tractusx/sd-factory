@@ -132,13 +132,6 @@ The fields are parameters of the Connector, holder is BPN or DID of
 the Connector wallet and issuer is BPN or DID of the wallet which signs
 the Verifiable Credential for this SD Document.
 
-SD-Factory is installed on integration environment and available 
-at https://sdfactory.int.demo.catena-x.net/
-
-The Swagger documentation for SD-Factory is available at
-https://sdfactory.int.demo.catena-x.net/v3/api-docs as JSON and 
-https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html
-in human-readable format. 
 
 # Configuration
 SD-Factory and SD-Hub are two microservices, each of them has its own configuration file.
