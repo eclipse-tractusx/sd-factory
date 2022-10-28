@@ -1,4 +1,4 @@
-# <a id="introduction"></a>Self-Description Hub
+# <a id="introduction"></a>Self-Description Factory
 
 In Catena-X we provide self-descriptions for any participant of this data space.
 The Self Descriptions are stored inside the Self Description Hub, but need to be
