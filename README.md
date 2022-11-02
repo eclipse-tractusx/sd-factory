@@ -338,3 +338,22 @@ A Docker image will be built and installed to the local repository.
 SD-Factory can be fired up locally in Docker environment. Before that
 the images need to be created as it is [described here](#docker). 
 
+
+#### Installation Steps:-
+
+Helm charts are provided inside https://github.com/catenax-ng/product-sd-hub
+
+There are diffrent ways to do the installation
+
+
+1. Using helm commands:-  
+
+    a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
+    b.) Modify values file according to your requirement.  <br />
+    c.) Deploy in a kubernetes cluster  <br />
+        helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
+
+2. Using ArgoCD. 
+
+To see how to deploy an application on 'Hotel Budapest': 
+[How to deploy](https://catenax-ng.github.io/docs/guides/how-to-deploy-an-application)
