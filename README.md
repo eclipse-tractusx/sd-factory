@@ -339,7 +339,8 @@ SD-Factory can be fired up locally in Docker environment. Before that
 the images need to be created as it is [described here](#docker). 
 
 
-#### Installation Steps:-
+## Installation Steps:-
+----------------------------------------------
 
 Helm charts are provided inside https://github.com/catenax-ng/product-sd-hub
 
