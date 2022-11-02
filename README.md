@@ -356,4 +356,4 @@ There are diffrent ways to do the installation
 2. Using ArgoCD. 
 
 To see how to deploy an application on 'Hotel Budapest': 
-[How to deploy](https://catenax-ng.github.io/docs/guides/how-to-deploy-an-application)
+[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
