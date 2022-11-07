@@ -45,5 +45,5 @@ issuer: "letsencrypt-prod"
 
 sdfactory:
   secret:
-    clientId: "<path:essential-services/data/custodian#clientId>"
-    clientSecret: "<path:essential-services/data/custodian#clientSecret>"
+    clientId: ""
+    clientSecret: ""
