@@ -32,6 +32,7 @@ ingress:
 
 sdfactory:
   secret:
+    name: "avp-sdfactory-secret"
     clientId: "<path:essential-services/data/custodian#clientId>"
     clientSecret: "<path:essential-services/data/custodian#clientSecret>"
     
