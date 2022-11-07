@@ -29,3 +29,10 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+sdfactory:
+  secret:
+    name: "avp-sdfactory-secret"
+    clientId: "<path:essential-services/data/custodian-beta#clientId>"
+    clientSecret: "<path:essential-services/data/custodian-beta#clientSecret>"
+    
