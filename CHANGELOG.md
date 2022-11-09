@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Moved helm charts from `helm/` to `charts`
 
-## [1.0.6] - 2022-10-21
+## [2.0.0] - 2022-11-09
 Added helm release, versioning & tagging
 
 ### Added
