@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+
+### Added
+- new schema of sd documents for TermsOfConditions, PhysicalResource, VirtualResource
+and InstantiatedVirtualResource
+
 
 ## [2.0.0] - 2022-11-09
 Added helm release, versioning & tagging
