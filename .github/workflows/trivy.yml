@@ -73,7 +73,7 @@ jobs:
         if: always()
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/catenax-ng/product-sd-hub/sdfactory:latest'
+          image-ref: 'ghcr.io/catenax-ng/tx-sd-factory/sdfactory:latest'
           format: "json"
 #          output: "trivy-results2.sarif"
           exit-code: "1"

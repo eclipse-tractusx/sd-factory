@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and InstantiatedVirtualResource
 
 
-## [2.0.0] - 2022-11-09
+## [1.0.6] - 2022-11-09
 Added helm release, versioning & tagging
 
 ### Added
