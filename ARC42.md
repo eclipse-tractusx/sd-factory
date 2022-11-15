@@ -142,7 +142,20 @@ The abstract instance provides the general feature to get things signed, either 
 the whole self-description. In both cases, a string in JSON-LD format is passed to a wallet and gets signed by 
 its private key and will be returned as String as signed JSON-LD.
 
-![](docs/images/image3.png)
+```mermaid
+flowchart LR
+    AF --> |sign| Wallet 
+	subgraph SD-Factory
+	    direction BT
+		LegalPerson --> AF[AbstractSDFactory]
+		ServiceOffering --> AF
+		TermsAndConditions --> AF
+		PhysicalResource --> AF
+		VirtualResource --> AF
+		InstantiatedVirtualResource -->AF
+	end
+	
+```
 
 We reduced the mandatory attributes according to 
 [TrustFramework v.22.04](https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04) 
