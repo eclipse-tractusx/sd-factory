@@ -278,8 +278,8 @@ configuration:
     edc.transfer.proxy.token.verifier.publickey.alias=pen-data-plane-public-key
     edc.transfer.proxy.token.signer.privatekey.alias=pen-data-plane-private-key
     edc.public.key.alias=pen-data-plane-public-key
-    edc.vault.hashicorp.url=
-    edc.vault.hashicorp.token=
+    edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
+    edc.vault.hashicorp.token=s.gP1YdTv6NccWybq6ohFq5D1d
     edc.vault.hashicorp.timeout.seconds=30
     edc.vault.hashicorp.api.secret.path=/v1/essential-services/data
     edc.vault.hashicorp.health.check.standby.ok=true
