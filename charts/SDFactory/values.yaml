@@ -48,6 +48,4 @@ sdfactory:
     name: ""
     clientId: ""
     clientSecret: ""
-    auth-server-url: ""
-    realm: ""
-    resource: ""
+
