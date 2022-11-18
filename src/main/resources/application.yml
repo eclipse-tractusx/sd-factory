@@ -21,9 +21,9 @@
 server:
   port: 8080
 keycloak:
-  #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
-  #realm: CX-Central
-  #resource: Cl2-CX-Portal
+  auth-server-url: https://centralidp.int.demo.catena-x.net/auth
+  realm: CX-Central
+  resource: Cl2-CX-Portal
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
@@ -40,7 +40,7 @@ app:
     schemaUrl: https://raw.githubusercontent.com/catenax-ng/product-sd-hub/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld
   custodianWallet:
     uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-    #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
+    auth-server-url: https://centralidp.int.demo.catena-x.net/auth
     realm: CX-Central
     #clientId: ${CLIENTID}
     #clientSecret: ${CLIENTSECRET}
