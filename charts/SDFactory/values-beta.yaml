@@ -35,6 +35,6 @@ sdfactory:
     name: "avp-sdfactory-secret"
     clientId: "<path:essential-services/data/custodian-beta#clientId>"
     clientSecret: "<path:essential-services/data/custodian-beta#clientSecret>"
-    auth-server-url: "<path:essential-services/data/custodian-beta#auth-server-url>"
+    authServerUrl: "<path:essential-services/data/custodian-beta#auth-server-url>"
     realm: "<path:essential-services/data/custodian-beta#realm>"
     resource: "<path:essential-services/data/custodian-beta#resource>"
