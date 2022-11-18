@@ -39,13 +39,33 @@ spec:
         ports:
         - containerPort: {{ .Values.portContainer }}
         env:
-        - name: CLIENTID
+        - name: KEYCLOAK_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: avp-sdfactory-secret
+              name: {{ .Values.sdfactory.secret.name }}
+              key: auth-server-url
+        - name: KEYCLOAK_REALM
+          valueFrom: 
+            secretKeyRef:
+              name: {{ .Values.sdfactory.secret.name }}
+              key: realm
+        - name: KEYCLOAK_RESOURCE
+          valueFrom: 
+            secretKeyRef:
+              name: {{ .Values.sdfactory.secret.name }}
+              key: resource
+        - name: APP_CUSTODIANWALLET_CLIENTID
+          valueFrom: 
+            secretKeyRef:
+              name: {{ .Values.sdfactory.secret.name }}
               key: ClientID
-        - name: CLIENTSECRET
+        - name: APP_CUSTODIANWALLET_CLIENTSECRET
           valueFrom: 
             secretKeyRef:
-              name: avp-sdfactory-secret
+              name: {{ .Values.sdfactory.secret.name }}
               key: ClientSecret
+         - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
+           valueFrom: 
+             secretKeyRef:
+               name: {{ .Values.sdfactory.secret.name }}
+               key: auth-server-url
