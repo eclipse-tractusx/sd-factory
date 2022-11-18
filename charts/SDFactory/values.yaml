@@ -27,7 +27,7 @@ image:
   
 ingress:
   enabled: false
-  domain: "sdfactory.int.demo.catena-x.net"
+  domain: ""
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
