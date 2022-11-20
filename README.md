@@ -350,7 +350,13 @@ There are diffrent ways to do the installation
 
     a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
     b.) Modify values file according to your requirement.  <br />
-    c.) Deploy in a kubernetes cluster  <br />
+    c.) You need to define the secrets as well in values.yaml
+        secret:
+          name: ""
+          clientId: ""
+          clientSecret: ""
+    d.) These secrets should be defined in Hashicorp vault
+    e.) Deploy in a kubernetes cluster  <br />
         helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
 
 2. Using ArgoCD. 
