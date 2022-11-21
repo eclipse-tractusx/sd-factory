@@ -41,43 +41,110 @@ paths:
                   registrationNumber: o12345678
                   headquarterAddress.country: DE
                   legalAddress.country: DE
+                  leiCode: <20 digit alphanumeric code>
+                  parentOrganisation: [
+                    https://<link_to_parent_organisation>,
+                    https://<link_to_parent_organisation>
+                  ]
+                  subOrganisation: [
+                    https://<link_to_parent_suborganisation>,
+                    https://<link_to_parent_suborganisation>
+                  ]
                   bpn: BPNL000000000000
               ServiceOffering:
                 description: payload to create ServiceOffering
                 value:
+                  type: ServiceOffering
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  type: ServiceOffering
-                  providedBy: https://participant.url
-                  aggregationOf: to be clarified
-                  termsAndConditions: to be clarified
-                  policies: to be clarified
+                  providedBy: https://<link_to_participant>
+                  aggregationOf: [
+                    https://<link_to_resource_SD>,
+                    https://<link_to_resource_SD>
+                  ]
+                  termsAndConditions: [
+                    {
+                      URL: https://<link_to_terms_and_conditions>,
+                      hash: <sha256 hash of the document>
+                    },
+                    {
+                      URL: https://<link_to_terms_and_conditions>,
+                      hash: <sha256 hash of the document>
+                    }
+                  ]
+                  policies: [
+                    Policy example,
+                    Policy example
+                  ]
               PhysicalResource:
                 description: payload to create PhysicalResource
                 value:
-                  holder: CAXSDUMMYCATENAZZ
-                  issuer: CAXSDUMMYCATENAZZ
                   type: PhysicalResource
-                  maintainedBy: https://<link_to_participant_self_description>
-                  locationAddress.country: DE
+                  holder: BPNL000000000000
+                  issuer: CAXSDUMMYCATENAZZ
+                  aggregationOf: [
+                    https://<link_to_resources_self_description>,
+                    https://<link_to_resources_self_description>
+                  ]
+                  maintainedBy: [
+                    https://<link_to_participant_self_description>
+                  ]
+                  ownedBy: [
+                    https://<link_to_participant>
+                  ]
+                  manufacturedBy: [
+                    https://<link_to_participant>
+                  ]
+                  locationAddress.country: [
+                    DE
+                  ]
+                  location.gps: [
+                    <GPS location in ISO 6709:2008/Cor 1:2009 format>
+                  ]
               VirtualResource:
                 description: payload to create VirtualResource
                 value:
-                  holder: CAXSDUMMYCATENAZZ
-                  issuer: CAXSDUMMYCATENAZZ
                   type: VirtualResource
-                  copyrightOwnedBy: https://<link_to_participant_self_description>
-                  license: https://<link_to_license_document>
+                  holder: BPNL000000000000
+                  issuer: CAXSDUMMYCATENAZZ
+                  aggregationOf: [
+                    https://<link_to_resources_self_description>,
+                    https://<link_to_resources_self_description>
+                  ]
+                  copyrightOwnedBy: [
+                    https://<link_to_participant_self_description>
+                  ]
+                  license: [
+                    https://<link_to_license_document>
+                  ]
               InstantiatedVirtualResource:
                 description: payload to create InstantiatedVirtualResource
                 value:
-                  holder: CAXSDUMMYCATENAZZ
-                  issuer: CAXSDUMMYCATENAZZ
                   type: InstantiatedVirtualResource
-                  maintainedBy: https://<link_to_participant_self_description>
-                  hostedOn: https://<link_to_resource>
-                  tenantOwnedBy: https://<link_to_participant_self_description>
-                  endpoint: <exposed_endpoints>
+                  holder: BPNL000000000000
+                  issuer: CAXSDUMMYCATENAZZ
+                  aggregationOf: [
+                    https://<link_to_resources_self_description>,
+                    https://<link_to_resources_self_description>
+                  ]
+                  copyrightOwnedBy: [
+                    https://<link_to_participant_self_description>
+                  ]
+                  license: [
+                    https://<link_to_license_document>
+                  ]
+                  maintainedBy: [
+                    https://<link_to_participant>
+                  ]
+                  hostedOn: [
+                    https://<link_to_resource>
+                  ]
+                  tenantOwnedBy: [
+                    https://<link_to_participant_self_description>
+                  ]
+                  endpoint: [
+                    https://<exposed_endpoints>
+                  ]
       responses:
         '201':
           description: Created
@@ -172,114 +239,224 @@ components:
   schemas:
     SelfDescriptionSchema:
       type: object
+      description: An identifiable Self Description
       properties:
         type:
           type: string
+          maxLength: 64
         holder:
           type: string
+          maxLength: 128
         issuer:
           type: string
+          maxLength: 128
       required:
         - type
         - holder
         - issuer
+    PolicySchema:
+      type: string
+    AddressSchema:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country code in ISO 3166-1 alpha2, alpha-3 or numeric format.
+          maxLength: 12
+    GpsSchema:
+      type: object
+      properties:
+        gps:
+          type: string
+          description: physical GPS in ISO 6709:2008/Cor 1:2009 format
     LegalPersonSchema:
       type: object
+      description: A Participant is a Legal Person
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        registrationNumber:
-          type: string
-        headquarterAddress.country:
-          type: string
-        legalAddress.country:
-          type: string
-        bpn:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - bpn
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+              description: Country's registration number which identify one specific company.
+            headquarterAddress:
+              $ref: '#/components/schemas/AddressSchema'
+            legalAddress:
+              $ref: '#/components/schemas/AddressSchema'
+            leiCode:
+              type: string
+            parentOrganisation:
+              type: array
+              description: A list of direct participant that this entity is a subOrganization of, if any.
+              items:
+                type: string
+                format: uri
+            subOrganisation:
+              type: array
+              description: A list of direct participant with an legal mandate on this entity, e.g., as a subsidiary.
+              items:
+                type: string
+                format: uri
+            bpn:
+              type: string
+          required:
+            - registrationNumber
+            - headquarterAddress
+            - legalAddress
+            - bpn
     ServiceOfferingSchema:
       type: object
+      description: Service Offering
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        providedBy:
-          type: string
-          format: uri
-        aggregationOf:
-          type: string
-        termsAndConditions:
-          type: string
-        policies:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - properties:
+            providedBy:
+              type: string
+              description: a resolvable link to the participant self-description providing the service
+              format: uri
+            aggregationOf:
+              type: array
+              description: a resolvable link to the resources self-description related to the service and that can exist independently of it.
+              items:
+                type: string
+                format: uri
+            termsAndConditions:
+              type: array
+              description: a resolvable link to the Terms and Conditions appling to that service
+              items:
+                $ref: '#/components/schemas/TermsAndConditionsSchema'
+            policies:
+              type: array
+              description: a list of policy expressed using a DSL (e.g., Rego or ODRL)
+              items:
+                $ref: '#/components/schemas/PolicySchema'
+          required:
+            - providedBy
+            - termsAndConditions
     TermsAndConditionsSchema:
       type: object
       allOf:
-        - $ref: '#/components/schemas/SelfDescriptionSchema'
+        - type: object
+          properties:
+            URL:
+              type: string
+              description: a resolvable link to document
+              format: uri
+            hash:
+              type: string
+              description: sha256 hash of the above document.
+          required:
+            - URL
+            - hash
+    Resource:
+      type: object
       properties:
-        URL:
-          type: string
-          format: uri
-        hash:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        aggregationOf:
+          type: array
+          description: resources related to the resource and that can exist independently of it.
+          items:
+            type: string
+            format: uri
     PhysicalResourceSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        maintainedBy:
-          type: string
-        locationAddress.country:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            maintainedBy:
+              type: array
+              description: a list of participant maintaining the resource in operational condition and thus have physical access to it.
+              items:
+                type: string
+                format: uri
+                minItems: 1
+            ownedBy:
+              type: array
+              description: a list of participant owning the resource.
+              items:
+                type: string
+                format: uri
+            manufacturedBy:
+              type: array
+              description: a list of participant manufacturing the resource.
+              items:
+                type: string
+                format: uri
+            locationAddress:
+              type: array
+              description: a list of physical location in ISO 3166-1 alpha2, alpha-3 or numeric format.
+              items:
+                $ref: '#/components/schemas/AddressSchema'
+            location:
+              type: array
+              description: a list of physical GPS in ISO 6709:2008/Cor 1:2009 format.
+              items:
+                $ref: '#/components/schemas/GpsSchema'
+          required:
+            - maintainedBy
+            - locationAddress
     VirtualResourceSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        copyrightOwnedBy:
-          type: string
-        license:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            copyrightOwnedBy:
+              type: array
+              description: |
+                A list of copyright owner either as a free form string or participant self-description. 
+                A copyright owner is a person or organization, that has the right to exploit the resource. 
+                Copyright owner does not necessary refer to the author of the resource, who is a natural 
+                person and may differ from copyright owner.
+              items:
+                type: string
+                minItems: 1
+            license:
+              type: array
+              description: A list of SPDX license identifiers or URL to license document
+              items:
+                type: string
+                minItems: 1
+          required:
+            - copyrightOwnedBy
+            - license
     InstantiatedVirtualResourceSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        maintainedBy:
-          type: string
-        hostedOn:
-          type: string
-        tenantOwnedBy:
-          type: string
-        endpoint:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - $ref: '#/components/schemas/VirtualResourceSchema'
+        - type: object
+          properties:
+            maintainedBy:
+              type: array
+              description: a list of participant maintaining the resource in operational condition.
+              items:
+                type: string
+                format: uri
+                minItems: 1
+            hostedOn:
+              type: string
+              description: a resource where the process is running, being executed on.
+              format: uri
+            tenantOwnedBy:
+              type: array
+              description: a list of participant with contractual relation with the resource.
+              items:
+                type: string
+                format: uri
+                minItems: 1
+            endpoint:
+              type: array
+              description: a list of exposed endpoints as defined in ISO/IEC TR 23188:2020
+              items:
+                type: string
+                minItems: 1
+          required:
+            - maintainedBy
+            - hostedOn
+            - tenantOwnedBy
+            - endpoint
 security:
   - bearerAuth: []         # use the same name as above
