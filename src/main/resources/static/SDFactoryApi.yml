@@ -18,7 +18,6 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/LegalPersonSchema'
                 - $ref: '#/components/schemas/ServiceOfferingSchema'
-                - $ref: '#/components/schemas/TermsAndConditionsSchema'
                 - $ref: '#/components/schemas/PhysicalResourceSchema'
                 - $ref: '#/components/schemas/VirtualResourceSchema'
                 - $ref: '#/components/schemas/InstantiatedVirtualResourceSchema'
@@ -27,7 +26,6 @@ paths:
                 mapping:
                   LegalPerson: '#/components/schemas/LegalPersonSchema'
                   ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
-                  TermsAndConditions: '#/components/schemas/TermsAndConditionsSchema'
                   PhysicalResource: '#/components/schemas/PhysicalResourceSchema'
                   VirtualResource: '#/components/schemas/VirtualResourceSchema'
                   InstantiatedVirtualResource: '#/components/schemas/InstantiatedVirtualResourceSchema'
@@ -39,8 +37,12 @@ paths:
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
                   registrationNumber: o12345678
-                  headquarterAddress.country: DE
-                  legalAddress.country: DE
+                  headquarterAddress: {
+                    country: DE
+                  }
+                  legalAddress: {
+                    country: DE
+                  }
                   leiCode: <20 digit alphanumeric code>
                   parentOrganisation: [
                     https://<link_to_parent_organisation>,
@@ -95,11 +97,21 @@ paths:
                   manufacturedBy: [
                     https://<link_to_participant>
                   ]
-                  locationAddress.country: [
-                    DE
+                  locationAddress: [
+                    {
+                      country: DE
+                    },
+                    {
+                      country: DE
+                    }
                   ]
-                  location.gps: [
-                    <GPS location in ISO 6709:2008/Cor 1:2009 format>
+                  location: [
+                    {
+                      gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
+                    },
+                    {
+                      gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
+                    }
                   ]
               VirtualResource:
                 description: payload to create VirtualResource
@@ -136,9 +148,7 @@ paths:
                   maintainedBy: [
                     https://<link_to_participant>
                   ]
-                  hostedOn: [
-                    https://<link_to_resource>
-                  ]
+                  hostedOn: https://<link_to_resource>
                   tenantOwnedBy: [
                     https://<link_to_participant_self_description>
                   ]
@@ -285,6 +295,7 @@ components:
               $ref: '#/components/schemas/AddressSchema'
             leiCode:
               type: string
+              maxLength: 20
             parentOrganisation:
               type: array
               description: A list of direct participant that this entity is a subOrganization of, if any.
@@ -322,7 +333,7 @@ components:
                 format: uri
             termsAndConditions:
               type: array
-              description: a resolvable link to the Terms and Conditions appling to that service
+              description: a resolvable link to the Terms and Conditions applying to that service
               items:
                 $ref: '#/components/schemas/TermsAndConditionsSchema'
             policies:
