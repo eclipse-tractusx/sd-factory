@@ -37,21 +37,17 @@ paths:
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
                   registrationNumber: o12345678
-                  headquarterAddress: {
+                  headquarterAddress:
                     country: DE
-                  }
-                  legalAddress: {
+                  legalAddress:
                     country: DE
-                  }
                   leiCode: <20 digit alphanumeric code>
-                  parentOrganisation: [
-                    https://<link_to_parent_organisation>,
-                    https://<link_to_parent_organisation>
-                  ]
-                  subOrganisation: [
-                    https://<link_to_parent_suborganisation>,
-                    https://<link_to_parent_suborganisation>
-                  ]
+                  parentOrganisation:
+                    - https://parent.organisation1.org
+                    - https://parent.organisation2.org
+                  subOrganisation:
+                    - https://parent.suborganisation1.org
+                    - https://parent.suborganisation2.org
                   bpn: BPNL000000000000
               ServiceOffering:
                 description: payload to create ServiceOffering
@@ -59,102 +55,82 @@ paths:
                   type: ServiceOffering
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  providedBy: https://<link_to_participant>
-                  aggregationOf: [
-                    https://<link_to_resource_SD>,
-                    https://<link_to_resource_SD>
-                  ]
-                  termsAndConditions: [
-                    {
-                      URL: https://<link_to_terms_and_conditions>,
-                      hash: <sha256 hash of the document>
-                    },
-                    {
-                      URL: https://<link_to_terms_and_conditions>,
-                      hash: <sha256 hash of the document>
-                    }
-                  ]
-                  policies: [
-                    Policy example,
-                    Policy example
-                  ]
+                  providedBy: https://participant.link.example.com
+                  aggregationOf:
+                    - https://resource.sd.example1.com
+                    - https://resource.sd.example2.com
+                  termsAndConditions:
+                      - URL: https://terms.and.conditions.example1.com
+                        hash: <sha256 hash of the document>
+                      - URL: https://terms.and.conditions.example2.com
+                        hash: <sha256 hash of the document>
+                  policies:
+                    - Policy example1
+                    - Policy example2
               PhysicalResource:
                 description: payload to create PhysicalResource
                 value:
                   type: PhysicalResource
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  aggregationOf: [
-                    https://<link_to_resources_self_description>,
-                    https://<link_to_resources_self_description>
-                  ]
-                  maintainedBy: [
-                    https://<link_to_participant_self_description>
-                  ]
-                  ownedBy: [
-                    https://<link_to_participant>
-                  ]
-                  manufacturedBy: [
-                    https://<link_to_participant>
-                  ]
-                  locationAddress: [
-                    {
-                      country: DE
-                    },
-                    {
-                      country: DE
-                    }
-                  ]
-                  location: [
-                    {
-                      gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
-                    },
-                    {
-                      gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
-                    }
-                  ]
+                  aggregationOf:
+                    - https://resource.self.description.url1.com
+                    - https://resource.self.description.url2.com
+                  maintainedBy:
+                    - https://participant.self.description.url1.com
+                    - https://participant.self.description.url2.com
+                  ownedBy:
+                    - https://participant.url1.com
+                    - https://participant.url2.com
+                  manufacturedBy:
+                    - https://participant.url1.com
+                    - https://participant.url2.com
+                  locationAddress:
+                      - country: DE
+                      - country: DE
+                  location:
+                      - gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
+                      - gps: <GPS location in ISO 6709:2008/Cor 1:2009 format>
               VirtualResource:
                 description: payload to create VirtualResource
                 value:
                   type: VirtualResource
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  aggregationOf: [
-                    https://<link_to_resources_self_description>,
-                    https://<link_to_resources_self_description>
-                  ]
-                  copyrightOwnedBy: [
-                    https://<link_to_participant_self_description>
-                  ]
-                  license: [
-                    https://<link_to_license_document>
-                  ]
+                  aggregationOf:
+                    - https://resource.self.description.url1.com
+                    - https://resource.self.description.url2.com
+                  copyrightOwnedBy:
+                    - https://participant.self.description.url1.com
+                    - https://participant.self.description.url2.com
+                  license:
+                    - https://license.document.example1.com
+                    - https://license.document.example2.com
               InstantiatedVirtualResource:
                 description: payload to create InstantiatedVirtualResource
                 value:
                   type: InstantiatedVirtualResource
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  aggregationOf: [
-                    https://<link_to_resources_self_description>,
-                    https://<link_to_resources_self_description>
-                  ]
-                  copyrightOwnedBy: [
-                    https://<link_to_participant_self_description>
-                  ]
-                  license: [
-                    https://<link_to_license_document>
-                  ]
-                  maintainedBy: [
-                    https://<link_to_participant>
-                  ]
-                  hostedOn: https://<link_to_resource>
-                  tenantOwnedBy: [
-                    https://<link_to_participant_self_description>
-                  ]
-                  endpoint: [
-                    https://<exposed_endpoints>
-                  ]
+                  aggregationOf:
+                    - https://resource.self.description.url1.com
+                    - https://resource.self.description.url2.com
+                  copyrightOwnedBy:
+                    - https://participant.self.description.url1.com
+                    - https://participant.self.description.url2.com
+                  license:
+                    - https://license.document.example1.com
+                    - https://license.document.example2.com
+                  maintainedBy:
+                    - https://participant.url1.com
+                    - https://participant.url2.com
+                  hostedOn: https://link.to.resource.com
+                  tenantOwnedBy:
+                      - https://participant.self.description.url1.com
+                      - https://participant.self.description.url2.com
+                  endpoint:
+                    - https://endpoint.url1.com
+                    - https://endpoint.url2.com
       responses:
         '201':
           description: Created
