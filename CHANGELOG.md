@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [1.1.0] - 2022-11-23
 
 ### Added
+- compatibility with Trust Framework V.22.04. 
+- Better Exception handling
+- parameters validation
 - new schema of sd documents for TermsOfConditions, PhysicalResource, VirtualResource
-and InstantiatedVirtualResource
+  and InstantiatedVirtualResource
 
 
-## [1.0.6] - 2022-11-09
+## [1.0.6] - 2022-10-22
 Added helm release, versioning & tagging
 
 ### Added
