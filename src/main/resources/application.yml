@@ -29,6 +29,9 @@ keycloak:
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
+spring:
+  jackson:
+    default-property-inclusion: non_null
 springdoc:
   api-docs:
     enabled: false

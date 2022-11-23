@@ -36,6 +36,8 @@ public class ExceptionConfig {
                 // For eg: Only add the keys you want.
                 errorAttributes.put( KEY_STATUS, defaultMap.get( DEFAULT_KEY_STATUS ) );
                 errorAttributes.put( KEY_MESSAGE ,defaultMap.get( DEFAULT_KEY_MESSAGE ) );
+                errorAttributes.put( KEY_ERROR ,defaultMap.get( DEFAULT_KEY_ERROR ) );
+
 
                 return errorAttributes;
             }
