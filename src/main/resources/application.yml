@@ -37,7 +37,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaUrl: https://raw.githubusercontent.com/catenax-ng/product-sd-hub/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld
+    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld
   custodianWallet:
     uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth

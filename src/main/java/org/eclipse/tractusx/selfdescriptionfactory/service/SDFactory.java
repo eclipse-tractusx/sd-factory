@@ -24,7 +24,9 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.api.SelfdescriptionApiDelegate;
@@ -37,17 +39,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -56,9 +59,6 @@ import java.util.UUID;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
 public class SDFactory implements SelfdescriptionApiDelegate {
-
-    // Namespace for the Self-Description document context
-
     @Value("${app.verifiableCredentials.schemaUrl}")
     private String schemaUrl;
 
@@ -69,20 +69,32 @@ public class SDFactory implements SelfdescriptionApiDelegate {
 
     private final CustodianWallet custodianWallet;
 
-    private final ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @PostConstruct
     private void init() {
-        try (InputStream sdVocIs = SDFactory.class.getClassLoader().getResourceAsStream("verifiablecredentials.jsonld/sd-document-v0.1.jsonld")) {
-            assert sdVocIs != null;
+        try {
+            objectMapper = JsonMapper.builder()
+                    .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
+                    .build();
             sdVocURI = URI.create(schemaUrl);
-            VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, sdVocIs));
+            URLConnection connection = sdVocURI.toURL().openConnection();
+            String redirect = connection.getHeaderField("Location");
+            if (redirect != null){
+                connection = new URL(redirect).openConnection();
+            }
+            try (InputStream sdVocIs = connection.getInputStream()) {
+                assert sdVocIs != null;
+                var sdVoc = sdVocIs.readAllBytes();
+                var sdVocS = new String(sdVoc);
+                VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, new ByteArrayInputStream(sdVoc)));
+            }
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    private VerifiableCredential createVC(String id, Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
+    private VerifiableCredential createVC(Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
         var credentialSubject = CredentialSubject.builder()
                 .claims(claims)
                 .build();
@@ -106,18 +118,10 @@ public class SDFactory implements SelfdescriptionApiDelegate {
         Map<String, Object> map = objectMapper.convertValue(selfdescriptionPostRequest, Map.class);
         var holder = map.remove("holder");
         var issuer = map.remove("issuer");
-        if (holder == null || issuer == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "holder and issuer should be defined in request");
-        }
-        var type = map.remove("type");
-        if (type == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field type (type of document) should be defined in request");
-        }
+        var type = map.get("type");
         map.values().removeAll(Collections.singleton(null));
-        var res = createVC(UUID.randomUUID().toString(), map, holder, issuer, type);
-
+        var res = createVC(map, holder, issuer, type);
         return new ResponseEntity<>(res.toMap(), HttpStatus.CREATED);
-
     }
 
 }

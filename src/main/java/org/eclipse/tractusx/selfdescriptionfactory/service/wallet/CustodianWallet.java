@@ -21,8 +21,8 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -41,9 +43,12 @@ public class CustodianWallet {
     private String uri;
 
     private final TokenManager tokenManager;
+    private final ObjectMapper objectMapper;
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
         try {
+            var payload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objToSign);
+            System.err.println(payload);
             return WebClient.create(uri).post()
                     .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
                     .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
@@ -55,6 +60,8 @@ public class CustodianWallet {
         } catch (WebClientResponseException e) {
             log.error(e.getResponseBodyAsString());
             throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
