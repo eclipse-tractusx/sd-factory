@@ -20,6 +20,8 @@
 
 server:
   port: 8080
+  error:
+    include-message: always
 keycloak:
   #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
   #realm: CX-Central

@@ -32,8 +32,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -47,8 +45,6 @@ public class CustodianWallet {
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
         try {
-            var payload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objToSign);
-            System.err.println(payload);
             return WebClient.create(uri).post()
                     .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
                     .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
@@ -58,10 +54,8 @@ public class CustodianWallet {
                     .bodyToMono(VerifiableCredential.class)
                     .block();
         } catch (WebClientResponseException e) {
-            log.error(e.getResponseBodyAsString());
-            throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("WebClientResponseException", e);
+            throw new ResponseStatusException(e.getStatusCode(), "Custodian Wallet problem", e);
         }
     }
 }
