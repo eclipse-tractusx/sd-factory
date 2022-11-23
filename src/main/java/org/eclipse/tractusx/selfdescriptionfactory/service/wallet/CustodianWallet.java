@@ -26,9 +26,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -56,6 +58,9 @@ public class CustodianWallet {
         } catch (WebClientResponseException e) {
             log.error("WebClientResponseException", e);
             throw new ResponseStatusException(e.getStatusCode(), "Custodian Wallet problem", e);
+        } catch (WebClientRequestException e) {
+            log.error("WebClientRequestException", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", e);
         }
     }
 }
