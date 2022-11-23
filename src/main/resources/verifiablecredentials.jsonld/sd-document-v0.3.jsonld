@@ -165,7 +165,7 @@
         "license": {
           "@id": "ctxsd:license",
           "@container": "@set",
-          "@type": "spdx:ListedLicense"
+          "@type": "spdx:licenseId"
         },
         "maintainedBy": {
           "@id": "ctxsd:maintainedBy",
