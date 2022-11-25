@@ -64,10 +64,10 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: |
-          ghcr.io/catenax-ng/product-sd-hub/sdfactory
+          ghcr.io/catenax-ng/tx-sd-factory/sdfactory
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
-          type=semver,pattern={{version}},value=1.0.6
+          type=semver,pattern={{version}},value=1.1.0
           
     - name: Log in to the Container registry
       uses: docker/login-action@v1

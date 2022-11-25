@@ -1,0 +1,192 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "ctxsd": "https://catena-x.net/selfdescription#",
+    "spdx": "http://spdx.org/rdf/terms#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "LegalPerson": {
+      "@id": "ctxsd:LegalPerson",
+      "@context": {
+        "registrationNumber": {
+          "@id": "ctxsd:registrationNumber",
+          "@type": "schema:name"
+        },
+        "headquarterAddress": {
+          "@id": "ctxsd:headquarterAddress",
+          "@context": {
+            "country": {
+              "@id": "ctxsd:country",
+              "@type": "schema:addressCountry"
+            }
+          }
+        },
+        "legalAddress": {
+          "@id": "ctxsd:legalAddress",
+          "@context": {
+            "country": {
+              "@id": "ctxsd:country",
+              "@type": "schema:addressCountry"
+            }
+          }
+        },
+        "parentOrganisation": {
+          "@id": "ctxsd:parentOrganisation",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "subOrganisation": {
+          "@id": "ctxsd:subOrganisation",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "leiCode": {
+          "@id": "ctxsd:leiCode",
+          "@type": "schema:leiCode"
+        },
+        "bpn": {
+          "@id": "ctxsd:bpn",
+          "@type": "schema:name"
+        }
+      }
+    },
+    "ServiceOffering": {
+      "@id": "ctxsd:ServiceOffering",
+      "@type": "rdfs:Class",
+      "@context": {
+        "providedBy": {
+          "@id": "ctxsd:providedBy",
+          "@type": "@id"
+        },
+        "aggregationOf": {
+          "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "termsAndConditions": {
+          "@id": "ctxsd:termsAndConditions",
+          "@container": "@set",
+          "@context": {
+            "URL": {
+              "@id": "ctxsd:URL",
+              "@type": "schema:url"
+            },
+            "hash": {
+              "@id": "ctxsd:hash",
+              "@type": "schema:sha256"
+            }
+          }
+        },
+        "policies": {
+          "@id": "ctxsd:policies",
+          "@container": "@set"
+        }
+      }
+    },
+    "PhysicalResource": {
+      "@id": "ctxsd:PhysicalResource",
+      "@context": {
+        "aggregationOf": {
+          "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "maintainedBy": {
+          "@id": "ctxsd:maintainedBy",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "ownedBy": {
+          "@id": "ctxsd:ownedBy",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "manufacturedBy": {
+          "@id": "ctxsd:manufacturedBy",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "locationAddress": {
+          "@id": "ctxsd:locationAddress",
+          "@container": "@set",
+          "@context": {
+            "country": {
+              "@id": "ctxsd:country",
+              "@type": "schema:addressCountry"
+            }
+          }
+        },
+        "location": {
+          "@id": "ctxsd:location",
+          "@container": "@set",
+          "@context": {
+            "gps": {
+              "@id": "ctxsd:gps",
+              "@type": "xsd:string"
+            }
+          }
+        }
+      }
+    },
+    "VirtualResource": {
+      "@id": "ctxsd:VirtualResource",
+      "@context": {
+        "aggregationOf": {
+          "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "copyrightOwnedBy": {
+          "@id": "ctxsd:copyrightOwnedBy",
+          "@container": "@set",
+          "@type": "xsd:string"
+        },
+        "license": {
+          "@id": "ctxsd:license",
+          "@container": "@set",
+          "@type": "spdx:ListedLicense"
+        }
+      }
+    },
+    "InstantiatedVirtualResource": {
+      "@id": "ctxsd:InstantiatedVirtualResource",
+      "@context": {
+        "aggregationOf": {
+          "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "copyrightOwnedBy": {
+          "@id": "ctxsd:copyrightOwnedBy",
+          "@container": "@set",
+          "@type": "xsd:string"
+        },
+        "license": {
+          "@id": "ctxsd:license",
+          "@container": "@set",
+          "@type": "spdx:licenseId"
+        },
+        "maintainedBy": {
+          "@id": "ctxsd:maintainedBy",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "hostedOn": {
+          "@id": "ctxsd:hostedOn",
+          "@type": "@id"
+        },
+        "tenantOwnedBy": {
+          "@id": "ctxsd:tenantOwnedBy",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "endpoint": {
+          "@id": "ctxsd:endpoint",
+          "@container": "@set",
+          "@type": "xsd:string"
+        }
+      }
+    }
+  }
+}

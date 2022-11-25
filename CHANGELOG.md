@@ -4,12 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [1.1.0] - 2022-11-23
 
-### Changed
-- Moved helm charts from `helm/` to `charts`
+### Added
+- compatibility with Trust Framework V.22.04. 
+- Better Exception handling
+- parameters validation
+- new schema of sd documents for TermsOfConditions, PhysicalResource, VirtualResource
+  and InstantiatedVirtualResource
 
-## [1.0.6] - 2022-10-21
+
+## [1.0.6] - 2022-10-22
 Added helm release, versioning & tagging
 
 ### Added
@@ -22,6 +27,7 @@ Added helm release, versioning & tagging
 - Update all the used libraries to the latest version
 - Change the representation of the consumed content type to application/json
 - All smells from SonarQube were fixed
+- Moved helm charts from `helm/` to `charts`
 
 ### Removed
 - Controller has been removed

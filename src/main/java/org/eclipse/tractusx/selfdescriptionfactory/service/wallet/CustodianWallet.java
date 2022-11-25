@@ -21,14 +21,16 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -41,6 +43,7 @@ public class CustodianWallet {
     private String uri;
 
     private final TokenManager tokenManager;
+    private final ObjectMapper objectMapper;
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
         try {
@@ -53,8 +56,11 @@ public class CustodianWallet {
                     .bodyToMono(VerifiableCredential.class)
                     .block();
         } catch (WebClientResponseException e) {
-            log.error(e.getResponseBodyAsString());
-            throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
+            log.error("WebClientResponseException", e);
+            throw new ResponseStatusException(e.getStatusCode(), "Custodian Wallet problem", e);
+        } catch (WebClientRequestException e) {
+            log.error("WebClientRequestException", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", e);
         }
     }
 }

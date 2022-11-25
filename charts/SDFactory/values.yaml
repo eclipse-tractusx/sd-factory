@@ -20,10 +20,10 @@
 
 #image: "ghcr.io/catenax-ng/product-sd-hub/sdfactory:1.0.4"
 image:
-  repository: "ghcr.io/catenax-ng/product-sd-hub/sdfactory" 
+  repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory" 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.6"
+  tag: "1.1.0"
   
 ingress:
   enabled: false
@@ -48,3 +48,6 @@ sdfactory:
     name: ""
     clientId: ""
     clientSecret: ""
+    authServerUrl: ""
+    realm: ""
+    resource: ""
