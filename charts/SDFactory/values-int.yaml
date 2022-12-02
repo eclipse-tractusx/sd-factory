@@ -32,9 +32,9 @@ ingress:
 
 sdfactory:
   secret:
-    name: "avp-sdfactory-secret"
     clientId: "<path:essential-services/data/custodian#clientId>"
     clientSecret: "<path:essential-services/data/custodian#clientSecret>"
     authServerUrl: "<path:essential-services/data/custodian#auth-server-url>"
     realm: "<path:essential-services/data/custodian#realm>"
-    resource: "<path:essential-services/data/custodian#resource>"    
+    resource: "<path:essential-services/data/custodian#resource>"
+    custodianWalletUri: "<path:essential-services/data/custodian#uri>"

@@ -45,9 +45,10 @@ issuer: "letsencrypt-prod"
 
 sdfactory:
   secret:
-    name: ""
     clientId: ""
     clientSecret: ""
     authServerUrl: ""
     realm: ""
     resource: ""
+    custodianWalletUri: ""
+    
