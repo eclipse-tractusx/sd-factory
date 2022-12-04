@@ -1,4 +1,4 @@
-# <a id="introduction"></a>Self-Description Hub
+# <a id="introduction"></a>Self-Description Factory
 
 In Catena-X we provide self-descriptions for any participant of this data space.
 The Self Descriptions are stored inside the Self Description Hub, but need to be
@@ -15,85 +15,167 @@ Here the flow of Self-Description creation is shown:
 
 ![Process Flow](docs/images/process-flow.png)
 
-1. A user is authenticated in Identity Provider service on behalf of a company 
+1. A user is authenticated in Identity Provider service on behalf of a company
    and receives the authentication ticket.
-2. User calls Onboarding Service with request for creating and publishing 
-   SD-document. The service authenticates the user and prepare the data 
-   SD-Factory needs for creating SD-document such as:  `company_number`, 
-   `headquarter_country`, `legal_country`, `service_provider`, `sd_type` and 
-   `bpn`. **Organization wallet of the company which runs the service shall 
-   be available at this point of time as it signs the Verifiable Credential 
-   with SD document. The wallet associated with the service shall be available 
+2. User calls On-boarding Service with request for creating and publishing
+   SD-document. The service authenticates the user and prepare the data
+   SD-Factory needs for creating SD-document. The documents SD-Factory can 
+   work with are defined in [Trust Framework V.22.04].
+   Currently, these documents are supported by SD-Factory version 1.0.6:
+    - LegalPerson
+    - ServiceOffering
+
+   **Organization wallet of the company which runs the service shall
+   be available at this point of time as it signs the Verifiable Credential
+   with SD document. The wallet associated with the service shall be available
    as well.**
-3. Onboarding service (OS) calls SD-Factory for creating and publishing 
-   SD-document passing this data as a parameter.  OS uses a credential with 
-   a role allowing for this request (e.g. ROLE_SD_CREATOR, currently ROLE_access). 
-   The credential for this operation is taken from ID Provider (keyclock).
-4. SD-Factory creates a Verifiable Credential based on the information taken from
+4. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
+   data as a parameter. OS uses a credential with a role allowing for this request
+   (e.g. `add_self_descriptions`, the default role for SD-document creation). The
+   credential for this operation is taken from ID Provider (keyclock).
+5. SD-Factory creates a Verifiable Credential based on the information taken from
    OS and signs it with organization key. The organization is acting as an Issuer.
    The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
    for this operation.
-5. SD-Factory publishes the Verifiable Credential on the SD-Hub and saves it in MongoDB.
+6. SD-Factory returns the Verifiable Credential to the requester.
 
 For the VC we have to provide valid JSON context where we have a reference to an object
-from known ontology. This object carries the claims the SD-Factory signs. Currently,
-this context is published as a JSON-LD document at
-https://df2af0fe-d34a-4c48-abda-c9cdf5718b4a.mock.pstmn.io/sd-document-v0.1.jsonld
+from known ontology. This object carries the claims the SD-Factory signs. The document
+is published on the [github repository of the project](src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld).
+The vocabulary URL can be changed when will be provided by Trusted Framework. 
+Currently, the vocabulary is defined here:-
 
-This context is going to be changed when corresponding vocabulary will be available in 
-Trusted Framework. Currently, the vocabulary is defined in this file:
 ```json
 {
   "@context": {
-    "id": "@id",
-    "type": "@type",
-    "ctx" : "https://catena-x.net/selfdescription#",
+    "id":"@id",
+    "type":"@type",
+    "ctx":"https://catena-x.net/selfdescription#",
     "SD-document": {
-        "@id": "ctx:SD-document",
-        "@context": {
-            "company_number": {
-                "@id": "ctx:company_number"
-            },
-            "headquarter_country": {
-                "@id": "ctx:headquarter_country"
-            },
-            "legal_country": {
-                "@id": "ctx:legal_country"
-            },
-            "service_provider": {
-                "@id": "ctx:service_provider"
-            },
-            "sd_type": {
-                "@id": "ctx:sd_type"
-            },
-            "bpn": {
-                "@id": "ctx:bpn"
-            }
+      "@id":"ctx:SD-document",
+      "@context": {
+        "company_number": {
+          "@id": "ctx:company_number"
+        },
+        "headquarter_country": {
+          "@id": "ctx:headquarter_country"
+        },
+        "legal_country": {
+          "@id": "ctx:legal_country"
+        },
+        "service_provider": {
+          "@id": "ctx:service_provider"
+        },
+        "bpn": {
+          "@id": "ctx:bpn"
         }
+      }
     },
-    "company_number" : {
-        "@id": "ctx:company_number",
-        "@type": "https://schema.org/taxID"
+    "LegalPerson": {
+      "@id": "ctx:LegalPerson",
+      "@context": {
+        "registrationNumber": {
+          "@id": "ctx:registrationNumber"
+        },
+        "headquarterAddress.country": {
+          "@id": "ctx:headquarterAddress.country"
+        },
+        "legalAddress.country": {
+          "@id": "ctx:legalAddress.country"
+        },
+        "bpn": {
+          "@id": "ctx:bpn"
+        }
+      }
+    },
+    "ServiceOffering": {
+      "@id":"ctx:ServiceOffering",
+      "@context": {
+        "providedBy": {
+          "@id": "ctx:providedBy"
+        },
+        "aggregationOf": {
+          "@id": "ctx:aggregationOf"
+        },
+        "termsAndConditions": {
+          "@id": "ctx:termsAndConditions"
+        },
+        "policies": {
+          "@id": "ctx:policies"
+        }
+      }
+    },
+    "company_number": {
+      "@id": "ctx:company_number",
+      "@type": "https://schema.org/name"
     },
     "headquarter_country": {
-        "@id": "ctx:headquarter_country",
-        "@type": "https://schema.org/addressCountry"
+      "@id": "ctx:headquarter_country",
+      "@type": "https://schema.org/addressCountry"
     },
     "legal_country": {
-        "@id": "ctx:legal_country",
-        "@type": "https://schema.org/addressCountry"
+      "@id": "ctx:legal_country",
+      "@type": "https://schema.org/addressCountry"
     },
-    "service_provider": {
-        "@id": "ctx:service_provider",
-        "@type": "https://schema.org/url"
+    "registrationNumber": {
+      "@id": "ctx:registrationNumber",
+      "@type": "https://schema.org/name"
     },
-    "sd_type": {
-        "@id": "ctx:sd_type",
-        "@type": "http://www.w3.org/2000/01/rdf-schema#label"
+    "headquarterAddress.country": {
+      "@id": "ctx:headquarterAddress.country",
+      "@type": "https://schema.org/addressCountry"
+    },
+    "legalAddress.country": {
+      "@id": "ctx:legalAddress.country",
+      "@type": "https://schema.org/addressCountry"
     },
     "bpn": {
-        "@id": "ctx:bpn",
-        "@type": "https://schema.org/name"
+      "@id": "ctx:bpn",
+      "@type": "https://schema.org/name"
+    },
+    "service_provider": {
+      "@id": "ctx:service_provider",
+      "@type": "https://schema.org/url"
+    },
+    "providedBy": {
+      "@id": "ctx:providedBy",
+      "@type": "https://schema.org/url"
+    },
+    "aggregationOf": {
+      "@id": "ctx:aggregationOf",
+      "@type": "https://schema.org/url"
+    },
+    "termsAndConditions": {
+      "@id": "ctx:termsAndConditions",
+      "@type": "https://schema.org/url"
+    },
+    "policies": {
+      "@id": "ctx:policies",
+      "@type": "https://schema.org/name"
+    },
+    "maintainedBy": {
+      "@id": "ctx:maintainedBy",
+      "@type": "https://schema.org/url"
+    },
+    "copyrightOwnedBy": {
+      "@id": "ctx:copyrightOwnedBy",
+      "@type": "https://schema.org/name"
+    },
+    "license": {
+      "@id": "ctx:license",
+      "@type": "https://schema.org/url"
+    },
+    "hostedOn": {
+      "@id": "ctx:hostedOn",
+      "@type": "https://schema.org/name"
+    },
+    "tenantOwnedBy": {
+      "@id": "ctx:tenantOwnedBy",
+      "@type": "https://schema.org/name"
+    },
+    "endpoint": {
+      "@id": "ctx:endpoint",
+      "@type": "https://schema.org/url"
     }
   }
 }
@@ -103,11 +185,10 @@ Trusted Framework. Currently, the vocabulary is defined in this file:
 
 ## The SD-Factory
 
-The SD-Factory provides an interface for creating and deleting SD-documents. Both 
-method are protected: the authorized user only can call it. Methods are protected 
-with keycloak, which configuration parameters are given in `application.yml`.
-The user roles for creating and deleting Self-Descriptions are specified in
-`application.yml` as well.
+The SD-Factory provides an interface to creating Verifiable Credential for one of mentioned documents.
+Only the authorized user can call this interface to create it. It is protected 
+with keycloak. The configuration parameters are given in `application.yml`.
+The user role for creating Self-Descriptions is specified in `application.yml` as well.
 
 ```http request
 POST /selfdescription
@@ -115,67 +196,118 @@ POST /selfdescription
 where body is
 ```json
 {
-    "bpn" : "BPNL000000000000",
-    "company_number" : "123456",
-    "legal_country" : "DE",
-    "headquarter_country" : "DE",
-    "service_provider" : "http://test.example.com",
-    "sd_type" : "connector",
-    "holder" : "BPNL000000000000",
-    "issuer" : "BPNL000000000000"
+  "type": "LegalPerson",
+  "holder": "BPNL000000000000",
+  "issuer": "CAXSDUMMYCATENAZZ",
+  "registrationNumber": "o12345678",
+  "headquarterAddress.country": "DE",
+  "legalAddress.country": "DE",
+  "bpn": "BPNL000000000000"
 }
 ```
-this call creates a Self-Description and publishes it in the Database.
-The Self-Description in the format of Verifiable Credential is returned.
+for LegalPerson Self-Description and
+```json
+{
+  "holder": "BPNL000000000000",
+  "issuer": "CAXSDUMMYCATENAZZ",
+  "type": "ServiceOffering",
+  "providedBy": "https://participant.url",
+  "aggregationOf": "to be clarified",
+  "termsAndConditions": "to be clarified",
+  "policies": "to be clarified"
+}
+```
+for ServiceOffering.
 
-The fields are parameters of the Connector, holder is BPN or DID of
-the Connector wallet and issuer is BPN or DID of the wallet which signs
-the Verifiable Credential for this SD Document.
+This call creates a Self-Description. The full OpenAPI specification defined in 
+[SDFactoryApi.yml](src/main/resources/static/SDFactoryApi.yml). Note, not all parameters are
+mandatory. The model is based on [Trust Framework V.22.04].
 
-SD-Factory is installed on integration environment and available 
-at https://sdfactory.int.demo.catena-x.net/
+The Self-Description in the format of Verifiable Credential is returned. Here is an example of
+Verifiable Credentials for LegalPerson:
 
-The Swagger documentation for SD-Factory is available at
-https://sdfactory.int.demo.catena-x.net/v3/api-docs as JSON and 
-https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html
-in human-readable format. 
+```json
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
+    "https://w3id.org/vc/status-list/2021/v1"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "LegalPerson"
+  ],
+  "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
+  "issuanceDate": "2022-12-04T20:57:11Z",
+  "expirationDate": "2023-03-04T20:57:11Z",
+  "credentialSubject": {
+    "type": "LegalPerson",
+    "registrationNumber": "o12345678",
+    "headquarterAddress.country": "DE",
+    "legalAddress.country": "DE",
+    "bpn": "BPNL000000000000",
+    "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+  },
+  "credentialStatus": {
+    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#486",
+    "type": "StatusList2021Entry",
+    "statusPurpose": "revocation",
+    "statusListIndex": "486",
+    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2022-12-04T20:57:18Z",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
+    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..hH8WBX2qp6aSOzriGaFawoJXrlGuFqeV05mdwzOOP3RPDnBc6zsYm74k3J8pZ46nN_eYhe7wFd0fy8yFQfWCAg"
+  }
+}
+```
 
 # Configuration
-SD-Factory and SD-Hub are two microservices, each of them has its own configuration file.
 The configuration property file is located under `resources` folder and is incorporated 
 into the fat jar during build process. It can be customized before building if needed.
 Or,the another one can be used as its location can be overridden:
 ```shell
 java -jar myproject.jar --spring.config.location=file:./custom-config/
 ```
-Here application.yaml will be searched in custom-config dir.
+Here application.yml will be searched in custom-config dir.
 
 ## Self-Description Factory Property file
-An example of `application.yaml` for SD-Factory is given bellow:
+An example of [application.yml](src/main/resources/application.yml) for SD-Factory is given bellow:
 ```yaml
 server:
   port: 8080
+  error:
+    include-message: always
 keycloak:
-  auth-server-url: https://centralidp.demo.catena-x.net/auth
-  realm: CX-Central
-  resource: Cl2-CX-Portal
+  #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
+  #realm: CX-Central
+  #resource: Cl2-CX-Portal
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
+spring:
+  jackson:
+    default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: /SDFactoryApi.yml
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    idPrefix: http://sdhub.int.demo.catena-x.net/
+    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld
   custodianWallet:
-    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
-    auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+    uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+    #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
     realm: CX-Central
-    clientId: Client005-CustodianTest
-    clientSecret: <client secret>
-    username: <username>
-    password: <password>
+    #clientId: ${CLIENTID}
+    #clientSecret: ${CLIENTSECRET}
   security:
     createRole: add_self_descriptions
 ```
@@ -184,22 +316,12 @@ Here `keycloak` section defines keycloak's parameters for authentication client 
 
 `app.verifiableCredentials.durationDays` defines for how many days the VC is issued.
 
-`app.verifiableCredentials.idPrefix` specifies prefix for VC identifiers. Internally the 
-identifiers are represented as hexadecimal numbers, but need to accessible as URL. As SD-Hub
-is responsible for serving the VCs, this parameter usually shall be set to the domain name
-of the Hub.
-
 `app.custodianWallet` contains parameters for accessing Custodian Wallet:
 - `uri` is custodian Wallet url
-- `auth-server-url`, `realm`, `clientId`, `clientSecret`, `username`, 
-`password` - keycloak parameters for a user used for meking the calls to 
-the Custodian Wallet. This user shall have enough rights to create 
-Verifiable Credentials and Verifiable Presentations.
-
-`app.security` - sets the roles a user must hold for creating and removing 
-Self-Description to/from SD-Hub.
-
-`app.db.sd.collectionName` sets MongoDB collection nname for storing Self-Descriptions
+- `auth-server-url`, `realm`, `clientId`, `clientSecret` are keycloak parameters for 
+   a user which calls the Custodian Wallet. This user shall have enough rights to create 
+   Verifiable Credentials and Verifiable Presentations.
+- `app.security` sets a role a user must have for creating Self-Description.
 
 # Building
 SD-Factory use Maven for building process. To build a service from sources one
@@ -211,17 +333,47 @@ cd SDFactory
 Then fat jar file can be found in `target` folder as well as in local Maven repository.
 it can be run with this command:
 ```shell
-java -jar target/sd-factory-1.0.0-SNAPSHOT.jar
+java -jar target/sd-factory-1.0.6-SNAPSHOT.jar
 ```
 Please note the name of jar-file as it may differ if version is changed.
 
 <a name="docker"></a>To build a Docker image one can use this command:
 ```shell
-./mvnw spring-boot:build-image
+docker build .
 ```
 A Docker image will be built and installed to the local repository.
 
 # Testing
 SD-Factory can be fired up locally in Docker environment. Before that
-the images need to be created as it is [described here](#docker). 
+the images need to be created as it is [described here](#docker). Do not forget
+to provide necessary configuration parameters in application.yml for keycloak 
+and the Custodian Wallet.
 
+## Installation Steps:-
+
+Helm charts are provided inside https://github.com/catenax-ng/tx-sd-factory
+
+There are diffrent ways to do the installation
+
+1. Using helm commands:-  
+
+    a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
+    b.) Modify values file according to your requirement.  <br />
+    c.) You need to define the secrets as well in values.yaml
+        secret:  <br />
+          clientId: ""  -> Custodian wallet client id  <br />
+          clientSecret: ""  -> Custodian wallet client secret  <br />
+          authServerUrl: ""  ->  Keycloak URL   <br />
+          realm: ""   -> Keycloak Realm  <br />
+          resource: ""  ->  Keycloak Resource   <br />
+          custodianWalletUri: "" -> Custodian wallet URI  <br /> 
+    d.) These secrets should be defined in Hashicorp vault   <br /> 
+    e.) Deploy in a kubernetes cluster  <br />
+        helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
+
+2. Using ArgoCD. 
+
+To see how to deploy an application on 'Hotel Budapest': 
+[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
+
+[Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
