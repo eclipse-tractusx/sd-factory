@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  sdfactory:
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2022-12-07T07:32:45.357936387Z"
+    description: A Helm chart for SDFactory
+    digest: e5c33516a6a639dec354cd87d703d7d47b75e37f9a68f10e7e4e955229cab372
+    name: sdfactory
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/sd-factory/releases/download/sdfactory-1.1.0/sdfactory-1.1.0.tgz
+    version: 1.1.0
+generated: "2022-12-07T07:32:45.357943388Z"
