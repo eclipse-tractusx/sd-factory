@@ -153,7 +153,8 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - properties:
+        - type: object
+          properties:
             registrationNumber:
               type: string
             headquarterAddress.country:
@@ -171,7 +172,8 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - properties:
+        - type: object
+          properties:
             providedBy:
               type: string
               format: uri
