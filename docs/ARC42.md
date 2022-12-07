@@ -117,7 +117,7 @@ Portal.
 
 ## Business Context
 
-![](docs/images/image1.png)
+![](images/image1.png)
 
 ## Technical Context
 
@@ -222,7 +222,7 @@ and needed attributes for Catena-X.
 
 Example LegalPerson
 
-![](docs/images/image4.png)
+![](images/image4.png)
 
 *   The SD-Document of the company's LegalPerson will be signed by the Catena-X Wallet.
 
@@ -234,7 +234,7 @@ Example LegalPerson
 
 Example PhysicalResource:
 
-![](docs/images/image5.png)
+![](images/image5.png)
 
 The Physical Resource will be created by the operator of the service (connector). The operator will use his wallet 
 to sign this SD-Document.
@@ -247,7 +247,7 @@ to sign this SD-Document.
 *   creation of InstantiatedVirtualResource for each connector
 *   creation of ServiceOffering for each connector
 
-![](docs/images/image6.png)
+![](images/image6.png)
 
 *   The SD-Document of the connector will be signed by the Company Wallet (e.g. T-Systems wallet).
 
@@ -416,7 +416,8 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - properties:
+        - type: object
+          properties:
             registrationNumber:
               type: string
             headquarterAddress.country:
@@ -434,7 +435,8 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - properties:
+        - type: object
+          properties:
             providedBy:
               type: string
               format: uri
@@ -514,11 +516,11 @@ Responses:
 
 ##Building Block View
 
-![](docs/images/image7.png)
+![](images/image7.png)
 
 ##Runtime View
 
-![](docs/images/image8.png)
+![](images/image8.png)
 
 Here the flow of Self-Description creation is shown:
 
