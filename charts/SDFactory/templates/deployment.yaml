@@ -42,30 +42,40 @@ spec:
         - name: KEYCLOAK_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: auth-server-url
         - name: KEYCLOAK_REALM
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: realm
         - name: KEYCLOAK_RESOURCE
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: resource
         - name: APP_CUSTODIANWALLET_CLIENTID
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientID
         - name: APP_CUSTODIANWALLET_CLIENTSECRET
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientSecret
         - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: {{ .Values.sdfactory.secret.name }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: auth-server-url
+        - name: APP_CUSTODIANWALLET_URI
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: custodianWalletUri
+        - name: APP_CUSTODIANWALLET_REALM
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: realm

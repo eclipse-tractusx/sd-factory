@@ -462,10 +462,13 @@ There are diffrent ways to do the installation
     a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
     b.) Modify values file according to your requirement.  <br />
     c.) You need to define the secrets as well in values.yaml
-        secret:
-          name: ""
-          clientId: ""
-          clientSecret: ""
+        secret:  <br />
+          clientId: ""  -> Custodian wallet client id  <br />
+          clientSecret: ""  -> Custodian wallet client secret  <br />
+          authServerUrl: ""  ->  Keycloak URL   <br />
+          realm: ""   -> Keycloak Realm  <br />
+          resource: ""  ->  Keycloak Resource   <br />
+          custodianWalletUri: "" -> Custodian wallet URI  <br /> 
     d.) These secrets should be defined in Hashicorp vault
     e.) Deploy in a kubernetes cluster  <br />
         helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
