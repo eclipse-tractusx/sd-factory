@@ -117,7 +117,7 @@ Portal.
 
 ## Business Context
 
-![](docs/images/image1.png)
+![](images/image1.png)
 
 ## Technical Context
 
@@ -222,7 +222,7 @@ and needed attributes for Catena-X.
 
 Example LegalPerson
 
-![](docs/images/image4.png)
+![](images/image4.png)
 
 *   The SD-Document of the company's LegalPerson will be signed by the Catena-X Wallet.
 
@@ -234,7 +234,7 @@ Example LegalPerson
 
 Example PhysicalResource:
 
-![](docs/images/image5.png)
+![](images/image5.png)
 
 The Physical Resource will be created by the operator of the service (connector). The operator will use his wallet 
 to sign this SD-Document.
@@ -247,7 +247,7 @@ to sign this SD-Document.
 *   creation of InstantiatedVirtualResource for each connector
 *   creation of ServiceOffering for each connector
 
-![](docs/images/image6.png)
+![](images/image6.png)
 
 *   The SD-Document of the connector will be signed by the Company Wallet (e.g. T-Systems wallet).
 
@@ -258,12 +258,12 @@ The Swagger documentation for SD-Factory is available at
 [https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html#/](https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html#/)
 in a human-readable format.
 
-Current OpenAPI specification of the service is given bellow:
+Current OpenAPI specification of the service version 1.0.6 is given bellow:
 
 ```yaml
 openapi: 3.0.0
 info:
-  version: 0.0.0
+  version: 1.0.6
   title: SD-Factory API
   description: API for creating and storing the Verifiable Credentials
 
@@ -290,13 +290,13 @@ paths:
               LegalPerson:
                 description: payload to create LegalPerson
                 value:
-                    type: LegalPerson
-                    holder: BPNL000000000000
-                    issuer: CAXSDUMMYCATENAZZ
-                    registrationNumber: o12345678
-                    headquarterAddress.country: DE
-                    legalAddress.country: DE
-                    bpn: BPNL000000000000
+                  type: LegalPerson
+                  holder: BPNL000000000000
+                  issuer: CAXSDUMMYCATENAZZ
+                  registrationNumber: o12345678
+                  headquarterAddress.country: DE
+                  legalAddress.country: DE
+                  bpn: BPNL000000000000
               ServiceOffering:
                 description: payload to create ServiceOffering
                 value:
@@ -319,79 +319,79 @@ paths:
                 jsonLegalPersonObject:
                   summary: A sample LegalPerson response
                   value: |
-                      {
-                        "id": "https://sdfactory.int.demo.catena-x.net/selfdescription/vc/1fb3ca5f-234e-4639-8e96-f2ceb56714f0",
-                        "@context": [
-                          "https://www.w3.org/2018/credentials/v1",
-                          "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
-                          "https://w3id.org/vc/status-list/2021/v1"
-                        ],
-                        "type": [
-                          "VerifiableCredential",
-                          "LegalPerson"
-                        ],
-                        "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                        "issuanceDate": "2022-10-08T18:12:14Z",
-                        "expirationDate": "2023-01-06T18:12:14Z",
-                        "credentialSubject": {
-                          "headquarter_country": "DE",
-                          "legal_country": "DE",
-                          "bpn": "BPNL000000000000",
-                          "registration_number": "12345678",
-                          "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                        },
-                        "credentialStatus": {
-                          "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#61",
-                          "type": "StatusList2021Entry",
-                          "statusPurpose": "revocation",
-                          "statusListIndex": "61",
-                          "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                        },
-                        "proof": {
-                          "type": "Ed25519Signature2018",
-                          "created": "2022-10-08T18:12:16Z",
-                          "proofPurpose": "assertionMethod",
-                          "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                          "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..PNxly7b0d714bapo58YB-qmTtw7q3TVB7plOtaQRCXF2VrCwO4-x7Fx8PeavnwYpzu8adF8ZLnALDgMuPBXIAg"
-                        }
+                    {
+                      "id": "https://sdfactory.int.demo.catena-x.net/selfdescription/vc/1fb3ca5f-234e-4639-8e96-f2ceb56714f0",
+                      "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
+                        "https://w3id.org/vc/status-list/2021/v1"
+                      ],
+                      "type": [
+                        "VerifiableCredential",
+                        "LegalPerson"
+                      ],
+                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
+                      "issuanceDate": "2022-10-08T18:12:14Z",
+                      "expirationDate": "2023-01-06T18:12:14Z",
+                      "credentialSubject": {
+                        "headquarter_country": "DE",
+                        "legal_country": "DE",
+                        "bpn": "BPNL000000000000",
+                        "registration_number": "12345678",
+                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+                      },
+                      "credentialStatus": {
+                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#61",
+                        "type": "StatusList2021Entry",
+                        "statusPurpose": "revocation",
+                        "statusListIndex": "61",
+                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+                      },
+                      "proof": {
+                        "type": "Ed25519Signature2018",
+                        "created": "2022-10-08T18:12:16Z",
+                        "proofPurpose": "assertionMethod",
+                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..PNxly7b0d714bapo58YB-qmTtw7q3TVB7plOtaQRCXF2VrCwO4-x7Fx8PeavnwYpzu8adF8ZLnALDgMuPBXIAg"
                       }
+                    }
                 jsonServiceOfferingObject:
                   summary: A sample ServiceOffering response
                   value: |
-                      {
-                          "@context": [
-                              "https://www.w3.org/2018/credentials/v1",
-                              "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
-                              "https://w3id.org/vc/status-list/2021/v1"
-                          ],
-                          "type": [
-                              "VerifiableCredential",
-                              "ServiceOffering"
-                          ],
-                          "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                          "issuanceDate": "2022-10-08T19:10:20Z",
-                          "expirationDate": "2023-01-06T19:10:20Z",
-                          "credentialSubject": {
-                              "termsAndConditions": "http://terms.and.cond",
-                              "policies": "policies",
-                              "provided_by": "sss",
-                              "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                          },
-                          "credentialStatus": {
-                              "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#67",
-                              "type": "StatusList2021Entry",
-                              "statusPurpose": "revocation",
-                              "statusListIndex": "67",
-                              "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                          },
-                          "proof": {
-                              "type": "Ed25519Signature2018",
-                              "created": "2022-10-08T19:10:23Z",
-                              "proofPurpose": "assertionMethod",
-                              "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                              "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..ivUytTwbtcxByw5L2zuxpE4pjJTIEzaLPoW_gXUtByjfN34ViEbgq6KeKO82ejB6GNetzJcu7sqsZfp6-GPzDA"
-                          }
-                      }
+                    {
+                        "@context": [
+                            "https://www.w3.org/2018/credentials/v1",
+                            "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
+                            "https://w3id.org/vc/status-list/2021/v1"
+                        ],
+                        "type": [
+                            "VerifiableCredential",
+                            "ServiceOffering"
+                        ],
+                        "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
+                        "issuanceDate": "2022-10-08T19:10:20Z",
+                        "expirationDate": "2023-01-06T19:10:20Z",
+                        "credentialSubject": {
+                            "termsAndConditions": "http://terms.and.cond",
+                            "policies": "policies",
+                            "provided_by": "sss",
+                            "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+                        },
+                        "credentialStatus": {
+                            "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#67",
+                            "type": "StatusList2021Entry",
+                            "statusPurpose": "revocation",
+                            "statusListIndex": "67",
+                            "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+                        },
+                        "proof": {
+                            "type": "Ed25519Signature2018",
+                            "created": "2022-10-08T19:10:23Z",
+                            "proofPurpose": "assertionMethod",
+                            "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
+                            "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..ivUytTwbtcxByw5L2zuxpE4pjJTIEzaLPoW_gXUtByjfN34ViEbgq6KeKO82ejB6GNetzJcu7sqsZfp6-GPzDA"
+                        }
+                    }
 components:
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
@@ -416,39 +416,39 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        registrationNumber:
-          type: string
-        headquarterAddress.country:
-          type: string
-        legalAddress.country:
-          type: string
-        bpn:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - bpn
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+            headquarterAddress.country:
+              type: string
+            legalAddress.country:
+              type: string
+            bpn:
+              type: string
+          required:
+            - registrationNumber
+            - headquarterAddress.country
+            - legalAddress.country
+            - bpn
     ServiceOfferingSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        providedBy:
-          type: string
-          format: uri
-        aggregationOf:
-          type: string
-        termsAndConditions:
-          type: string
-        policies:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - type: object
+          properties:
+            providedBy:
+              type: string
+              format: uri
+            aggregationOf:
+              type: string
+            termsAndConditions:
+              type: string
+            policies:
+              type: string
+          required:
+            - providedBy
+            - termsAndConditions
 security:
   - bearerAuth: []
 ```  
@@ -516,11 +516,11 @@ Responses:
 
 ##Building Block View
 
-![](docs/images/image7.png)
+![](images/image7.png)
 
 ##Runtime View
 
-![](docs/images/image8.png)
+![](images/image8.png)
 
 Here the flow of Self-Description creation is shown:
 
