@@ -500,7 +500,8 @@ components:
       description: Service Offering
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - properties:
+        - type: object
+          properties:
             providedBy:
               type: string
               description: a resolvable link to the participant self-description providing the service
@@ -526,19 +527,17 @@ components:
             - termsAndConditions
     TermsAndConditionsSchema:
       type: object
-      allOf:
-        - type: object
-          properties:
-            URL:
-              type: string
-              description: a resolvable link to document
-              format: uri
-            hash:
-              type: string
-              description: sha256 hash of the above document.
-          required:
-            - URL
-            - hash
+      properties:
+        URL:
+          type: string
+          description: a resolvable link to document
+          format: uri
+        hash:
+          type: string
+          description: sha256 hash of the above document.
+      required:
+        - URL
+        - hash
     Resource:
       type: object
       properties:
