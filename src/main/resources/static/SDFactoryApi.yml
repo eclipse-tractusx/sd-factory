@@ -330,12 +330,14 @@ components:
               $ref: '#/components/schemas/AddressSchema'
             parentOrganization:
               type: array
+              maxItems: 512
               description: A list of direct participant that this entity is a subOrganization of, if any.
               items:
                 type: string
                 format: uri
             subOrganization:
               type: array
+              maxItems: 512
               description: A list of direct participant with a legal mandate on this entity, e.g., as a subsidiary.
               items:
                 type: string
@@ -389,6 +391,7 @@ components:
               format: uri
             aggregationOf:
               type: array
+              maxItems: 512
               description: |
                 a resolvable link to the resources self-description related to the service and that can exist 
                 independently of it.
@@ -397,6 +400,7 @@ components:
                 format: uri
             dependsOn:
               type: array
+              maxItems: 512
               description: |
                 a resolvable link to the service offering self-description related to the service and that can 
                 exist independently of it.
@@ -405,12 +409,14 @@ components:
                 format: uri
             termsAndConditions:
               type: array
+              maxItems: 512
               description: a resolvable link to the Terms and Conditions applying to that service
               items:
                 $ref: '#/components/schemas/TermsAndConditionsSchema'
             policy:
               type: array
               minItems: 1
+              maxItems: 512
               description: |
                 a list of policy expressed using a DSL (e.g., Rego or ODRL) 
                 (access control, throttling, usage, retention, …)
@@ -418,6 +424,7 @@ components:
                 $ref: '#/components/schemas/PolicySchema'
             dataProtectionRegime:
               type: array
+              maxItems: 512
               description: a list of data protection regime
               items:
                 type: string
@@ -431,6 +438,7 @@ components:
               type: array
               description: list of methods to export data from your user’s account out of the service
               minItems: 1
+              maxItems: 512
               items:
                 $ref: '#/components/schemas/DataAccountExportSchema'
           required:
@@ -465,6 +473,7 @@ components:
           description: A free text description of the data resource
         aggregationOf:
           type: array
+          maxItems: 512
           description: resources related to the resource and that can exist independently of it.
           items:
             type: string
@@ -487,12 +496,14 @@ components:
                 has the right to exploit the resource. Copyright owner does not necessarily refer to the
                 author of the resource, who is a natural person and may differ from copyright owner.
               minItems: 1
+              maxItems: 512
               items:
                 type: string
             license:
               type: array
               description: A list of SPDX identifiers or URL to document
               minItems: 1
+              maxItems: 512
               items:
                 type: string
             policy:
@@ -501,6 +512,7 @@ components:
                 a list of policy expressed using a DSL (e.g., Rego or ODRL) 
                 (access control, throttling, usage, retention, …)
               minItems: 1
+              maxItems: 512
               items:
                 $ref: '#/components/schemas/PolicySchema'
           required:
@@ -523,28 +535,33 @@ components:
                 a list of participant maintaining the resource in operational condition and thus 
                 having physical access to it.
               minItems: 1
+              maxItems: 512
               items:
                 type: string
                 format: uri
             ownedBy:
               type: array
+              maxItems: 512
               description: a list of participant owning the resource.
               items:
                 type: string
                 format: uri
             manufacturedBy:
               type: array
+              maxItems: 512
               description: a list of participant manufacturing the resource.
               items:
                 type: string
                 format: uri
             locationAddress:
               type: array
+              maxItems: 512
               description: a list of physical location in ISO 3166-1 alpha2, alpha-3 or numeric format.
               items:
                 $ref: '#/components/schemas/AddressSchema'
             location:
               type: array
+              maxItems: 512
               description: a list of physical GPS in ISO 6709:2008/Cor 1:2009 format.
               items:
                 $ref: '#/components/schemas/GpsSchema'
@@ -562,6 +579,7 @@ components:
               type: array
               description: a list of participant maintaining the resource in operational condition.
               minItems: 1
+              maxItems: 512
               items:
                 type: string
                 format: uri
@@ -577,6 +595,7 @@ components:
               type: array
               description: a list of participant with contractual relation with the resource.
               minItems: 1
+              maxItems: 512
               items:
                 type: string
                 format: uri
@@ -586,6 +605,7 @@ components:
                 a list of Service Access Point which can be an endpoint as a mean to access 
                 and interact with the resource
               minItems: 1
+              maxItems: 512
               items:
                 $ref: '#/components/schemas/ServiceAccessPointSchema'
           required:
@@ -606,6 +626,7 @@ components:
           description: host of the endpoint
         protocol:
           type: array
+          maxItems: 512
           description: protocol of the endpoint
           items:
             type: string
@@ -614,11 +635,13 @@ components:
           description: version of the endpoint
         port:
           type: array
+          maxItems: 512
           description: port of the endpoint
           items:
             type: string
         openAPI:
           type: array
+          maxItems: 512
           description: URL of the OpenAPI documentation
           items:
             type: string
