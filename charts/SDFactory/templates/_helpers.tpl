@@ -51,6 +51,13 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Create name of application secret
+*/}}
+{{- define "sdhub.applicationSecret.name" -}}
+{{- printf "%s-application" (include "sdhub.fullname" .) }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "sdhub.serviceAccountName" -}}

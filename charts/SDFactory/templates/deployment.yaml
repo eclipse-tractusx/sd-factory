@@ -39,13 +39,43 @@ spec:
         ports:
         - containerPort: {{ .Values.portContainer }}
         env:
-        - name: CLIENTID
+        - name: KEYCLOAK_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: avp-sdfactory-secret
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: auth-server-url
+        - name: KEYCLOAK_REALM
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: realm
+        - name: KEYCLOAK_RESOURCE
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: resource
+        - name: APP_CUSTODIANWALLET_CLIENTID
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientID
-        - name: CLIENTSECRET
+        - name: APP_CUSTODIANWALLET_CLIENTSECRET
           valueFrom: 
             secretKeyRef:
-              name: avp-sdfactory-secret
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientSecret
+        - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: auth-server-url
+        - name: APP_CUSTODIANWALLET_URI
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: custodianWalletUri
+        - name: APP_CUSTODIANWALLET_REALM
+          valueFrom: 
+            secretKeyRef:
+              name: {{ include "sdhub.applicationSecret.name" . }}
+              key: realm

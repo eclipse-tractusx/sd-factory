@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.0
+  version: 1.0.6
   title: SD-Factory API
   description: API for creating and storing the Verifiable Credentials
 
@@ -153,38 +153,38 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        registrationNumber:
-          type: string
-        headquarterAddress.country:
-          type: string
-        legalAddress.country:
-          type: string
-        bpn:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - bpn
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+            headquarterAddress.country:
+              type: string
+            legalAddress.country:
+              type: string
+            bpn:
+              type: string
+          required:
+            - registrationNumber
+            - headquarterAddress.country
+            - legalAddress.country
+            - bpn
     ServiceOfferingSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-      properties:
-        providedBy:
-          type: string
-          format: uri
-        aggregationOf:
-          type: string
-        termsAndConditions:
-          type: string
-        policies:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-        - providedBy
+        - type: object
+          properties:
+            providedBy:
+              type: string
+              format: uri
+            aggregationOf:
+              type: string
+            termsAndConditions:
+              type: string
+            policies:
+              type: string
+          required:
+            - providedBy
+            - termsAndConditions
 security:
-  - bearerAuth: []         # use the same name as above
+  - bearerAuth: []

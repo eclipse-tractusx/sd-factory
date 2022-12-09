@@ -18,15 +18,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-name: "Trivyfactoryscan"
+name: "Trivy"
 on:
   push:
     branches: 
      - main
   schedule:
     # Once a day
-    - cron: "0 0 * * *"
-    
+    - cron: "0 0 * * *"   
   workflow_dispatch:
   # Trigger manually
 
@@ -46,7 +45,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: "config"
-#          exit-code: "1"
+          exit-code: "1"
           hide-progress: false
           format: "sarif"
           output: "trivy-results1.sarif"
@@ -73,14 +72,14 @@ jobs:
         if: always()
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/catenax-ng/product-sd-hub/sdfactory:latest'
-          format: "json"
-#          output: "trivy-results2.sarif"
+          image-ref: 'ghcr.io/catenax-ng/tx-sd-factory/sdfactory:latest'
+          format: "sarif"
+          output: "trivy-results2.sarif"
           exit-code: "1"
           severity: "CRITICAL,HIGH"
 
-#      - name: Upload Trivy scan results to GitHub Security tab
-#        if: always()
-#        uses: github/codeql-action/upload-sarif@v2
-#        with:
-#          sarif_file: "trivy-results2.sarif"
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results2.sarif"
