@@ -1,9 +1,8 @@
 openapi: 3.0.0
 info:
-  version: 1.1.0
+  version: 1.2.0
   title: SD-Factory API
-  description: API for creating and storing the Verifiable Credentials
-
+  description: API for creating and storing the Verifiable Credentials compliant with Trust Framework 22.11
 paths:
   /selfdescription:
     post:
@@ -38,10 +37,9 @@ paths:
                   issuer: CAXSDUMMYCATENAZZ
                   registrationNumber: o12345678
                   headquarterAddress:
-                    country: DE
+                    countryCode: DE
                   legalAddress:
-                    country: DE
-                  leiCode: 20_digit_code
+                    countryCode: DE
                   parentOrganisation:
                     - https://parent.organisation1.org
                     - https://parent.organisation2.org
@@ -53,26 +51,45 @@ paths:
                 description: payload to create ServiceOffering
                 value:
                   type: ServiceOffering
+                  name: ServiceOfferingName
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  providedBy: https://participant.link.example.com
+                  providedBy: https://participant.url
                   aggregationOf:
                     - https://resource.sd.example1.com
                     - https://resource.sd.example2.com
+                  dependsOn:
+                    - https://resource.sd.example1.com
+                    - https://resource.sd.example2.com
                   termsAndConditions:
-                      - URL: https://terms.and.conditions.example1.com
-                        hash: <sha256 hash of the document>
-                      - URL: https://terms.and.conditions.example2.com
-                        hash: <sha256 hash of the document>
-                  policies:
+                    - URL: https://terms.and.conditions.example1.com
+                      hash: <sha256 hash of the document>
+                    - URL: https://terms.and.conditions.example2.com
+                      hash: <sha256 hash of the document>
+                  policy:
                     - Policy example1
                     - Policy example2
+                  dataProtectionRegime:
+                    - GDPR2016
+                    - LGPD2019
+                    - PDPA2012
+                    - CCPA2018
+                    - VCDPA2021
+                  dataAccountExport:
+                    - requestType: API
+                      accessType: digital
+                      formatType: image
+                    - requestType: API
+                      accessType: digital
+                      formatType: text
               PhysicalResource:
                 description: payload to create PhysicalResource
                 value:
                   type: PhysicalResource
-                  holder: BPNL000000000000
+                  name: PhysicalResourceName
+                  holder: CAXSDUMMYCATENAZZ
                   issuer: CAXSDUMMYCATENAZZ
+                  description: Description of physical resource
                   aggregationOf:
                     - https://resource.self.description.url1.com
                     - https://resource.self.description.url2.com
@@ -86,17 +103,19 @@ paths:
                     - https://participant.url1.com
                     - https://participant.url2.com
                   locationAddress:
-                      - country: US
-                      - country: FR
+                    - countryCode: US
+                    - countryCode: FR
                   location:
-                      - gps: +40.75-074.00/
-                      - gps: +48.52+002.20/
+                    - gps: +40.75-074.00/
+                    - gps: +48.52+002.20/
               VirtualResource:
                 description: payload to create VirtualResource
                 value:
                   type: VirtualResource
-                  holder: BPNL000000000000
+                  name: VirtualResourceName
+                  holder: CAXSDUMMYCATENAZZ
                   issuer: CAXSDUMMYCATENAZZ
+                  description: Description of virtual resource
                   aggregationOf:
                     - https://resource.self.description.url1.com
                     - https://resource.self.description.url2.com
@@ -106,12 +125,17 @@ paths:
                   license:
                     - Apache-2.0
                     - BSD-Source-Code
+                  policy:
+                    - Policy example1
+                    - Policy example2
               InstantiatedVirtualResource:
                 description: payload to create InstantiatedVirtualResource
                 value:
                   type: InstantiatedVirtualResource
+                  name: InstantiatedVirtualResourceName
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
+                  description: Description of Instantiated virtual resource
                   aggregationOf:
                     - https://resource.self.description.url1.com
                     - https://resource.self.description.url2.com
@@ -121,16 +145,20 @@ paths:
                   license:
                     - Apache-2.0
                     - BSD-Source-Code
+                  policy:
+                    - Policy example1
+                    - Policy example2
                   maintainedBy:
                     - https://participant.url1.com
                     - https://participant.url2.com
                   hostedOn: https://link.to.resource.com
+                  instanceOf: https://link.to.virtual.resource.com
                   tenantOwnedBy:
-                      - https://participant.self.description.url1.com
-                      - https://participant.self.description.url2.com
-                  endpoint:
-                    - https://endpoint.url1.com
-                    - https://endpoint.url2.com
+                    - https://participant.self.description.url1.com
+                    - https://participant.self.description.url2.com
+                  serviceAccessPoint:
+                    - https://service.access.point.url1.com
+                    - https://service.access.point.url2.com
       responses:
         '201':
           description: Created
@@ -144,9 +172,10 @@ paths:
                   summary: A sample LegalPerson response
                   value: |
                     {
+                      "id": "https://sdfactory.int.demo.catena-x.net/selfdescription/vc/1fb3ca5f-234e-4639-8e96-f2ceb56714f0",
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
+                        "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -154,278 +183,73 @@ paths:
                         "LegalPerson"
                       ],
                       "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-11-23T12:02:41Z",
-                      "expirationDate": "2023-02-21T12:02:41Z",
+                      "issuanceDate": "2022-10-08T18:12:14Z",
+                      "expirationDate": "2023-01-06T18:12:14Z",
                       "credentialSubject": {
-                        "type": "LegalPerson",
-                        "registrationNumber": "o12345678",
-                        "headquarterAddress": {
-                          "country": "DE"
-                        },
-                        "legalAddress": {
-                          "country": "DE"
-                        },
-                        "leiCode": "20_digit_code",
-                        "parentOrganisation": [
-                          "https://parent.organisation1.org",
-                          "https://parent.organisation2.org"
-                        ],
-                        "subOrganisation": [
-                          "https://sub.organisation1.org",
-                          "https://sub.organisation2.org"
-                        ],
+                        "headquarter_country": "DE",
+                        "legal_country": "DE",
                         "bpn": "BPNL000000000000",
+                        "registration_number": "12345678",
                         "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#452",
+                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#61",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
-                        "statusListIndex": "452",
+                        "statusListIndex": "61",
                         "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
-                        "created": "2022-11-23T12:02:43Z",
+                        "created": "2022-10-08T18:12:16Z",
                         "proofPurpose": "assertionMethod",
                         "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..KALYtsHMI62J0x3ILqkuOc8hu30YzBevanddWesaEd2j776fKZN5dvJBfUH_Lo7Q97jXhmZMiYt7HW7k-8duBA"
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..PNxly7b0d714bapo58YB-qmTtw7q3TVB7plOtaQRCXF2VrCwO4-x7Fx8PeavnwYpzu8adF8ZLnALDgMuPBXIAg"
                       }
                     }
                 jsonServiceOfferingObject:
                   summary: A sample ServiceOffering response
                   value: |
                     {
-                      "@context": [
-                        "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
-                        "https://w3id.org/vc/status-list/2021/v1"
-                      ],
-                      "type": [
-                        "VerifiableCredential",
-                        "ServiceOffering"
-                      ],
-                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-11-23T12:06:54Z",
-                      "expirationDate": "2023-02-21T12:06:54Z",
-                      "credentialSubject": {
-                        "type": "ServiceOffering",
-                        "providedBy": "https://participant.link.example.com",
-                        "aggregationOf": [
-                          "https://resource.sd.example1.com",
-                          "https://resource.sd.example2.com"
+                        "@context": [
+                            "https://www.w3.org/2018/credentials/v1",
+                            "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
+                            "https://w3id.org/vc/status-list/2021/v1"
                         ],
-                        "termsAndConditions": [
-                          {
-                            "URL": "https://terms.and.conditions.example1.com",
-                            "hash": "<sha256 hash of the document>"
-                          },
-                          {
-                            "URL": "https://terms.and.conditions.example2.com",
-                            "hash": "<sha256 hash of the document>"
-                          }
+                        "type": [
+                            "VerifiableCredential",
+                            "ServiceOffering"
                         ],
-                        "policies": [
-                          "Policy example1",
-                          "Policy example2"
-                        ],
-                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                      },
-                      "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#453",
-                        "type": "StatusList2021Entry",
-                        "statusPurpose": "revocation",
-                        "statusListIndex": "453",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                      },
-                      "proof": {
-                        "type": "Ed25519Signature2018",
-                        "created": "2022-11-23T12:06:55Z",
-                        "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0.._zhTQQPvZgzGec-g_zffrWshOTLj-3f836xW-R-4Rlh9OhmaWW3K1xuKIFkxuHhka4rYj_NUU7DnEw36deO1BA"
-                      }
-                    }
-                jsonPhysicalResourceObject:
-                  summary: A sample PhysicalResource response
-                  value: |
-                    {
-                      "@context": [
-                        "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
-                        "https://w3id.org/vc/status-list/2021/v1"
-                      ],
-                      "type": [
-                        "VerifiableCredential",
-                        "PhysicalResource"
-                      ],
-                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-11-23T12:34:54Z",
-                      "expirationDate": "2023-02-21T12:34:54Z",
-                      "credentialSubject": {
-                        "type": "PhysicalResource",
-                        "aggregationOf": [
-                          "https://resource.self.description.url1.com",
-                          "https://resource.self.description.url2.com"
-                        ],
-                        "maintainedBy": [
-                          "https://participant.self.description.url1.com",
-                          "https://participant.self.description.url2.com"
-                        ],
-                        "ownedBy": [
-                          "https://participant.url1.com",
-                          "https://participant.url2.com"
-                        ],
-                        "manufacturedBy": [
-                          "https://participant.url1.com",
-                          "https://participant.url2.com"
-                        ],
-                        "locationAddress": [
-                          {
-                            "country": "US"
-                          },
-                          {
-                            "country": "FR"
-                          }
-                        ],
-                        "location": [
-                          {
-                            "gps": "+40.75-074.00/"
-                          },
-                          {
-                            "gps": "+48.52+002.20/"
-                          }
-                        ],
-                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                      },
-                      "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#459",
-                        "type": "StatusList2021Entry",
-                        "statusPurpose": "revocation",
-                        "statusListIndex": "459",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                      },
-                      "proof": {
-                        "type": "Ed25519Signature2018",
-                        "created": "2022-11-23T12:34:56Z",
-                        "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..H7pH_6fcJE9OYmZay1UcAJ5c0PKuRGAmlLmpCPwDvKpXYNT91AtDyf6072UPBALZ_w1LYBVmrj0JixW3jcFABg"
-                      }
-                    }
-                jsonVirtualResourceObject:
-                  summary: A sample VirtualResource response
-                  value: |
-                    {
-                      "@context": [
-                        "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
-                        "https://w3id.org/vc/status-list/2021/v1"
-                      ],
-                      "type": [
-                        "VerifiableCredential",
-                        "VirtualResource"
-                      ],
-                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-11-23T12:11:05Z",
-                      "expirationDate": "2023-02-21T12:11:05Z",
-                      "credentialSubject": {
-                        "type": "VirtualResource",
-                        "aggregationOf": [
-                          "https://resource.self.description.url1.com",
-                          "https://resource.self.description.url2.com"
-                        ],
-                        "copyrightOwnedBy": [
-                          "https://participant.self.description.url1.com",
-                          "https://participant.self.description.url2.com"
-                        ],
-                        "license": [
-                          "Apache-2.0",
-                          "BSD-Source-Code"
-                        ],
-                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                      },
-                      "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#455",
-                        "type": "StatusList2021Entry",
-                        "statusPurpose": "revocation",
-                        "statusListIndex": "455",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                      },
-                      "proof": {
-                        "type": "Ed25519Signature2018",
-                        "created": "2022-11-23T12:11:06Z",
-                        "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..9aqFIS9SFfm2igrtDmovi28HuBfd6x9RyAbF0gel7u7bOvYLYgVxoHhsr_qQqOYu3Ghv2AxTlg8nBhYWysPrBg"
-                      }
-                    }
-                jsonInstantiatedVirtualResourceObject:
-                  summary: A sample InstantiatedVirtualResource response
-                  value: |
-                    {
-                      "@context": [
-                        "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
-                        "https://w3id.org/vc/status-list/2021/v1"
-                      ],
-                      "type": [
-                        "VerifiableCredential",
-                        "InstantiatedVirtualResource"
-                      ],
-                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-11-23T12:12:47Z",
-                      "expirationDate": "2023-02-21T12:12:47Z",
-                      "credentialSubject": {
-                        "type": "InstantiatedVirtualResource",
-                        "aggregationOf": [
-                          "https://resource.self.description.url1.com",
-                          "https://resource.self.description.url2.com"
-                        ],
-                        "copyrightOwnedBy": [
-                          "https://participant.self.description.url1.com",
-                          "https://participant.self.description.url2.com"
-                        ],
-                        "license": [
-                          "Apache-2.0",
-                          "BSD-Source-Code"
-                        ],
-                        "maintainedBy": [
-                          "https://participant.url1.com",
-                          "https://participant.url2.com"
-                        ],
-                        "hostedOn": "https://link.to.resource.com",
-                        "tenantOwnedBy": [
-                          "https://participant.self.description.url1.com",
-                          "https://participant.self.description.url2.com"
-                        ],
-                        "endpoint": [
-                          "https://endpoint.url1.com",
-                          "https://endpoint.url2.com"
-                        ],
-                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                      },
-                      "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#456",
-                        "type": "StatusList2021Entry",
-                        "statusPurpose": "revocation",
-                        "statusListIndex": "456",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                      },
-                      "proof": {
-                        "type": "Ed25519Signature2018",
-                        "created": "2022-11-23T12:12:48Z",
-                        "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..KUqt52Hdws5k5YHAeSk5xr7vUYq415ZJYrCGxQyjrp0p2DBy0v6c-TLHbNjRBY4nAp_T-RS3f0Ro6GuUcpbhBw"
-                      }
+                        "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
+                        "issuanceDate": "2022-10-08T19:10:20Z",
+                        "expirationDate": "2023-01-06T19:10:20Z",
+                        "credentialSubject": {
+                            "termsAndConditions": "http://terms.and.cond",
+                            "policies": "policies",
+                            "provided_by": "sss",
+                            "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+                        },
+                        "credentialStatus": {
+                            "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#67",
+                            "type": "StatusList2021Entry",
+                            "statusPurpose": "revocation",
+                            "statusListIndex": "67",
+                            "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+                        },
+                        "proof": {
+                            "type": "Ed25519Signature2018",
+                            "created": "2022-10-08T19:10:23Z",
+                            "proofPurpose": "assertionMethod",
+                            "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
+                            "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..ivUytTwbtcxByw5L2zuxpE4pjJTIEzaLPoW_gXUtByjfN34ViEbgq6KeKO82ejB6GNetzJcu7sqsZfp6-GPzDA"
+                        }
                     }
 components:
   securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+      bearerFormat: JWT
   schemas:
     SelfDescriptionSchema:
       type: object
@@ -449,7 +273,7 @@ components:
     AddressSchema:
       type: object
       properties:
-        country:
+        countryCode:
           type: string
           description: Country code in ISO 3166-1 alpha2, alpha-3 or numeric format.
           maxLength: 12
@@ -459,6 +283,38 @@ components:
         gps:
           type: string
           description: physical GPS in ISO 6709:2008/Cor 1:2009 format
+    RegistrationNumberSchema:
+      type: object
+      description: The list of valid entity registrationNumber
+      anyOf:
+        - type: object
+          properties:
+            local:
+              type: string
+              description: the state issued company number
+        - type: object
+          properties:
+            EUID:
+              type: string
+              description: |
+                the European Unique Identifier (EUID) for business located in the European Economic Area, Iceland, 
+                Liechtenstein or Norway and registered in the Business Registers Interconnection System (BRIS). 
+                This number can be found via the EU Business registers portal
+        - type: object
+          properties:
+            EORI:
+              type: string
+              description: the Economic Operators Registration and Identification number (EORI).
+        - type: object
+          properties:
+            vatID:
+              type: string
+              description: the VAT identification number.
+        - type: object
+          properties:
+            leiCode:
+              type: string
+              description: Unique LEI number as defined by https://www.gleif.org.
     LegalPersonSchema:
       type: object
       description: A Participant is a Legal Person
@@ -467,48 +323,83 @@ components:
         - type: object
           properties:
             registrationNumber:
-              type: string
-              description: Country's registration number which identify one specific company.
+              $ref: '#/components/schemas/RegistrationNumberSchema'
             headquarterAddress:
               $ref: '#/components/schemas/AddressSchema'
             legalAddress:
               $ref: '#/components/schemas/AddressSchema'
-            leiCode:
-              type: string
-              maxLength: 20
-            parentOrganisation:
+            parentOrganization:
               type: array
               description: A list of direct participant that this entity is a subOrganization of, if any.
               items:
                 type: string
                 format: uri
-            subOrganisation:
+            subOrganization:
               type: array
-              description: A list of direct participant with an legal mandate on this entity, e.g., as a subsidiary.
+              description: A list of direct participant with a legal mandate on this entity, e.g., as a subsidiary.
               items:
                 type: string
                 format: uri
             bpn:
               type: string
+              description: BPN number
           required:
             - registrationNumber
             - headquarterAddress
             - legalAddress
             - bpn
+    DataAccountExportSchema:
+      type: object
+      description: |
+        The purpose is to enable the participant ordering the service to assess 
+        the feasibility to export its personal and non-personal data out of the service.
+      properties:
+        requestType:
+          type: string
+          description: the mean to request data retrieval
+          enum:
+            - API
+            - email
+            - webform
+            - unregisteredLetter
+            - registeredLetter
+            - supportCenter
+        accessType:
+          type: string
+          description: type of data support
+          enum:
+            - digital
+            - physical
+        formatType:
+          type: string
+          description: type of Media Types (formerly known as MIME types) as defined by the IANA.
     ServiceOfferingSchema:
       type: object
-      description: Service Offering
+      description: This is the generic format for all service offerings
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
         - type: object
           properties:
+            name:
+              type: string
+              description: A human readable name of the component
             providedBy:
               type: string
               description: a resolvable link to the participant self-description providing the service
               format: uri
             aggregationOf:
               type: array
-              description: a resolvable link to the resources self-description related to the service and that can exist independently of it.
+              description: |
+                a resolvable link to the resources self-description related to the service and that can exist 
+                independently of it.
+              items:
+                type: string
+                format: uri
+            dependsOn:
+              type: array
+              description: |
+                a resolvable link to the service offering self-description related to the service and that can 
+                exist independently of it.
               items:
                 type: string
                 format: uri
@@ -517,50 +408,124 @@ components:
               description: a resolvable link to the Terms and Conditions applying to that service
               items:
                 $ref: '#/components/schemas/TermsAndConditionsSchema'
-            policies:
+            policy:
               type: array
-              description: a list of policy expressed using a DSL (e.g., Rego or ODRL)
+              minItems: 1
+              description: |
+                a list of policy expressed using a DSL (e.g., Rego or ODRL) 
+                (access control, throttling, usage, retention, …)
               items:
                 $ref: '#/components/schemas/PolicySchema'
+            dataProtectionRegime:
+              type: array
+              description: a list of data protection regime
+              items:
+                type: string
+                enum:
+                  - GDPR2016
+                  - LGPD2019
+                  - PDPA2012
+                  - CCPA2018
+                  - VCDPA2021
+            dataAccountExport:
+              type: array
+              description: list of methods to export data from your user’s account out of the service
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/DataAccountExportSchema'
           required:
             - providedBy
             - termsAndConditions
+            - policy
+            - dataAccountExport
     TermsAndConditionsSchema:
       type: object
-      properties:
-        URL:
-          type: string
-          description: a resolvable link to document
-          format: uri
-        hash:
-          type: string
-          description: sha256 hash of the above document.
-      required:
-        - URL
-        - hash
-    Resource:
+      allOf:
+        - type: object
+          properties:
+            URL:
+              type: string
+              description: a resolvable link to document
+              format: uri
+            hash:
+              type: string
+              description: sha256 hash of the above document.
+          required:
+            - URL
+            - hash
+    ResourceSchema:
       type: object
+      description: A resource that may be aggregated in a Service Offering or exist independently of it.
       properties:
+        name:
+          type: string
+          description: A human readable name of the data resource
+        description:
+          type: string
+          description: A free text description of the data resource
         aggregationOf:
           type: array
           description: resources related to the resource and that can exist independently of it.
           items:
             type: string
             format: uri
-    PhysicalResourceSchema:
+    VirtualResourceSchema:
       type: object
+      description: |
+        A Virtual resource is a resource describing recorded information such as, and not limited to, 
+        a dataset, a software, a configuration file, an AI model.
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - $ref: '#/components/schemas/Resource'
+        - $ref: '#/components/schemas/ResourceSchema'
+        - type: object
+          properties:
+            copyrightOwnedBy:
+              type: array
+              description: |
+                A list of copyright owners either as a free form string or participant URIs from which 
+                Self-Descriptions can be retrieved. A copyright owner is a person or organization that 
+                has the right to exploit the resource. Copyright owner does not necessarily refer to the
+                author of the resource, who is a natural person and may differ from copyright owner.
+              minItems: 1
+              items:
+                type: string
+            license:
+              type: array
+              description: A list of SPDX identifiers or URL to document
+              minItems: 1
+              items:
+                type: string
+            policy:
+              type: array
+              description: |
+                a list of policy expressed using a DSL (e.g., Rego or ODRL) 
+                (access control, throttling, usage, retention, …)
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/PolicySchema'
+          required:
+            - copyrightOwnedBy
+            - license
+            - policy
+    PhysicalResourceSchema:
+      type: object
+      description: |
+        A Physical resource is, but not limited to, a datacenter, a bare-metal service, a warehouse, a plant. 
+        Those are entities that have a weight and position in physical space.
+      allOf:
+        - $ref: '#/components/schemas/SelfDescriptionSchema'
+        - $ref: '#/components/schemas/ResourceSchema'
         - type: object
           properties:
             maintainedBy:
               type: array
-              description: a list of participant maintaining the resource in operational condition and thus have physical access to it.
+              description: |
+                a list of participant maintaining the resource in operational condition and thus 
+                having physical access to it.
+              minItems: 1
               items:
                 type: string
                 format: uri
-                minItems: 1
             ownedBy:
               type: array
               description: a list of participant owning the resource.
@@ -586,32 +551,6 @@ components:
           required:
             - maintainedBy
             - locationAddress
-    VirtualResourceSchema:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - $ref: '#/components/schemas/Resource'
-        - type: object
-          properties:
-            copyrightOwnedBy:
-              type: array
-              description: |
-                A list of copyright owner either as a free form string or participant self-description. 
-                A copyright owner is a person or organization, that has the right to exploit the resource. 
-                Copyright owner does not necessary refer to the author of the resource, who is a natural 
-                person and may differ from copyright owner.
-              items:
-                type: string
-                minItems: 1
-            license:
-              type: array
-              description: A list of SPDX license identifiers or URL to license document
-              items:
-                type: string
-                minItems: 1
-          required:
-            - copyrightOwnedBy
-            - license
     InstantiatedVirtualResourceSchema:
       type: object
       allOf:
@@ -622,31 +561,67 @@ components:
             maintainedBy:
               type: array
               description: a list of participant maintaining the resource in operational condition.
+              minItems: 1
               items:
                 type: string
                 format: uri
-                minItems: 1
             hostedOn:
               type: string
-              description: a resource where the process is running, being executed on.
+              description: a resource where the process is located (physical server, datacenter, availability zone, …).
+              format: uri
+            instanceOf:
+              type: string
+              description: a virtual resource (normally a software resource) this process is an instance of.
               format: uri
             tenantOwnedBy:
               type: array
               description: a list of participant with contractual relation with the resource.
+              minItems: 1
               items:
                 type: string
                 format: uri
-                minItems: 1
-            endpoint:
+            serviceAccessPoint:
               type: array
-              description: a list of exposed endpoints as defined in ISO/IEC TR 23188:2020
+              description: |
+                a list of Service Access Point which can be an endpoint as a mean to access 
+                and interact with the resource
+              minItems: 1
               items:
-                type: string
-                minItems: 1
+                $ref: '#/components/schemas/ServiceAccessPointSchema'
           required:
             - maintainedBy
             - hostedOn
+            - instanceOf
             - tenantOwnedBy
-            - endpoint
+            - serviceAccessPoint
+    ServiceAccessPointSchema:
+      type: object
+      description: A service access point is an identifying label for network endpoints used in the OSI model.
+      properties:
+        name:
+          type: string
+          description: name of the endpoint
+        host:
+          type: string
+          description: host of the endpoint
+        protocol:
+          type: array
+          description: protocol of the endpoint
+          items:
+            type: string
+        version:
+          type: string
+          description: version of the endpoint
+        port:
+          type: array
+          description: port of the endpoint
+          items:
+            type: string
+        openAPI:
+          type: array
+          description: URL of the OpenAPI documentation
+          items:
+            type: string
+            format: uri
 security:
   - bearerAuth: []         # use the same name as above
