@@ -448,19 +448,17 @@ components:
             - dataAccountExport
     TermsAndConditionsSchema:
       type: object
-      allOf:
-        - type: object
-          properties:
-            URL:
-              type: string
-              description: a resolvable link to document
-              format: uri
-            hash:
-              type: string
-              description: sha256 hash of the above document.
-          required:
-            - URL
-            - hash
+      properties:
+        URL:
+          type: string
+          description: a resolvable link to document
+          format: uri
+        hash:
+          type: string
+          description: sha256 hash of the above document.
+      required:
+        - URL
+        - hash
     ResourceSchema:
       type: object
       description: A resource that may be aggregated in a Service Offering or exist independently of it.
