@@ -35,7 +35,8 @@ paths:
                   type: LegalPerson
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  registrationNumber: o12345678
+                  registrationNumber:
+                    local: o12345678
                   headquarterAddress:
                     countryCode: DE
                   legalAddress:
@@ -157,8 +158,30 @@ paths:
                     - https://participant.self.description.url1.com
                     - https://participant.self.description.url2.com
                   serviceAccessPoint:
-                    - https://service.access.point.url1.com
-                    - https://service.access.point.url2.com
+                    - name: endpointName1
+                      host: https://service.access.point.url1.com
+                      protocol:
+                        - http
+                        - https
+                      version: 2
+                      port:
+                        - 8081
+                        - 8082
+                      openAPI:
+                        - https://openAPI.document.url1.com
+                        - https://openAPI.document.url2.com
+                    - name: endpointName2
+                      host: https://service.access.point.url2.com
+                      protocol:
+                        - http
+                        - https
+                      version: 2
+                      port:
+                        - 8081
+                        - 8082
+                      openAPI:
+                        - https://openAPI.document.url1.com
+                        - https://openAPI.document.url2.com
       responses:
         '201':
           description: Created
