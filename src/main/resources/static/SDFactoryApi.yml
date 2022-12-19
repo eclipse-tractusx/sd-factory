@@ -70,12 +70,7 @@ paths:
                   policy:
                     - Policy example1
                     - Policy example2
-                  dataProtectionRegime:
-                    - GDPR2016
-                    - LGPD2019
-                    - PDPA2012
-                    - CCPA2018
-                    - VCDPA2021
+                  dataProtectionRegime: VCDPA2021
                   dataAccountExport:
                     - requestType: API
                       accessType: digital
