@@ -46,8 +46,8 @@
         "legalAddress": {
           "@id": "ctxsd:legalAddress",
           "@context": {
-            "country": {
-              "@id": "ctxsd:country",
+            "countryCode": {
+              "@id": "ctxsd:countryCode",
               "@type": "schema:addressCountry"
             }
           }
