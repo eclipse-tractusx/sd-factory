@@ -4,7 +4,7 @@ info:
   title: SD-Factory API
   description: API for creating and storing the Verifiable Credentials compliant with Trust Framework 22.10
 paths:
-  /selfdescription:
+  /api/22.10/selfdescription:
     post:
       summary: Creates a Verifiable Credential and returns it
       operationId: selfdescriptionPost
