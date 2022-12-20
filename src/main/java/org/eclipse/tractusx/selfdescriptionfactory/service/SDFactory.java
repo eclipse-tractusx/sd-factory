@@ -28,8 +28,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import foundation.identity.jsonld.JsonLDUtils;
+import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.api.SelfdescriptionApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.api.ApiApiDelegate;
 import org.eclipse.tractusx.selfdescriptionfactory.model.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,16 +42,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+
+import static org.eclipse.tractusx.selfdescriptionfactory.Utils.getConnectionIfRedirected;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -58,40 +57,34 @@ import java.util.Map;
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequiredArgsConstructor
-public class SDFactory implements SelfdescriptionApiDelegate {
+public class SDFactory implements ApiApiDelegate {
     @Value("${app.verifiableCredentials.schemaUrl}")
     private String schemaUrl;
-
     private URI sdVocURI;
-
     @Value("${app.verifiableCredentials.durationDays:90}")
     private int duration;
+    @Value("${app.verifiableCredentials.maxRedirect:3}")
+    private int maxRedirect;
 
     private final CustodianWallet custodianWallet;
-
     private ObjectMapper objectMapper;
 
     @PostConstruct
     private void init() {
-        try {
-            objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
-                    .build();
-            sdVocURI = URI.create(schemaUrl);
-            URLConnection connection = sdVocURI.toURL().openConnection();
-            String redirect = connection.getHeaderField("Location");
-            if (redirect != null){
-                connection = new URL(redirect).openConnection();
-            }
-            try (InputStream sdVocIs = connection.getInputStream()) {
-                assert sdVocIs != null;
-                var sdVoc = sdVocIs.readAllBytes();
-                var sdVocS = new String(sdVoc);
-                VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, new ByteArrayInputStream(sdVoc)));
-            }
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        objectMapper = JsonMapper.builder()
+                .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
+                .build();
+        sdVocURI = URI.create(schemaUrl);
+        Try.of(() -> getConnectionIfRedirected(sdVocURI.toURL(), maxRedirect))
+                .flatMap(connection ->
+                        Try.withResources(connection::getInputStream)
+                                .of(is -> JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, is))
+                ).onSuccess(context ->
+                        VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, context)
+                ).onFailure(e -> {
+                    e.printStackTrace();
+                    System.exit(-1);
+                });
     }
 
     private VerifiableCredential createVC(Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
@@ -110,7 +103,6 @@ public class SDFactory implements SelfdescriptionApiDelegate {
 
         return custodianWallet.getSignedVC(verifiableCredential);
     }
-
 
     @SuppressWarnings("unchecked")
     @PreAuthorize("hasRole(@securityRoles.createRole)")

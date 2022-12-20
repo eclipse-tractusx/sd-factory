@@ -21,9 +21,12 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -34,33 +37,47 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.Predicates.instanceOf;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CustodianWallet {
-
     @Value("${app.custodianWallet.uri}")
     private String uri;
-
     private final TokenManager tokenManager;
     private final ObjectMapper objectMapper;
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
-        try {
-            return WebClient.create(uri).post()
-                    .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
-                    .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
-                    .bodyValue(objToSign)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono(VerifiableCredential.class)
-                    .block();
-        } catch (WebClientResponseException e) {
-            log.error("WebClientResponseException", e);
-            throw new ResponseStatusException(e.getStatusCode(), "Custodian Wallet problem", e);
-        } catch (WebClientRequestException e) {
-            log.error("WebClientRequestException", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", e);
-        }
+        return Try.of(() -> WebClient.create(uri).post()
+                .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
+                .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
+                .bodyValue(objToSign)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(VerifiableCredential.class)
+                .block()
+        ).onFailure(WebClientResponseException.class, err ->
+                log.error("WebClientResponseException", err)
+        ).onFailure(WebClientRequestException.class, err ->
+                log.error("WebClientRequestException", err)
+        ).recoverWith(Utils.mapFailure(
+                e -> io.vavr.API.Match(e).of(
+                        Case($(instanceOf(WebClientResponseException.class)), err ->
+                                Try.of(() -> objectMapper.readValue(err.getResponseBodyAsByteArray(), JsonNode.class).get("message").asText()
+                                ).map(errString -> new ResponseStatusException(err.getStatusCode(), "Custodian Wallet problem: " + errString, err)
+                                ).recover(mapperErr -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Mapper Error", mapperErr)
+                                ).get()
+                        ),
+                        Case($(instanceOf(WebClientRequestException.class)), err ->
+                                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", err)
+                        ),
+                        Case($(), err -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", err)
+                        )
+                )
+        )).get();
     }
+
 }
