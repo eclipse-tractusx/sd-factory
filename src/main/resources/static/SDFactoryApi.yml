@@ -5,7 +5,7 @@ info:
   description: API for creating and storing the Verifiable Credentials
 
 paths:
-  /selfdescription:
+  /api/22.04/selfdescription:
     post:
       summary: Creates a Verifiable Credential and returns it
       operationId: selfdescriptionPost

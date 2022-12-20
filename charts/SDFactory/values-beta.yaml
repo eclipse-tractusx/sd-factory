@@ -37,4 +37,4 @@ sdfactory:
     authServerUrl: "<path:essential-services/data/custodian-beta#auth-server-url>"
     realm: "<path:essential-services/data/custodian-beta#realm>"
     resource: "<path:essential-services/data/custodian-beta#resource>"
-    custodianWalletUri: "<path:essential-services/data/custodian#uri>"
+    custodianWalletUri: "<path:essential-services/data/custodian-beta#uri>"
