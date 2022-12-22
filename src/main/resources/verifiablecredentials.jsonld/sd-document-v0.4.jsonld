@@ -11,7 +11,6 @@
       "@context": {
         "registrationNumber": {
           "@id": "ctxsd:registrationNumber",
-          "@container": "@id",
           "@context": {
             "local": {
                 "@id": "ctxsd:local",
@@ -73,12 +72,21 @@
       "@id": "ctxsd:ServiceOffering",
       "@type": "rdfs:Class",
       "@context": {
+        "name": {
+          "@id": "ctxsd:name",
+          "@type": "schema:name"
+        }
         "providedBy": {
           "@id": "ctxsd:providedBy",
           "@type": "@id"
         },
         "aggregationOf": {
           "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "dependsOn": {
+          "@id": "ctxsd:dependsOn",
           "@container": "@set",
           "@type": "@id"
         },
@@ -99,6 +107,29 @@
         "policy": {
           "@id": "ctxsd:policy",
           "@container": "@set"
+        },
+        "dataProtectionRegime": {
+          "@id": "ctxsd:dataProtectionRegime",
+          "@container": "@set",
+          "@type": "schema:name"
+        },
+        "dataAccountExport": {
+          "@id": "ctxsd:dataAccountExport",
+          "@container": "@set",
+          @context: {
+            "requestType": {
+              "@id": "ctxsd:requestType",
+              "@type": "schema:name"
+            },
+            "accessType": {
+              "@id": "ctxsd:accessType",
+              "@type": "schema:name"
+            },
+            "formatType": {
+              "@id": "ctxsd:formatType",
+              "@type": "schema:name"
+            }
+          }
         }
       }
     },
