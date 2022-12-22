@@ -75,7 +75,7 @@
         "name": {
           "@id": "ctxsd:name",
           "@type": "schema:name"
-        }
+        },
         "providedBy": {
           "@id": "ctxsd:providedBy",
           "@type": "@id"
