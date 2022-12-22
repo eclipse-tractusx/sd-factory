@@ -116,7 +116,7 @@
         "dataAccountExport": {
           "@id": "ctxsd:dataAccountExport",
           "@container": "@set",
-          @context: {
+          "@context": {
             "requestType": {
               "@id": "ctxsd:requestType",
               "@type": "schema:name"
