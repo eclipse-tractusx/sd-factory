@@ -24,6 +24,7 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialContexts;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -73,18 +74,16 @@ public class SDFactory implements ApiApiDelegate {
     private void init() {
         objectMapper = JsonMapper.builder()
                 .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
-                .build();
+                .build().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         sdVocURI = URI.create(schemaUrl);
-        Try.of(() -> getConnectionIfRedirected(sdVocURI.toURL(), maxRedirect))
-                .flatMap(connection ->
-                        Try.withResources(connection::getInputStream)
-                                .of(is -> JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, is))
-                ).onSuccess(context ->
-                        VerifiableCredentialContexts.CONTEXTS.put(sdVocURI, context)
-                ).onFailure(e -> {
-                    e.printStackTrace();
-                    System.exit(-1);
-                });
+        VerifiableCredentialContexts.CONTEXTS.put(
+                sdVocURI,
+                Try.of(() -> getConnectionIfRedirected(sdVocURI.toURL(), maxRedirect))
+                        .flatMap(connection ->
+                                Try.withResources(connection::getInputStream)
+                                        .of(is -> JsonDocument.of(com.apicatalog.jsonld.http.media.MediaType.JSON_LD, is))
+                        ).get()
+        );
     }
 
     private VerifiableCredential createVC(Map<String, Object> claims, Object holderBpn, Object issuerBpn, Object documentType) {
@@ -111,7 +110,6 @@ public class SDFactory implements ApiApiDelegate {
         var holder = map.remove("holder");
         var issuer = map.remove("issuer");
         var type = map.get("type");
-        map.values().removeAll(Collections.singleton(null));
         var res = createVC(map, holder, issuer, type);
         return new ResponseEntity<>(res.toMap(), HttpStatus.CREATED);
     }
