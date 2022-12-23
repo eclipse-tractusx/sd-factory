@@ -44,7 +44,7 @@ Here the flow of Self-Description creation is shown:
 
 For the VC we have to provide valid JSON context where we have a reference to an object
 from known ontology. This object carries the claims the SD-Factory signs. The document
-is published on the [github repository of the project](src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld).
+is published on the [github repository of the project](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld).
 The vocabulary URL can be changed when will be provided by Trusted Framework. 
 Currently, the vocabulary is defined here:
 
@@ -319,7 +319,7 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
@@ -403,7 +403,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld
+    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
   custodianWallet:
     uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
