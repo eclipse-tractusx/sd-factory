@@ -159,7 +159,7 @@ paths:
                     - https://participant.self.description.url2.com
                   serviceAccessPoint:
                     - name: endpointName1
-                      host: https://service.access.point.url1.com
+                      host: service.access.point.url1.com
                       protocol:
                         - http
                         - https
@@ -171,7 +171,7 @@ paths:
                         - https://openAPI.document.url1.com
                         - https://openAPI.document.url2.com
                     - name: endpointName2
-                      host: https://service.access.point.url2.com
+                      host: service.access.point.url2.com
                       protocol:
                         - http
                         - https
