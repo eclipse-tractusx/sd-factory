@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - introduce vavr.io library for neater code
+- add support for all versions of Trust Framework in a single project
 
 ### Changed
 - rename endpoint path to reflect API version (/api/22.04/selfdescription)

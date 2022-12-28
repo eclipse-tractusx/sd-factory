@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+  version: 1.0.6
+  title: SD-Factory API
+  description: API for creating and storing the Verifiable Credentials
+paths:
+  /api/1.0.6/selfdescription:
+    post:
+      summary: Creates a Verifiable Credential and returns it
+      operationId: selfdescriptionPost
+      requestBody:
+        required: true
+        description: parameters to generate VC
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/LegalPersonSchema'
+                - $ref: '#/components/schemas/ServiceOfferingSchema'
+              discriminator:
+                propertyName: type
+                mapping:
+                  LegalPerson: '#/components/schemas/LegalPersonSchema'
+                  ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
+            examples:
+              LegalPerson:
+                description: payload to create LegalPerson
+                value:
+                    type: LegalPerson
+                    holder: BPNL000000000000
+                    issuer: CAXSDUMMYCATENAZZ
+                    registrationNumber: o12345678
+                    headquarterAddress.country: DE
+                    legalAddress.country: DE
+                    bpn: BPNL000000000000
+              ServiceOffering:
+                description: payload to create ServiceOffering
+                value:
+                  holder: BPNL000000000000
+                  issuer: CAXSDUMMYCATENAZZ
+                  type: ServiceOffering
+                  providedBy: https://participant.url
+                  aggregationOf: to be clarified
+                  termsAndConditions: to be clarified
+                  policies: to be clarified
+      responses:
+        '201':
+          description: Created
+          content:
+            application/vc+ld+json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                jsonLegalPersonObject:
+                  summary: A sample LegalPerson response
+                  value: |
+                    {
+                      "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld",
+                        "https://w3id.org/vc/status-list/2021/v1"
+                      ],
+                      "type": [
+                        "VerifiableCredential",
+                        "LegalPerson"
+                      ],
+                      "issuer": "did:sov:AmTGK5u8HdFgzidzTxM9B8",
+                      "issuanceDate": "2022-12-28T12:16:55Z",
+                      "expirationDate": "2023-03-28T12:16:55Z",
+                      "credentialSubject": {
+                        "type": "LegalPerson",
+                        "registrationNumber": "o12345678",
+                        "headquarterAddress.country": "DE",
+                        "legalAddress.country": "DE",
+                        "bpn": "BPNL000000000000",
+                        "id": "BPNL000000000000"
+                      },
+                      "credentialStatus": {
+                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#46",
+                        "type": "StatusList2021Entry",
+                        "statusPurpose": "revocation",
+                        "statusListIndex": "46",
+                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                      },
+                      "proof": {
+                        "type": "Ed25519Signature2018",
+                        "created": "2022-12-28T12:16:56Z",
+                        "proofPurpose": "assertionMethod",
+                        "verificationMethod": "did:sov:AmTGK5u8HdFgzidzTxM9B8#key-1",
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..-khhTGsBnHvXT_0jpD78sA6M_D4CFROMQu-uEy-3kWcXbEqbHlhkqLyJUnuuSFhBJENxwm7azB2tbOL1rTa5DA"
+                      }
+                    }
+                jsonServiceOfferingObject:
+                  summary: A sample ServiceOffering response
+                  value: |
+                    {
+                      "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld",
+                        "https://w3id.org/vc/status-list/2021/v1"
+                      ],
+                      "type": [
+                        "VerifiableCredential",
+                        "ServiceOffering"
+                      ],
+                      "issuer": "did:sov:AmTGK5u8HdFgzidzTxM9B8",
+                      "issuanceDate": "2022-12-28T12:19:00Z",
+                      "expirationDate": "2023-03-28T12:19:00Z",
+                      "credentialSubject": {
+                        "type": "ServiceOffering",
+                        "providedBy": "https://participant.url",
+                        "aggregationOf": "to be clarified",
+                        "termsAndConditions": "to be clarified",
+                        "policies": "to be clarified",
+                        "id": "BPNL000000000000"
+                      },
+                      "credentialStatus": {
+                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#47",
+                        "type": "StatusList2021Entry",
+                        "statusPurpose": "revocation",
+                        "statusListIndex": "47",
+                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                      },
+                      "proof": {
+                        "type": "Ed25519Signature2018",
+                        "created": "2022-12-28T12:19:01Z",
+                        "proofPurpose": "assertionMethod",
+                        "verificationMethod": "did:sov:AmTGK5u8HdFgzidzTxM9B8#key-1",
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..7ZelD2nqtpnqjnYB9tPPfEXdlQoTFmIBbhCquDUsRB3p16Ui8wKojOQPFrYcgPvD-DaXskWpgwpXNMoUTA2WCg"
+                      }
+                    }
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    SelfDescriptionSchema:
+      type: object
+      properties:
+        type:
+          type: string
+        holder:
+          type: string
+        issuer:
+          type: string
+      required:
+        - type
+        - holder
+        - issuer
+    LegalPersonSchema:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SelfDescriptionSchema'
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+            headquarterAddress.country:
+              type: string
+            legalAddress.country:
+              type: string
+            bpn:
+              type: string
+          required:
+            - registrationNumber
+            - headquarterAddress.country
+            - legalAddress.country
+            - bpn
+    ServiceOfferingSchema:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SelfDescriptionSchema'
+        - type: object
+          properties:
+            providedBy:
+              type: string
+              format: uri
+            aggregationOf:
+              type: string
+            termsAndConditions:
+              type: string
+            policies:
+              type: string
+          required:
+            - providedBy
+            - termsAndConditions
+security:
+  - bearerAuth: []

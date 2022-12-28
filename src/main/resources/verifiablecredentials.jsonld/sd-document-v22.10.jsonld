@@ -52,13 +52,13 @@
             }
           }
         },
-        "parentOrganisation": {
-          "@id": "ctxsd:parentOrganisation",
+        "parentOrganization": {
+          "@id": "ctxsd:parentOrganization",
           "@container": "@set",
           "@type": "@id"
         },
-        "subOrganisation": {
-          "@id": "ctxsd:subOrganisation",
+        "subOrganization": {
+          "@id": "ctxsd:subOrganization",
           "@container": "@set",
           "@type": "@id"
         },

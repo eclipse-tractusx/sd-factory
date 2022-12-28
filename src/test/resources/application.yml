@@ -17,7 +17,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
-
+server:
+  error:
+    include-message: always
 keycloak:
   auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
   realm: CX-Central
@@ -25,24 +27,33 @@ keycloak:
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
+spring:
+  jackson:
+    default-property-inclusion: non_null
 springdoc:
   api-docs:
     enabled: false
   swagger-ui:
-    url: /SDFactoryApi.yml
+    urls:
+      - url: /SDFactoryApi-22.10.yml
+        name: API-22.10
+      - url: /SDFactoryApi-22.04.yml
+        name: API-22.04
+      - url: /SDFactoryApi-1.0.6.yml
+        name: API-1.0.6
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaUrl: https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld
+    schema106Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld
+    schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   custodianWallet:
-    uri: https://custodian-dev.germanywestcentral.cloudapp.azure.com/api
-    auth-server-url: https://catenaxdev003akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth
+    uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+    auth-server-url: https://centralidp.int.demo.catena-x.net/auth
     realm: CX-Central
-    clientId: Client005-CustodianTest
-    clientSecret: Htv9MhV2rk6XM9zV54xdo2cwSMxFIBzU
-    username: custodian@catenax.de
-    password: changeme
+    clientId: clientid
+    clientSecret: secret
   security:
     createRole: add_self_descriptions

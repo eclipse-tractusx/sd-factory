@@ -18,20 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory;
+package org.eclipse.tractusx.selfdescriptionfactory.service.v2210;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.eclipse.tractusx.selfdescriptionfactory.model_2210.SelfdescriptionPostRequest;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
-@ComponentScan(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
-public class SelfDescriptionFactoryApplication {
+import java.util.Map;
 
-    public static void main(String[] args) {
-        SpringApplication.run(SelfDescriptionFactoryApplication.class, args);
+@Component
+@RequiredArgsConstructor
+public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Map<String, Object>> {
+    private final ObjectMapper objectMapper;
+
+    @Override
+    public Map<String, Object> convert(@NonNull SelfdescriptionPostRequest source) {
+        return objectMapper.convertValue(source, new TypeReference<>(){});
     }
-
 }

@@ -309,7 +309,7 @@ for LegalPerson Self-Description and
 for ServiceOffering.
 
 This call creates a Self-Description. The full OpenAPI specification defined in 
-[SDFactoryApi.yml](src/main/resources/static/SDFactoryApi.yml). Note, not all parameters are
+[SDFactoryApi.yml](src/main/resources/static/SDFactoryApi-v22.10.yml). Note, not all parameters are
 mandatory. The model is given in [Trust Framework V.22.04].
 
 The Self-Description in the format of Verifiable Credential is returned. Here is an example of
@@ -397,7 +397,7 @@ springdoc:
   api-docs:
     enabled: false
   swagger-ui:
-    url: /SDFactoryApi.yml
+    url: /SDFactoryApi-v22.10.yml
 app:
   build:
     version: ^project.version^

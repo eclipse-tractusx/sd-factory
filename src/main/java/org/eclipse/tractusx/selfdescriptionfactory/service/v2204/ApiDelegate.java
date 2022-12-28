@@ -18,20 +18,27 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory;
+package org.eclipse.tractusx.selfdescriptionfactory.service.v2204;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
+import lombok.RequiredArgsConstructor;
+import org.eclipse.tractusx.selfdescriptionfactory.api_2204.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model_2204.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
-@ComponentScan(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
-public class SelfDescriptionFactoryApplication {
+import java.util.Map;
 
-    public static void main(String[] args) {
-        SpringApplication.run(SelfDescriptionFactoryApplication.class, args);
+@Service
+@RequiredArgsConstructor
+public class ApiDelegate implements ApiApiDelegate {
+    private final SDFactory sdFactory;
+
+    @Value("${app.verifiableCredentials.schema2204Url}")
+    private String schemaUrl;
+
+    public ResponseEntity<Map<String, Object>> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        return sdFactory.createVC(selfdescriptionPostRequest, schemaUrl);
     }
-
 }
