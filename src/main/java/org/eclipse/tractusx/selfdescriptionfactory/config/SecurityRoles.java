@@ -23,9 +23,10 @@ package org.eclipse.tractusx.selfdescriptionfactory.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-@Configuration
+import org.springframework.stereotype.Component;
+
 @ConfigurationProperties(prefix = "app.security")
+@Component("securityRoles")
 @Getter @Setter
 public class SecurityRoles {
     private String createRole;
