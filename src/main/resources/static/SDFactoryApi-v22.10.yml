@@ -556,12 +556,15 @@ components:
       properties:
         type:
           type: string
+          minLength: 1
           maxLength: 64
         holder:
           type: string
+          minLength: 1
           maxLength: 128
         issuer:
           type: string
+          minLength: 1
           maxLength: 128
       required:
         - type
@@ -590,11 +593,15 @@ components:
           properties:
             local:
               type: string
+              minLength: 1
+              maxLength: 128
               description: the state issued company number
         - type: object
           properties:
             EUID:
               type: string
+              minLength: 1
+              maxLength: 128
               description: |
                 the European Unique Identifier (EUID) for business located in the European Economic Area, Iceland, 
                 Liechtenstein or Norway and registered in the Business Registers Interconnection System (BRIS). 
@@ -603,16 +610,22 @@ components:
           properties:
             EORI:
               type: string
+              minLength: 1
+              maxLength: 128
               description: the Economic Operators Registration and Identification number (EORI).
         - type: object
           properties:
             vatID:
               type: string
+              minLength: 1
+              maxLength: 128
               description: the VAT identification number.
         - type: object
           properties:
             leiCode:
               type: string
+              minLength: 1
+              maxLength: 128
               description: Unique LEI number as defined by https://www.gleif.org.
     LegalPersonSchema:
       type: object
@@ -643,6 +656,8 @@ components:
                 format: uri
             bpn:
               type: string
+              minLength: 1
+              maxLength: 128
               description: BPN number
           required:
             - registrationNumber

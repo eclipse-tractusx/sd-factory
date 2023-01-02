@@ -433,12 +433,15 @@ components:
       properties:
         type:
           type: string
+          minLength: 1
           maxLength: 64
         holder:
           type: string
+          minLength: 1
           maxLength: 128
         issuer:
           type: string
+          minLength: 1
           maxLength: 128
       required:
         - type
@@ -468,6 +471,8 @@ components:
           properties:
             registrationNumber:
               type: string
+              minLength: 1
+              maxLength: 128
               description: Country's registration number which identify one specific company.
             headquarterAddress:
               $ref: '#/components/schemas/AddressSchema'
@@ -490,6 +495,8 @@ components:
                 format: uri
             bpn:
               type: string
+              minLength: 1
+              maxLength: 128
           required:
             - registrationNumber
             - headquarterAddress
