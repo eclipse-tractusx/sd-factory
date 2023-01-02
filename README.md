@@ -1,261 +1,91 @@
 # <a id="introduction"></a>Self-Description Factory
 
 In Catena-X we provide self-descriptions for any participant of this data space.
-The Self Descriptions are stored inside the Self Description Hub, but need to be
-created first. Self-Description Factory component is responsible for the creation of 
-Self Descriptions. This component gets all necessary parameters and
-information from the Onboarding Tool, which prepares the data for the SD-Factory,
-and uses the
+The Self Descriptions are stored inside the Self Description Hub. Self-Description 
+Factory component is responsible for the creation of Self Descriptions. This component 
+gets input data from the Onboarding Tool, which prepares the data for the SD-Factory,
+creates a Verifiable Credential and passes the document to the
 [Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallets)
-based on custodian to sign the Self Descriptions.
+based on the Custodian for the signature. The result is passed back to the requester.
 
 # Solution Strategy 
 
 Here the flow of Self-Description creation is shown:
 
-![Process Flow](docs/images/process-flow.png)
+```mermaid
+sequenceDiagram
+	actor User
+	User-->>Identity Provider: authentication
+	User->>Onboarding Service: participant data
+	Onboarding Service-->>Identity Provider: technical user
+	Onboarding Service->>+SDFactory: SD-document 
+    SDFactory-->>Identity Provider: technical user to acees the Wallet
+    SDFactory->>+Managed Identity Wallet: Verifiable Credential
+    Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
+    SDFactory->>+Onboarding Service: Signed Verifiable Credential
+	
+```
 
 1. A user is authenticated in Identity Provider service on behalf of a company
    and receives the authentication ticket.
 2. User calls On-boarding Service with request for creating and publishing
    SD-document. The service authenticates the user and prepare the data
    SD-Factory needs for creating SD-document. The documents SD-Factory can 
-   work with are defined in [Trust Framework V.22.04].
+   work with are defined in [Trust Framework]. SDFactory supports schema from different 
+   versions of [Trust Framework] depending on the endpoint address. 
+   Take a look at the section describing [REST interface](#REST Interface) for details. 
    Currently, these documents are supported by SD-Factory:
-    - LegalPerson
-    - ServiceOffering
-    - PhysicalResource
-    - VirtualResource
-    - InstantiatedVirtualResource
+    - LegalPerson (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
+    - ServiceOffering (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
+    - PhysicalResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
+    - VirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
+    - InstantiatedVirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
 
    **Organization wallet of the company which runs the service shall
    be available at this point of time as it signs the Verifiable Credential
    with SD document. The wallet associated with the service shall be available
    as well.**
-4. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
+3. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
    data as a parameter. OS uses a credential with a role allowing for this request
    (e.g. `add_self_descriptions`, the default role for SD-document creation). The
-   credential for this operation is taken from ID Provider (keyclock).
-5. SD-Factory creates a Verifiable Credential based on the information taken from
+   credential for this operation is taken from Identity Provider (keyclock).
+4. SD-Factory creates a Verifiable Credential based on the information taken from
    OS and signs it with organization key. The organization is acting as an Issuer.
    The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
    for this operation.
-6. SD-Factory returns the Verifiable Credential to the requester.
+5. SD-Factory returns signed Verifiable Credential to the requester (On-boarding service),
+   which is responsible for publishing it. 
 
 For the VC we have to provide valid JSON context where we have a reference to an object
 from known ontology. This object carries the claims the SD-Factory signs. The document
-is published on the [github repository of the project](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld).
-The vocabulary URL can be changed when will be provided by Trusted Framework. 
-Currently, the vocabulary is defined here:
-
-```json
-{
-  "@context": {
-    "id": "@id",
-    "type": "@type",
-    "ctxsd": "https://catena-x.net/selfdescription#",
-    "spdx": "http://spdx.org/rdf/terms#",
-    "schema": "https://schema.org/",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "LegalPerson": {
-      "@id": "ctxsd:LegalPerson",
-      "@context": {
-        "registrationNumber": {
-          "@id": "ctxsd:registrationNumber",
-          "@type": "schema:name"
-        },
-        "headquarterAddress": {
-          "@id": "ctxsd:headquarterAddress",
-          "@context": {
-            "country": {
-              "@id": "ctxsd:country",
-              "@type": "schema:addressCountry"
-            }
-          }
-        },
-        "legalAddress": {
-          "@id": "ctxsd:legalAddress",
-          "@context": {
-            "country": {
-              "@id": "ctxsd:country",
-              "@type": "schema:addressCountry"
-            }
-          }
-        },
-        "parentOrganisation": {
-          "@id": "ctxsd:parentOrganisation",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "subOrganisation": {
-          "@id": "ctxsd:subOrganisation",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "leiCode": {
-          "@id": "ctxsd:leiCode",
-          "@type": "schema:leiCode"
-        },
-        "bpn": {
-          "@id": "ctxsd:bpn",
-          "@type": "schema:name"
-        }
-      }
-    },
-    "ServiceOffering": {
-      "@id": "ctxsd:ServiceOffering",
-      "@type": "rdfs:Class",
-      "@context": {
-        "providedBy": {
-          "@id": "ctxsd:providedBy",
-          "@type": "@id"
-        },
-        "aggregationOf": {
-          "@id": "ctxsd:aggregationOf",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "termsAndConditions": {
-          "@id": "ctxsd:termsAndConditions",
-          "@container": "@set",
-          "@context": {
-            "URL": {
-              "@id": "ctxsd:URL",
-              "@type": "schema:url"
-            },
-            "hash": {
-              "@id": "ctxsd:hash",
-              "@type": "schema:sha256"
-            }
-          }
-        },
-        "policies": {
-          "@id": "ctxsd:policies",
-          "@container": "@set"
-        }
-      }
-    },
-    "PhysicalResource": {
-      "@id": "ctxsd:PhysicalResource",
-      "@context": {
-        "aggregationOf": {
-          "@id": "ctxsd:aggregationOf",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "maintainedBy": {
-          "@id": "ctxsd:maintainedBy",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "ownedBy": {
-          "@id": "ctxsd:ownedBy",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "manufacturedBy": {
-          "@id": "ctxsd:manufacturedBy",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "locationAddress": {
-          "@id": "ctxsd:locationAddress",
-          "@container": "@set",
-          "@context": {
-            "country": {
-              "@id": "ctxsd:country",
-              "@type": "schema:addressCountry"
-            }
-          }
-        },
-        "location": {
-          "@id": "ctxsd:location",
-          "@container": "@set",
-          "@context": {
-            "gps": {
-              "@id": "ctxsd:gps",
-              "@type": "xsd:string"
-            }
-          }
-        }
-      }
-    },
-    "VirtualResource": {
-      "@id": "ctxsd:VirtualResource",
-      "@context": {
-        "aggregationOf": {
-          "@id": "ctxsd:aggregationOf",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "copyrightOwnedBy": {
-          "@id": "ctxsd:copyrightOwnedBy",
-          "@container": "@set",
-          "@type": "xsd:string"
-        },
-        "license": {
-          "@id": "ctxsd:license",
-          "@container": "@set",
-          "@type": "spdx:ListedLicense"
-        }
-      }
-    },
-    "InstantiatedVirtualResource": {
-      "@id": "ctxsd:InstantiatedVirtualResource",
-      "@context": {
-        "aggregationOf": {
-          "@id": "ctxsd:aggregationOf",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "copyrightOwnedBy": {
-          "@id": "ctxsd:copyrightOwnedBy",
-          "@container": "@set",
-          "@type": "xsd:string"
-        },
-        "license": {
-          "@id": "ctxsd:license",
-          "@container": "@set",
-          "@type": "spdx:licenseId"
-        },
-        "maintainedBy": {
-          "@id": "ctxsd:maintainedBy",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "hostedOn": {
-          "@id": "ctxsd:hostedOn",
-          "@type": "@id"
-        },
-        "tenantOwnedBy": {
-          "@id": "ctxsd:tenantOwnedBy",
-          "@container": "@set",
-          "@type": "@id"
-        },
-        "endpoint": {
-          "@id": "ctxsd:endpoint",
-          "@container": "@set",
-          "@type": "xsd:string"
-        }
-      }
-    }
-  }
-}
-```
+is published on the github repository of the project. The vocabulary URL can be changed 
+when will be provided by Trusted Framework. Currently, three vocabularies are supported:
+1. [Pre-22.4 schema, AKA 1.06](src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld).
+2. [Version 22.04 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld).
+3. [Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld).
 
 # REST Interface
 
-## The SD-Factory
-
-The SD-Factory provides an interface to creating Verifiable Credential for one of mentioned documents.
-Only the authorized user can call this interface to create it. It is protected 
-with keycloak. The configuration parameters are given in `application.yml`.
+The SD-Factory provides interfaces to create Verifiable Credential for one of mentioned documents.
+Only the authorized user can call these interfaces. They are protected with keycloak. The configuration 
+parameters are given in `application.yml`.
 The user role for creating Self-Descriptions is specified in `application.yml` as well.
 
-```http request
-POST /selfdescription
-```
-where body is
+Depending on the required version a SD-document goes to one of those endpoint to be converted to the 
+signed Verifiable Credential:
+
+1. `POST /api/1.0.6/selfdescription`
+2. `POST /api/22.04/selfdescription`
+3. `POST /api/22.10/selfdescription`
+
+OpenAPI specification for each version is given there:
+
+1. [Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-v1.0.6.yml).
+2. [Version 22.04 of Trust Framework](src/main/resources/static/SDFactoryApi-v22.04.yml).
+3. [Version 22.10 of Trust Framework](src/main/resources/static/SDFactoryApi-v22.10.yml).
+
+An example of the body for LegalPerson from  22.04 specification is given bellow:
+
 ```json
 {
   "type": "LegalPerson",
@@ -279,38 +109,6 @@ where body is
   "bpn": "BPNL000000000000"
 }
 ```
-for LegalPerson Self-Description and
-```json
-{
-  "type": "ServiceOffering",
-  "holder": "BPNL000000000000",
-  "issuer": "CAXSDUMMYCATENAZZ",
-  "providedBy": "https://participant.link.example.com",
-  "aggregationOf": [
-    "https://resource.sd.example1.com",
-    "https://resource.sd.example2.com"
-  ],
-  "termsAndConditions": [
-    {
-      "URL": "https://terms.and.conditions.example1.com",
-      "hash": "<sha256 hash of the document>"
-    },
-    {
-      "URL": "https://terms.and.conditions.example2.com",
-      "hash": "<sha256 hash of the document>"
-    }
-  ],
-  "policies": [
-    "Policy example1",
-    "Policy example2"
-  ]
-}
-```
-for ServiceOffering.
-
-This call creates a Self-Description. The full OpenAPI specification defined in 
-[SDFactoryApi.yml](src/main/resources/static/SDFactoryApi-v22.10.yml). Note, not all parameters are
-mandatory. The model is given in [Trust Framework V.22.04].
 
 The Self-Description in the format of Verifiable Credential is returned. Here is an example of
 Verifiable Credentials for LegalPerson:
@@ -397,13 +195,21 @@ springdoc:
   api-docs:
     enabled: false
   swagger-ui:
-    url: /SDFactoryApi-v22.10.yml
+    urls:
+      - url: /SDFactoryApi-v22.10.yml
+        name: API-22.10
+      - url: /SDFactoryApi-v22.04.yml
+        name: API-22.04
+      - url: /SDFactoryApi-v1.0.6.yml
+        name: API-1.0.6
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
+    schema106Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld
+    schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   custodianWallet:
     uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
@@ -414,16 +220,20 @@ app:
     createRole: add_self_descriptions
 ```
 
-Here `keycloak` section defines keycloak's parameters for authentication client requests.
+Here `keycloak` section defines keycloak's parameters for client requests authentication.
 
 `app.verifiableCredentials.durationDays` defines for how many days the VC is issued.
+
+`schema106Url`,  `schema2204Url` and `schema2210Url` specify the JSON-LD vocabulary URLs for API 1.0.6 (pre-22.04), 
+22.04 and 22.10 versions respectively.  
 
 `app.custodianWallet` contains parameters for accessing Custodian Wallet:
 - `uri` is custodian Wallet url
 - `auth-server-url`, `realm`, `clientId`, `clientSecret` are keycloak parameters for 
    a user which calls the Custodian Wallet. This user shall have enough rights to create 
    Verifiable Credentials and Verifiable Presentations.
-- `app.security` sets a role a user must have for creating Self-Description.
+
+`app.security` sets a role a user must have for creating Self-Description.
 
 # Building
 SD-Factory use Maven for building process. To build a service from sources one
@@ -478,4 +288,7 @@ There are diffrent ways to do the installation
 To see how to deploy an application on 'Hotel Budapest': 
 [How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
 
+[Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+
