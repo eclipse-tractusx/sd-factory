@@ -23,7 +23,7 @@ image:
   repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory" 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.1.0"
+  tag: "1.2.0"
   
 ingress:
   enabled: false
@@ -42,6 +42,11 @@ portContainer: 8080
 portService: 80
 replicaCount: 1
 issuer: "letsencrypt-prod"
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 80
 
 sdfactory:
   secret:

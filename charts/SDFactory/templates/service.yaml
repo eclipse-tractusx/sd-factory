@@ -21,11 +21,13 @@
 apiVersion: v1                # API version
 kind: Service                 # Type of the kubernetes resource
 metadata:                     
- name: {{ .Values.name }}  
+  name: {{ include "sdfactory.fullname" . }}
+  labels:
+    {{- include "sdfactory.labels" . | nindent 4 }}
 spec:                         
- type: ClusterIP             # The service will be exposed by opening a Port on each node and proxying it. 
- selector:
-  app: {{ .Values.name }}    # The service exposes Pods with label `app idss-sdhub`
- ports:                      # Forward incoming connections on port 9092 to the target port 9092
- - port: {{ .Values.portService }}
-   targetPort: {{ .Values.portContainer }}
+  type: {{ .Values.service.type }}             # The service will be exposed by opening a Port on each node and proxying it. 
+  selector:
+    {{- include "sdfactory.selectorLabels" . | nindent 4 }}    # The service exposes Pods with label `app idss-sdhub`
+  ports:                      # Forward incoming connections on port 9092 to the target port 9092
+  - port: {{ .Values.service.port }} 
+    targetPort: {{ .Values.service.targetPort }}

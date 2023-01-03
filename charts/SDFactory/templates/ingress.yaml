@@ -23,7 +23,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.name }}
+  name: {{ include "sdfactory.fullname" . }}
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.issuer }}
     kubernetes.io/ingress.class: nginx
