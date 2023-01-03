@@ -21,7 +21,7 @@
 ingress:
   enabled: true
   className: "nginx"
-  domain: "sdfactory20.10.dev.demo.catena-x.net"
+  domain: "sdfactory-120.dev.demo.catena-x.net"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
