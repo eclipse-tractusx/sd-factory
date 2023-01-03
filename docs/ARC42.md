@@ -2,12 +2,10 @@
 
 ## Introduction and Goals
 
-SD-Factory creates a Verifiable Credential based on the information taken from OS, unlocks Private Key from CX-wallet 
-and signs it with CatenaX key.
+SD-Factory creates a Verifiable Credential based on the information taken from Onboarding Service (OS) and requests
+signature from CX-wallet.
 
-The self description factory is a factory to create Self Descriptions for each entity of GAIA-X TrustFramework.  
-This page describes the context based on 
-[TrustFramework v.22.04](https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04)
+The Self-Description Factory creates Self Description documents for entities of GAIA-X [Trust Framework].  
 
 ## Requirements Overview
 
@@ -15,8 +13,7 @@ This page describes the context based on
 
 
 *   Create Self-Descriptions formed on information from the Onboarding Service
-*   Unlock a Private Key from CX-Wallet
-*   Sign Self-Description with CatenaX key
+*   Calls CX-Wallet to sign Self-Description with CatenaX key
 
 ### High Level Requirement for Release 2
 
@@ -49,7 +46,7 @@ This page describes the context based on
 
 ### Self Description Data Model
 
-The data model of Gaia-X is not finally defined yet, but is a livid document with permanent changes. The latest 
+The data model of Gaia-X is not finally defined yet, but is a live document with permanent changes. The latest 
 information are available [here](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/participant/#provider).
 Therefore, it was aligned with Gaia-X that the Self Descriptions' claims contain a small set of properties such as
 
@@ -60,7 +57,7 @@ Version 0.1 (October 2021 as mentioned in a Workshop together with Pierre Gronli
 *   product\_provider: the product provider (the company providing this service): For shared services this will be Catena-X or the operating company in the name of Catena-x. 
 *   governance\_law\_country: the service provider
 
-Version 1.0 (based on the [Trust-Framework](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/participant/#provider))
+Version 1.0 (based on the [Trust-Framework])
 
 * company\_number: Country’s registration number which identify one specific company.
 * headquarter.country: Physical location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
@@ -137,7 +134,7 @@ classDiagram
     Participant <|-- NaturalPerson  
 ```
   
-To get them filled we provide a service factory for each of the entities. Hence we have a subclassing hierarchy. 
+To get them filled we provide a service factory for each of the entities. Hence, we have a subclassing hierarchy. 
 The abstract instance provides the general feature to get things signed, either a part of the self-description or 
 the whole self-description. In both cases, a string in JSON-LD format is passed to a wallet and gets signed by 
 its private key and will be returned as String as signed JSON-LD.
@@ -157,65 +154,25 @@ flowchart LR
 	
 ```
 
-We reduced the mandatory attributes according to 
-[TrustFramework v.22.04](https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04) 
-and needed attributes for Catena-X.
+The documents SD-Factory can
+work with are defined in [Trust Framework]. SDFactory supports schema from different
+versions of [Trust Framework] depending on the endpoint address.
+Take a look at the section describing [REST interface](#REST Interface) for details.
+Currently, these documents are supported by SD-Factory:
+- LegalPerson (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
+- ServiceOffering (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
+- PhysicalResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
+- VirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
+- InstantiatedVirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
 
-**LegalPerson**
-
-| **Attribute**              | **Cardinality** | **Comment**                                                                              |
-|----------------------------|-----------------|------------------------------------------------------------------------------------------|
-| registrationNumber         | 1               | Country's registration number which identify one specific company                        |
-| headquarterAddress.country | 1               | Physical location of head quarter in ISO 3166-1 alpha2, alpha-3 or numeric format.       |
-| legalAddress.country       | 1               | Physical location of legal registration in ISO 3166-1 alpha2, alpha-3 or numeric format. |
-| bpn                        | 1               | Catena-X specific attribute representing the business partner number for legals (BPN-L)  |
-
-**ServiceOffering**
-
-| **Attribute**      | **Cardinality** | **Comment**                                                                                                         |
-|--------------------|-----------------|---------------------------------------------------------------------------------------------------------------------|
-| providedBy         | 1               | a resolvable link to the participant self-description providing the service                                         |
-| aggregationOf      | 0..\*           | a resolvable link to the resources self- description related to the service and that can exist independently of it. |
-| termsAndConditions | 1..\*           | a resolvable link to the Terms and Conditions appling to that service.                                              |
-| policies           | 0..\*           | a list of policy expressed using a DSL (e.g., Rego or ODRL)                                                         |
-
-**TermsOfConditions**
-
-| **Attribute** | **Cardinality** | **Comment**                        |
-|---------------|-----------------|------------------------------------|
-| URL           | 1               | a resolvable link to document      |
-| hash          | 1               | sha256 hash of the above document. |
-
-**PhysicalResource**
-
-| **Attribute**           | **Cardinality** | **Comment**                                                                                                  |
-|-------------------------|-----------------|--------------------------------------------------------------------------------------------------------------|
-| maintainedBy            | 1..\*           | a list of participant maintaining the resource in operational condition and thus have physical access to it. |
-| locationAddress.country | 0..\*           | a list of physical location in ISO 3166-1 alpha2, alpha-3 or numeric format.                                 |
-
-**VirtualResource**
-
-| **Attribute**    | **Cardinality** | **Comment**                                                                                                                                                                                                                                                                                                              |
-|------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| copyrightOwnedBy | 1..\*           | A list of copyright owner either as a free form string or participant self- description. A copyright owner is a person or organization, that has the right to exploit the resource. Copyright owner does not necessary refer to the author of the resource, who is a natural person and may differ from copyright owner. |
-| license          | 1..\*           | A list of SPDX license identifiers or URL to license document                                                                                                                                                                                                                                                            |
-
-**InstantiatedVirtualResource**
-
-| **Attribute** | **Cardinality** | **Comment**                                                             |
-|---------------|-----------------|-------------------------------------------------------------------------|
-| maintainedBy  | 1..\*           | a list of participant maintaining the resource in operational condition |
-| hostedOn      | 1               | a resource where the process is running, being executed on.             |
-| tenantOwnedBy | 1..\*           | a list of participant with contractual relation with the resource.      |
-| endpoint      | 1..\*           | a list of exposed endpoints as defined in  ISO/IEC TR 23188:2020        |
 
 ## Solution Strategy
 
 ### The process for creating SD-Documents:
 
 #### Step 1: Creation of LegalPerson for each company
-*   Each SME or Company has to have an SD-Document. This SD document has to be created during the onboarding process.
-*   It means concretely we have to create the LegalPerson for each company:
+*   Each SME or Company has to have an SD-Document. This SD document has to be created during the on-boarding process.
+*   Concretely, we have to create the LegalPerson for those companies:
     *   SMEs,
     *   Enterprises,
     *   and Third-Party Provider
@@ -224,19 +181,19 @@ Example LegalPerson
 
 ![](images/image4.png)
 
-*   The SD-Document of the company's LegalPerson will be signed by the Catena-X Wallet.
+*   The SD-Document of a company's LegalPerson is signed by the Catena-X Wallet.
 
 #### Step 2: Creation of PhysicalResource for the place where the service (e.g. connector) will running
 
-* Each service need a data center or cloud ctenant where the service will be deployed this is the Physical 
+* Each service need a data center or cloud tenant where the service will be deployed. This is the Physical 
   resource of the service
-* the PhysicalResource contains a list of Participant who maintaining the service and the location (country)
+* The PhysicalResource contains a list of Participant who maintaining the service and the location (country)
 
 Example PhysicalResource:
 
 ![](images/image5.png)
 
-The Physical Resource will be created by the operator of the service (connector). The operator will use his wallet 
+The Physical Resource is created by the operator of the service (connector). The operator will use his wallet 
 to sign this SD-Document.
 
 #### Step 3: Creation of Service Offering and InstantiatedVirtualResource for each connector:
@@ -251,240 +208,108 @@ to sign this SD-Document.
 
 *   The SD-Document of the connector will be signed by the Company Wallet (e.g. T-Systems wallet).
 
-##REST interface
+## REST Interface
 
-The Swagger documentation for SD-Factory is available at 
-[https://sdfactory.int.demo.catena-x.net/SDFactoryApi.yml](https://sdfactory.int.demo.catena-x.net/SDFactoryApi.yml) as YAML and 
-[https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html#/](https://sdfactory.int.demo.catena-x.net/swagger-ui/index.html#/)
-in a human-readable format.
+The SD-Factory provides interfaces to create Verifiable Credential for one of mentioned documents.
+Only the authorized user can call these interfaces. They are protected with keycloak. The configuration
+parameters are given in `application.yml`.
+The user role for creating Self-Descriptions is specified in `application.yml` as well.
 
-Current OpenAPI specification of the service version 1.0.6 is given bellow:
+Depending on the required version a SD-document goes to one of those endpoint to be converted to the
+signed Verifiable Credential:
 
-```yaml
-openapi: 3.0.0
-info:
-  version: 1.0.6
-  title: SD-Factory API
-  description: API for creating and storing the Verifiable Credentials
+1. `POST /api/1.0.6/selfdescription`
+2. `POST /api/22.04/selfdescription`
+3. `POST /api/22.10/selfdescription`
 
-paths:
-  /selfdescription:
-    post:
-      summary: Creates a Verifiable Credential and returns it
-      operationId: selfdescriptionPost
-      requestBody:
-        required: true
-        description: parameters to generate VC
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/LegalPersonSchema'
-                - $ref: '#/components/schemas/ServiceOfferingSchema'
-              discriminator:
-                propertyName: type
-                mapping:
-                  LegalPerson: '#/components/schemas/LegalPersonSchema'
-                  ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
-            examples:
-              LegalPerson:
-                description: payload to create LegalPerson
-                value:
-                  type: LegalPerson
-                  holder: BPNL000000000000
-                  issuer: CAXSDUMMYCATENAZZ
-                  registrationNumber: o12345678
-                  headquarterAddress.country: DE
-                  legalAddress.country: DE
-                  bpn: BPNL000000000000
-              ServiceOffering:
-                description: payload to create ServiceOffering
-                value:
-                  holder: BPNL000000000000
-                  issuer: CAXSDUMMYCATENAZZ
-                  type: ServiceOffering
-                  providedBy: https://participant.url
-                  aggregationOf: to be clarified
-                  termsAndConditions: to be clarified
-                  policies: to be clarified
-      responses:
-        '201':
-          description: Created
-          content:
-            application/vc+ld+json:
-              schema:
-                type: object
-                additionalProperties: {}
-              examples:
-                jsonLegalPersonObject:
-                  summary: A sample LegalPerson response
-                  value: |
-                    {
-                      "id": "https://sdfactory.int.demo.catena-x.net/selfdescription/vc/1fb3ca5f-234e-4639-8e96-f2ceb56714f0",
-                      "@context": [
-                        "https://www.w3.org/2018/credentials/v1",
-                        "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
-                        "https://w3id.org/vc/status-list/2021/v1"
-                      ],
-                      "type": [
-                        "VerifiableCredential",
-                        "LegalPerson"
-                      ],
-                      "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                      "issuanceDate": "2022-10-08T18:12:14Z",
-                      "expirationDate": "2023-01-06T18:12:14Z",
-                      "credentialSubject": {
-                        "headquarter_country": "DE",
-                        "legal_country": "DE",
-                        "bpn": "BPNL000000000000",
-                        "registration_number": "12345678",
-                        "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                      },
-                      "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#61",
-                        "type": "StatusList2021Entry",
-                        "statusPurpose": "revocation",
-                        "statusListIndex": "61",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                      },
-                      "proof": {
-                        "type": "Ed25519Signature2018",
-                        "created": "2022-10-08T18:12:16Z",
-                        "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..PNxly7b0d714bapo58YB-qmTtw7q3TVB7plOtaQRCXF2VrCwO4-x7Fx8PeavnwYpzu8adF8ZLnALDgMuPBXIAg"
-                      }
-                    }
-                jsonServiceOfferingObject:
-                  summary: A sample ServiceOffering response
-                  value: |
-                    {
-                        "@context": [
-                            "https://www.w3.org/2018/credentials/v1",
-                            "https://raw.githubusercontent.com/catenax-ng/product-sd-hub/eclipse_preparation/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.1.jsonld",
-                            "https://w3id.org/vc/status-list/2021/v1"
-                        ],
-                        "type": [
-                            "VerifiableCredential",
-                            "ServiceOffering"
-                        ],
-                        "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-                        "issuanceDate": "2022-10-08T19:10:20Z",
-                        "expirationDate": "2023-01-06T19:10:20Z",
-                        "credentialSubject": {
-                            "termsAndConditions": "http://terms.and.cond",
-                            "policies": "policies",
-                            "provided_by": "sss",
-                            "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
-                        },
-                        "credentialStatus": {
-                            "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#67",
-                            "type": "StatusList2021Entry",
-                            "statusPurpose": "revocation",
-                            "statusListIndex": "67",
-                            "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
-                        },
-                        "proof": {
-                            "type": "Ed25519Signature2018",
-                            "created": "2022-10-08T19:10:23Z",
-                            "proofPurpose": "assertionMethod",
-                            "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-                            "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..ivUytTwbtcxByw5L2zuxpE4pjJTIEzaLPoW_gXUtByjfN34ViEbgq6KeKO82ejB6GNetzJcu7sqsZfp6-GPzDA"
-                        }
-                    }
-components:
-  securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
-  schemas:
-    SelfDescriptionSchema:
-      type: object
-      properties:
-        type:
-          type: string
-        holder:
-          type: string
-        issuer:
-          type: string
-      required:
-        - type
-        - holder
-        - issuer
-    LegalPersonSchema:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - type: object
-          properties:
-            registrationNumber:
-              type: string
-            headquarterAddress.country:
-              type: string
-            legalAddress.country:
-              type: string
-            bpn:
-              type: string
-          required:
-            - registrationNumber
-            - headquarterAddress.country
-            - legalAddress.country
-            - bpn
-    ServiceOfferingSchema:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/SelfDescriptionSchema'
-        - type: object
-          properties:
-            providedBy:
-              type: string
-              format: uri
-            aggregationOf:
-              type: string
-            termsAndConditions:
-              type: string
-            policies:
-              type: string
-          required:
-            - providedBy
-            - termsAndConditions
-security:
-  - bearerAuth: []
-```  
+OpenAPI specification for each version is given there:
 
-POST /selfdescription
+1. [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-v1.0.6.yml).
+2. [Version 22.04 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.04.yml).
+3. [Version 22.10 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.10.yml).
 
-Endpoint consumes JSON data (so, header Content-Type should be application/json) and returns JSON-LD.  
-Note: Each request should contain holder and issuer fields and also type field (that is type of document, 
-i.e. for LegalPerson it will be LegalPerson).  
-  
-Sample data for LegalPerson:
+An example of the body for LegalPerson from  22.04 specification is given bellow:
 
-    {
-      "registrationNumber": "123456",
-      "headquarterAddress.country": "DE",
-      "legalAddress.country": "DE",
-      "bpn": "CAXSDUMMYCATENAZZ",
-      "issuer": "CAXSDUMMYCATENAZZ",
-      "holder": "CAXSDUMMYCATENAZZ",
-      "type": "LegalPerson"
-    }
+```json
+{
+  "type": "LegalPerson",
+  "issuer": "CAXSDUMMYCATENAZZ",
+  "registrationNumber": "o12345678",
+  "headquarterAddress": {
+    "country": "DE"
+  },
+  "legalAddress": {
+    "country": "DE"
+  },
+  "leiCode": "20_digit_code",
+  "parentOrganisation": [
+    "https://parent.organisation1.org",
+    "https://parent.organisation2.org"
+  ],
+  "subOrganisation": [
+    "https://sub.organisation1.org",
+    "https://sub.organisation2.org"
+  ],
+  "bpn": "BPNL000000000000"
+}
+```
 
+The Self-Description in the format of Verifiable Credential is returned. Here is an example of
+Verifiable Credentials for LegalPerson:
 
-Sample data for ServiceOffering:
+```json
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld",
+    "https://w3id.org/vc/status-list/2021/v1"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "LegalPerson"
+  ],
+  "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
+  "issuanceDate": "2022-11-23T12:02:41Z",
+  "expirationDate": "2023-02-21T12:02:41Z",
+  "credentialSubject": {
+    "type": "LegalPerson",
+    "registrationNumber": "o12345678",
+    "headquarterAddress": {
+      "country": "DE"
+    },
+    "legalAddress": {
+      "country": "DE"
+    },
+    "leiCode": "20_digit_code",
+    "parentOrganisation": [
+      "https://parent.organisation1.org",
+      "https://parent.organisation2.org"
+    ],
+    "subOrganisation": [
+      "https://sub.organisation1.org",
+      "https://sub.organisation2.org"
+    ],
+    "bpn": "BPNL000000000000",
+    "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+  },
+  "credentialStatus": {
+    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#452",
+    "type": "StatusList2021Entry",
+    "statusPurpose": "revocation",
+    "statusListIndex": "452",
+    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+  },
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2022-11-23T12:02:43Z",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
+    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..KALYtsHMI62J0x3ILqkuOc8hu30YzBevanddWesaEd2j776fKZN5dvJBfUH_Lo7Q97jXhmZMiYt7HW7k-8duBA"
+  }
+}
+```    
 
-    {
-      "providedBy": "https://<link_to_participant_self_description>",
-      "aggregationOf": "https://<link_to_resource_self_description>",
-      "termsAndConditions": "https://<link_to_terms_and_conditions>",
-      "issuer": "CAXSDUMMYCATENAZZ",
-      "holder": "CAXSDUMMYCATENAZZ",
-      "type": "ServiceOffering"
-    }
-    
-
-##SD-Documents for Release 2:
+## SD-Documents for Release 2:
 
 In agreement with Portal, we will only create the LegalPerson SD-Document for CX-Participants and ServiceOffering for Connector
 
@@ -514,13 +339,25 @@ Responses:
 | 401  | Unauthorized                                     |
 | 403  | Access is forbidden                              |
 
-##Building Block View
+## Building Block View
 
 ![](images/image7.png)
 
-##Runtime View
+## Runtime View
 
-![](images/image8.png)
+```mermaid
+sequenceDiagram
+	actor User
+	User-->>Identity Provider: authentication
+	User->>Onboarding Service: participant data
+	Onboarding Service-->>Identity Provider: technical user
+	Onboarding Service->>+SDFactory: SD-document 
+    SDFactory-->>Identity Provider: technical user to acees the Wallet
+    SDFactory->>+Managed Identity Wallet: Verifiable Credential
+    Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
+    SDFactory->>+Onboarding Service: Signed Verifiable Credential
+	
+```
 
 Here the flow of Self-Description creation is shown:
 
@@ -536,20 +373,20 @@ Here the flow of Self-Description creation is shown:
    is taken from ID Provider (keyclock).
 4. SD-Factory creates a Verifiable Credential based on the information taken from OS, unlocks Private Key from 
    Organisation-wallet (custodian wallet), and signs it with organization key.
-5. SD-Factory publishes the Verifiable Credential to the Portal. As the VC is signed with a trusted key the endpoint for
+5. SD-Factory returns the Verifiable Credential to the Portal. As the VC is signed with a trusted key the endpoint for
    publishing at the Portal may be publicly accessible. SD document is not stored in SD-Factory.
 
-##Deployment View
+## Deployment View
 
 In Catena-X we use [ARGO-CD](https://confluence.catena-x.net/display/ARTI/ArgoCD+deployment+tool) for deployment
 
 [README.md](https://github.com/catenax-ng/tx-sd-factory/blob/main/README.md) describe the deployment process
 
-##Quality Requirements
+## Quality Requirements
 
 [See Quality Gates 4](https://confluence.catena-x.net/pages/viewpage.action?pageId=55011187&src=contextnavpagetreemode)
 
-##Glossary
+## Glossary
 
 | Term                                                                                                     | Description                                                                                                                                                                                                                                                                                                                                                 |
 |----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -574,14 +411,18 @@ In Catena-X we use [ARGO-CD](https://confluence.catena-x.net/display/ARTI/ArgoCD
 | Verifiable Presentation                                                                                  | The expression of a subset of one's persona is called a verifiable presentation. ([more](https://www.w3.org/TR/vc-data-model/))                                                                                                                                                                                                                             |
 | Verifier                                                                                                 | Is an instance that verifies the verifiable credentials of the holder. ([more](https://www.w3.org/TR/vc-data-model/))                                                                                                                                                                                                                                       |
 
-##Links:
+## Links:
 
-*   [Gaia-X Architecture Document 21-09-2021](https://www.gaia-x.eu/sites/default/files/2021-10/Gaia-X_Architecture_Document_2109.pdf) 
-*   [Self Description](https://confluence.catena-x.net/display/ARTI/Self+Description)
-*   [https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions](https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions) (Note that this repository is private for Participants in the Gaia-X Self Description Working Group)
-*   [https://www.w3.org/TR/vc-data-model/](https://www.w3.org/TR/vc-data-model/#core-data-model)
-*   [https://github.com/WebOfTrustInfo/rwot9-prague/blob/master/topics-and-advance-readings/X.509-DID-Method.md](https://github.com/WebOfTrustInfo/rwot9-prague/blob/master/topics-and-advance-readings/X.509-DID-Method.md)
-*   [https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/)
-*   [https://github.com/boschresearch/gx-ssi-demonstrator](https://github.com/boschresearch/gx-ssi-demonstrator)
-*   [https://gitlab.com/gaia-x/lab/compliance/gaia-x-vc-issuer](https://gitlab.com/gaia-x/lab/compliance/gaia-x-vc-issuer)
-*   [https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions/-/tree/master/documentation/sd-tutorial](https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions/-/tree/master/documentation/sd-tutorial)
+* [Gaia-X Architecture Document 21-09-2021](https://www.gaia-x.eu/sites/default/files/2021-10/Gaia-X_Architecture_Document_2109.pdf) 
+* [Self Description](https://confluence.catena-x.net/display/ARTI/Self+Description)
+* [https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions](https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions) (Note that this repository is private for Participants in the Gaia-X Self Description Working Group)
+* [https://www.w3.org/TR/vc-data-model/](https://www.w3.org/TR/vc-data-model/#core-data-model)
+* [https://github.com/WebOfTrustInfo/rwot9-prague/blob/master/topics-and-advance-readings/X.509-DID-Method.md](https://github.com/WebOfTrustInfo/rwot9-prague/blob/master/topics-and-advance-readings/X.509-DID-Method.md)
+* [https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/)
+* [https://github.com/boschresearch/gx-ssi-demonstrator](https://github.com/boschresearch/gx-ssi-demonstrator)
+* [https://gitlab.com/gaia-x/lab/compliance/gaia-x-vc-issuer](https://gitlab.com/gaia-x/lab/compliance/gaia-x-vc-issuer)
+* [https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions/-/tree/master/documentation/sd-tutorial](https://gitlab.com/gaia-x/gaia-x-community/gaia-x-self-descriptions/-/tree/master/documentation/sd-tutorial)
+
+[Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
+[Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
