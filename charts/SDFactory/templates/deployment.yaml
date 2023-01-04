@@ -21,63 +21,61 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sdfactory.fullname" . }}
-  labels:
-    {{- include "sdfactory.labels" . | nindent 4 }}
+  name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "sdfactory.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        {{- include "sdfactory.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.name }}
     spec:
       containers:
       - name: {{ .Values.name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.service.targetPort }}
+        - containerPort: {{ .Values.portContainer }}
         env:
         - name: KEYCLOAK_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: auth-server-url
         - name: KEYCLOAK_REALM
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: realm
         - name: KEYCLOAK_RESOURCE
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: resource
         - name: APP_CUSTODIANWALLET_CLIENTID
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientID
         - name: APP_CUSTODIANWALLET_CLIENTSECRET
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: ClientSecret
         - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: auth-server-url
         - name: APP_CUSTODIANWALLET_URI
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: custodianWalletUri
         - name: APP_CUSTODIANWALLET_REALM
           valueFrom: 
             secretKeyRef:
-              name: {{ include "sdfactory.applicationSecret.name" . }}
+              name: {{ include "sdhub.applicationSecret.name" . }}
               key: realm
