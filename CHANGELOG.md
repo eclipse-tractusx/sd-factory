@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+
+### Added
+- introduce vavr.io library for neater code
+- add support for all versions of Trust Framework in a single project
+
+### Changed
+- rename endpoint path to reflect API version (/api/22.04/selfdescription)
+- better error propagation from the Custodian to get more details on a error
+- update Spring Boot from 2.7.5 -> 2.7.6
+- update springdoc-openapi-ui 1.6.12 -> 1.6.13
+- update keycloak-admin-client 19.0.3 -> 20.0.2
+- update com.google.protobuf 3.21.9 -> 3.21.11
+- update openapi-generator-maven-plugin 6.2.0 -> 6.2.1
+
 ## [1.1.0] - 2022-11-23
 
 ### Added

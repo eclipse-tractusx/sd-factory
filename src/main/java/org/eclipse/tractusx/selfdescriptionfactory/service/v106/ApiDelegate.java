@@ -18,17 +18,27 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.config;
+package org.eclipse.tractusx.selfdescriptionfactory.service.v106;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.eclipse.tractusx.selfdescriptionfactory.api_106.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model_106.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-@ConfigurationProperties(prefix = "app.security")
-@Component("securityRoles")
-@Getter @Setter
-public class SecurityRoles {
-    private String createRole;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class ApiDelegate implements ApiApiDelegate {
+    private final SDFactory sdFactory;
+
+    @Value("${app.verifiableCredentials.schema106Url}")
+    private String schemaUrl;
+
+    public ResponseEntity<Map<String, Object>> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        return sdFactory.createVC(selfdescriptionPostRequest, schemaUrl);
+    }
 }
-

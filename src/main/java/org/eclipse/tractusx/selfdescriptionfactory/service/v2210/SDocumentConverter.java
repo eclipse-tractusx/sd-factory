@@ -18,17 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.config;
+package org.eclipse.tractusx.selfdescriptionfactory.service.v2210;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.eclipse.tractusx.selfdescriptionfactory.model_2210.SelfdescriptionPostRequest;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = "app.security")
-@Component("securityRoles")
-@Getter @Setter
-public class SecurityRoles {
-    private String createRole;
-}
+import java.util.Map;
 
+@Component
+@RequiredArgsConstructor
+public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Map<String, Object>> {
+    private final ObjectMapper objectMapper;
+
+    @Override
+    public Map<String, Object> convert(@NonNull SelfdescriptionPostRequest source) {
+        return objectMapper.convertValue(source, new TypeReference<>(){});
+    }
+}

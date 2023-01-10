@@ -36,13 +36,21 @@ springdoc:
   api-docs:
     enabled: false
   swagger-ui:
-    url: /SDFactoryApi.yml
+    urls:
+      - url: /SDFactoryApi-v22.10.yml
+        name: API-22.10
+      - url: /SDFactoryApi-v22.04.yml
+        name: API-22.04
+      - url: /SDFactoryApi-v1.0.6.yml
+        name: API-1.0.6
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaUrl: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v0.3.jsonld
+    schema106Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld
+    schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   custodianWallet:
     #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
@@ -51,3 +59,6 @@ app:
     #clientSecret: ${CLIENTSECRET}
   security:
     createRole: add_self_descriptions
+logging:
+  level:
+    org.eclipse.tractusx.selfdescriptionfactory: DEBUG
