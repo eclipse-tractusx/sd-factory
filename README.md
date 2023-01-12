@@ -290,5 +290,5 @@ To see how to deploy an application on 'Hotel Budapest':
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
-[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
 

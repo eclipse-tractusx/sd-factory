@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.api_2204.ApiApiDelegate;
 import org.eclipse.tractusx.selfdescriptionfactory.model_2204.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +34,7 @@ import java.util.Map;
 public class ApiDelegate implements ApiApiDelegate {
     private final SDFactory sdFactory;
 
-    @Value("${app.verifiableCredentials.schema2204Url}")
-    private String schemaUrl;
-
     public ResponseEntity<Map<String, Object>> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
-        return sdFactory.createVC(selfdescriptionPostRequest, schemaUrl);
+        return sdFactory.createVC(selfdescriptionPostRequest);
     }
 }

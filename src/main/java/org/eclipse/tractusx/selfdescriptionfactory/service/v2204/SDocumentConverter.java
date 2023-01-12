@@ -24,19 +24,23 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.model_2204.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.net.URI;
 
 @Component
 @RequiredArgsConstructor
-public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Map<String, Object>> {
+public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Claims> {
     private final ObjectMapper objectMapper;
+    @Value("${app.verifiableCredentials.schema2204Url}")
+    private String schemaUrl;
 
     @Override
-    public Map<String, Object> convert(@NonNull SelfdescriptionPostRequest source) {
-        return objectMapper.convertValue(source, new TypeReference<>(){});
+    public Claims convert(@NonNull SelfdescriptionPostRequest source) {
+        return new Claims(objectMapper.convertValue(source, new TypeReference<>(){}), URI.create(schemaUrl));
     }
 }
