@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [1.2.0] - 2023-01-16
 
 ### Added
+- added a converter to support Trust Framework 22.10 keeping old API v1.0.6
 - introduce vavr.io library for neater code
 - add support for all versions of Trust Framework in a single project
 
