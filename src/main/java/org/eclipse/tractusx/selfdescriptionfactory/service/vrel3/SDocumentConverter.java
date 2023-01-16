@@ -62,8 +62,8 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
 
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
-    @Value("${app.verifiableCredentials.schema106Url}")
-    private String schemaUrl106;
+    @Value("${app.verifiableCredentials.schemaRel3Url}")
+    private String schemaRel3;
 
     @Override
     public Claims convert(@NonNull SelfdescriptionPostRequest source) {
@@ -76,7 +76,7 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
                     .andThen(validator.validated(this::convertRel3ServiceOffering2210))
                     .andThen(converter2210::convert)
                     .apply(s)),
-                Case($(), s -> new Claims(objectMapper.convertValue(s, new TypeReference<>() {}), URI.create(schemaUrl106)))
+                Case($(), s -> new Claims(objectMapper.convertValue(s, new TypeReference<>() {}), URI.create(schemaRel3)))
         );
     }
 

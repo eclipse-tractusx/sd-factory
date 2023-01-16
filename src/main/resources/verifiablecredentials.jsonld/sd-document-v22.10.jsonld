@@ -11,26 +11,15 @@
       "@context": {
         "registrationNumber": {
           "@id": "ctxsd:registrationNumber",
+          "@container": "@set",
           "@context": {
-            "local": {
-                "@id": "ctxsd:local",
-                "@type": "schema:name"
+            "type": {
+              "@id": "ctxsd:type",
+              "@type": "schema:name"
             },
-            "EUID": {
-                "@id": "ctxsd:EUID",
-                "@type": "schema:name"
-            },
-            "EORI": {
-                "@id": "ctxsd:EORI",
-                "@type": "schema:name"
-            },
-            "vatID": {
-                "@id": "ctxsd:vatID",
-                "@type": "schema:name"
-            },
-            "leiCode": {
-                "@id": "ctxsd:leiCode",
-                "@type": "schema:name"
+            "value": {
+              "@id": "ctxsd:value",
+              "@type": "schema:name"
             }
           }
         },
