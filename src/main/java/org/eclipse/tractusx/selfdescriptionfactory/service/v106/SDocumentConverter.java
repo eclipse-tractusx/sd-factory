@@ -97,23 +97,18 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
     private RegistrationNumberSchema convertRegNum(String regNumber) {
         var result = new RegistrationNumberSchema();
         return Try.success(regNumber.indexOf(":"))
-                        .filter(i -> i > 0, i -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find RegistrationNumber Type"))
-                        .flatMap(colonIndex ->
-                                Try.success(regNumber.substring(0, colonIndex))
-                                        .flatMap(regType -> API.Match(regType).of(
-                                                Case($("local"), Try.success(result::local)),
-                                                Case($("EUID"), Try.success(result::EUID)),
-                                                Case($("EORI"), Try.success(result::EORI)),
-                                                Case($("vatID"), Try.success(result::vatID)),
-                                                Case($("leiCode"), Try.success(result::leiCode)),
-                                                Case($(), Try.<Function<String, RegistrationNumberSchema>>failure(
-                                                        new ResponseStatusException(
-                                                                HttpStatus.BAD_REQUEST,
-                                                                "Not Supported RegistrationNumber Type: "+ regType
-                                                        )
-                                                ))
-                                        )).map(fn -> fn.apply(regNumber.substring(colonIndex + 1)))
-                        ).get();
+                .filter(i -> i > 0, i -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find RegistrationNumber Type"))
+                .flatMap(colonIndex -> Try.success(regNumber.substring(0, colonIndex))
+                        .mapTry(type -> result.getClass().getMethod(type, String.class))
+                        .mapTry(method -> method.invoke(result, regNumber.substring(colonIndex + 1)))
+                        .map(RegistrationNumberSchema.class::cast)
+                ).recoverWith(Utils.mapFailure(err ->
+                        new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "BAD RegistrationNumber: '" + regNumber +"'",
+                                err
+                        ))
+                ).get();
     }
 
     private AddressSchema convertCountryCode(String countryCode) {
