@@ -29,7 +29,7 @@ paths:
                     type: LegalPerson
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
-                    registrationNumber: o12345678
+                    registrationNumber: local:o12345678
                     headquarterAddress.country: DE
                     legalAddress.country: DE
                     bpn: BPNL000000000000
@@ -40,9 +40,9 @@ paths:
                   issuer: CAXSDUMMYCATENAZZ
                   type: ServiceOffering
                   providedBy: https://participant.url
-                  aggregationOf: to be clarified
-                  termsAndConditions: to be clarified
-                  policies: to be clarified
+                  aggregationOf: https://arrg1.url, https://aggr2.url
+                  termsAndConditions: https://github.com/catenax-ng/tx-sd-factory/raw/main/LICENSE
+                  policies: policy1, policy2
       responses:
         '201':
           description: Created
