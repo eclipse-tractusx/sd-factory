@@ -27,15 +27,15 @@
             "@id": "ctx:LegalPerson",
             "@context": {
                 "registrationNumber": {
-                    "@id": "ctxsd:registrationNumber",
+                    "@id": "ctx:registrationNumber",
                     "@container": "@set",
                     "@context": {
                         "type": {
-                            "@id": "ctxsd:type",
+                            "@id": "ctx:type",
                             "@type": "schema:name"
                         },
                         "value": {
-                            "@id": "ctxsd:value",
+                            "@id": "ctx:value",
                             "@type": "schema:name"
                         }
                     }
