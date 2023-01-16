@@ -40,8 +40,8 @@ paths:
                   issuer: CAXSDUMMYCATENAZZ
                   type: ServiceOffering
                   providedBy: https://participant.url
-                  aggregationOf: https://arrg1.url, https://aggr2.url
-                  termsAndConditions: https://github.com/catenax-ng/tx-sd-factory/raw/main/LICENSE
+                  aggregationOf: https://aggr1.url, https://aggr2.url
+                  termsAndConditions: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/LICENSE
                   policies: policy1, policy2
       responses:
         '201':
