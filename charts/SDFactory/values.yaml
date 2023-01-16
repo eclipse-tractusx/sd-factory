@@ -23,7 +23,7 @@ image:
   repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory" 
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.2.0"
+  tag: "1.0.7"
   
 ingress:
   enabled: false

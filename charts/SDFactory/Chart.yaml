@@ -22,5 +22,5 @@ apiVersion: v2
 name: sdfactory
 description: A Helm chart for SDFactory
 type: application
-version: 1.0.8
+version: 1.0.9
 appVersion: 1.2.0
