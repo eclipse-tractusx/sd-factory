@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.v106;
+package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,13 +27,12 @@ import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
-import org.eclipse.tractusx.selfdescriptionfactory.model_106.LegalPersonSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model_106.SelfdescriptionPostRequest;
-import org.eclipse.tractusx.selfdescriptionfactory.model_106.ServiceOfferingSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2210.AddressSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2210.DataAccountExportSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2210.RegistrationNumberSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2210.TermsAndConditionsSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.AddressSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.DataAccountExportSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.TermsAndConditionsSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -70,55 +69,47 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
     public Claims convert(@NonNull SelfdescriptionPostRequest source) {
         return API.Match(source).of(
                 Case($(instanceOf(LegalPersonSchema.class)), s -> Function.<LegalPersonSchema>identity()
-                        .andThen(validator.validated(this::convert106LegalPerson2210))
+                        .andThen(validator.validated(this::convertRel3LegalPerson2210))
                         .andThen(converter2210::convert)
                         .apply(s)),
                 Case($(instanceOf(ServiceOfferingSchema.class)), s -> Function.<ServiceOfferingSchema>identity()
-                    .andThen(validator.validated(this::convert106ServiceOffering2210))
+                    .andThen(validator.validated(this::convertRel3ServiceOffering2210))
                     .andThen(converter2210::convert)
                     .apply(s)),
                 Case($(), s -> new Claims(objectMapper.convertValue(s, new TypeReference<>() {}), URI.create(schemaUrl106)))
         );
     }
 
-    private org.eclipse.tractusx.selfdescriptionfactory.model_2210.LegalPersonSchema convert106LegalPerson2210(
-            org.eclipse.tractusx.selfdescriptionfactory.model_106.LegalPersonSchema source
+    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema convertRel3LegalPerson2210(
+            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema source
     ) {
-        return new org.eclipse.tractusx.selfdescriptionfactory.model_2210.LegalPersonSchema()
+        return new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema()
                 .type(source.getType())
                 .holder(source.getHolder())
                 .issuer(source.getIssuer())
                 .bpn(source.getBpn())
-                .registrationNumber(convertRegNum(source.getRegistrationNumber()))
+                .registrationNumber(source.getRegistrationNumber().stream().map(this::convertRegNum).collect(Collectors.toSet()))
                 .headquarterAddress(convertCountryCode(source.getHeadquarterAddressCountry()))
                 .legalAddress(convertCountryCode(source.getLegalAddressCountry()));
     }
 
-    private RegistrationNumberSchema convertRegNum(String regNumber) {
-        var result = new RegistrationNumberSchema();
-        return Try.success(regNumber.indexOf(":"))
-                .filter(i -> i > 0, i -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not find RegistrationNumber Type"))
-                .flatMap(colonIndex -> Try.success(regNumber.substring(0, colonIndex))
-                        .mapTry(type -> result.getClass().getMethod(type, String.class))
-                        .mapTry(method -> method.invoke(result, regNumber.substring(colonIndex + 1)))
-                        .map(RegistrationNumberSchema.class::cast)
-                ).recoverWith(Utils.mapFailure(err ->
-                        new ResponseStatusException(
-                                HttpStatus.BAD_REQUEST,
-                                "BAD RegistrationNumber: '" + regNumber +"'",
-                                err
-                        ))
-                ).get();
+    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema convertRegNum(
+            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema regNumber
+    ) {
+        var result = new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema();
+        return result.type(org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema.TypeEnum.fromValue(
+                regNumber.getType().getValue())
+        ).value(regNumber.getValue());
     }
 
     private AddressSchema convertCountryCode(String countryCode) {
         return new AddressSchema().countryCode(countryCode);
     }
 
-    private org.eclipse.tractusx.selfdescriptionfactory.model_2210.ServiceOfferingSchema convert106ServiceOffering2210(
-            org.eclipse.tractusx.selfdescriptionfactory.model_106.ServiceOfferingSchema source
+    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.ServiceOfferingSchema convertRel3ServiceOffering2210(
+            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema source
     ) {
-        return new org.eclipse.tractusx.selfdescriptionfactory.model_2210.ServiceOfferingSchema()
+        return new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.ServiceOfferingSchema()
                 .type(source.getType())
                 .holder(source.getHolder())
                 .issuer(source.getIssuer())

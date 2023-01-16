@@ -21,8 +21,8 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.v2204;
 
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.api_2204.ApiApiDelegate;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2204.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.api.v2204.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2204.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

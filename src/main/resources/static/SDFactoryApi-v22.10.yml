@@ -578,6 +578,7 @@ components:
         countryCode:
           type: string
           description: Country code in ISO 3166-1 alpha2, alpha-3 or numeric format.
+          minLength: 1
           maxLength: 12
     GpsSchema:
       type: object
@@ -585,48 +586,26 @@ components:
         gps:
           type: string
           description: physical GPS in ISO 6709:2008/Cor 1:2009 format
+          minLength: 1
+          maxLength: 128
     RegistrationNumberSchema:
       type: object
-      description: The list of valid entity registrationNumber
-      anyOf:
-        - type: object
-          properties:
-            local:
-              type: string
-              minLength: 1
-              maxLength: 128
-              description: the state issued company number
-        - type: object
-          properties:
-            EUID:
-              type: string
-              minLength: 1
-              maxLength: 128
-              description: |
-                the European Unique Identifier (EUID) for business located in the European Economic Area, Iceland, 
-                Liechtenstein or Norway and registered in the Business Registers Interconnection System (BRIS). 
-                This number can be found via the EU Business registers portal
-        - type: object
-          properties:
-            EORI:
-              type: string
-              minLength: 1
-              maxLength: 128
-              description: the Economic Operators Registration and Identification number (EORI).
-        - type: object
-          properties:
-            vatID:
-              type: string
-              minLength: 1
-              maxLength: 128
-              description: the VAT identification number.
-        - type: object
-          properties:
-            leiCode:
-              type: string
-              minLength: 1
-              maxLength: 128
-              description: Unique LEI number as defined by https://www.gleif.org.
+      description: Registration Number element
+      properties:
+        type:
+          type: string
+          description: the mean to request data retrieval
+          enum:
+            - local
+            - EUID
+            - EORI
+            - vatID
+            - leiCode
+        value:
+          type: string
+          description: Registration Number value
+          minLength: 1
+          maxLength: 128
     LegalPersonSchema:
       type: object
       description: A Participant is a Legal Person
@@ -635,7 +614,13 @@ components:
         - type: object
           properties:
             registrationNumber:
-              $ref: '#/components/schemas/RegistrationNumberSchema'
+              type: array
+              uniqueItems: true
+              minItems: 1
+              maxItems: 512
+              description: A list of registration numbers
+              items:
+                $ref: '#/components/schemas/RegistrationNumberSchema'
             headquarterAddress:
               $ref: '#/components/schemas/AddressSchema'
             legalAddress:

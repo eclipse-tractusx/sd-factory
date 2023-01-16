@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.v106;
+package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.api_106.ApiApiDelegate;
-import org.eclipse.tractusx.selfdescriptionfactory.model_106.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.api.vrel3.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

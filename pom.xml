@@ -201,16 +201,16 @@
                 <version>6.2.1</version>
                 <executions>
                     <execution>
-                        <id>api-1.0.6</id>
+                        <id>api-vRel3</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-v1.0.6.yml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-vRel3.yml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api-106</apiPackage>
+                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.vrel3</apiPackage>
                             <apiNameSuffix>v106</apiNameSuffix>
-                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model-106</modelPackage>
+                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.vrel3</modelPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
@@ -231,9 +231,9 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-v22.04.yml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api-2204</apiPackage>
+                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.v2204</apiPackage>
                             <apiNameSuffix>v2210</apiNameSuffix>
-                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model-2204</modelPackage>
+                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.v2204</modelPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
@@ -254,9 +254,9 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-v22.10.yml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api-2210</apiPackage>
+                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.v2210</apiPackage>
                             <apiNameSuffix>v2210</apiNameSuffix>
-                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model-2210</modelPackage>
+                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.v2210</modelPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>

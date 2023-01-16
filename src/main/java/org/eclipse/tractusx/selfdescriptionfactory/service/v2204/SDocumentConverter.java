@@ -23,7 +23,7 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.v2204;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.model_2204.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2204.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
