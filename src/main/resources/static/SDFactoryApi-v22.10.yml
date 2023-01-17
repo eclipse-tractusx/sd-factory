@@ -198,51 +198,54 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
                         "VerifiableCredential",
                         "LegalPerson"
                       ],
-                      "issuer": "did:sov:AmTGK5u8HdFgzidzTxM9B8",
-                      "issuanceDate": "2022-12-28T14:13:55Z",
-                      "expirationDate": "2023-03-28T14:13:55Z",
+                      "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
+                      "issuanceDate": "2023-01-17T09:53:08Z",
+                      "expirationDate": "2023-04-17T09:53:08Z",
                       "credentialSubject": {
-                        "type": "LegalPerson",
-                        "registrationNumber": {
-                          "local": "o12345678"
-                        },
-                        "headquarterAddress": {
-                          "countryCode": "DE"
-                        },
-                        "legalAddress": {
-                          "countryCode": "DE"
-                        },
-                        "parentOrganization": [
-                          "https://parent.organisation1.org",
-                          "https://parent.organisation2.org"
-                        ],
+                        "bpn": "BPNL000000000000",
                         "subOrganization": [
                           "https://sub.organisation1.org",
                           "https://sub.organisation2.org"
                         ],
-                        "bpn": "BPNL000000000000",
-                        "id": "BPNL000000000000"
+                        "registrationNumber": [
+                          {
+                            "type": "local",
+                            "value": "o12345678"
+                          }
+                        ],
+                        "headquarterAddress": {
+                          "countryCode": "DE"
+                        },
+                        "type": "LegalPerson",
+                        "parentOrganization": [
+                          "https://parent.organisation1.org",
+                          "https://parent.organisation2.org"
+                        ],
+                        "legalAddress": {
+                          "countryCode": "DE"
+                        },
+                        "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#53",
+                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#12",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
-                        "statusListIndex": "53",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListIndex": "12",
+                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
-                        "created": "2022-12-28T14:13:56Z",
+                        "created": "2023-01-17T09:53:11Z",
                         "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:AmTGK5u8HdFgzidzTxM9B8#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..AnsWL-6s3uiqTWaUtQYIbzzUCPpckYs0zPrkx-rOtYIo3z0bsDXml-GkaYMTWn0mzsJv_lwGvZ73yYxt1BrQDw"
+                        "verificationMethod": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs#key-1",
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..8PcPnLotya4WExB4dvfP48QvU2PkczbOddZDyneZHDo26y_0ahwv-7tmqbI5bRIm4aqOE1aY9lZloOY9AjmjDg"
                       }
                     }
                 jsonServiceOfferingObject:

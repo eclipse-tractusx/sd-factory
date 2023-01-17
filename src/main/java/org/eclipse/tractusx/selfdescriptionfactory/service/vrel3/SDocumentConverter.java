@@ -88,18 +88,11 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
                 .holder(source.getHolder())
                 .issuer(source.getIssuer())
                 .bpn(source.getBpn())
-                .registrationNumber(source.getRegistrationNumber().stream().map(this::convertRegNum).collect(Collectors.toSet()))
+                .registrationNumber(source.getRegistrationNumber().stream()
+                        .map(rNum -> objectMapper.convertValue(rNum, org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema.class))
+                        .collect(Collectors.toSet()))
                 .headquarterAddress(convertCountryCode(source.getHeadquarterAddressCountry()))
                 .legalAddress(convertCountryCode(source.getLegalAddressCountry()));
-    }
-
-    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema convertRegNum(
-            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema regNumber
-    ) {
-        var result = new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema();
-        return result.type(org.eclipse.tractusx.selfdescriptionfactory.model.v2210.RegistrationNumberSchema.TypeEnum.fromValue(
-                regNumber.getType().getValue())
-        ).value(regNumber.getValue());
     }
 
     private AddressSchema convertCountryCode(String countryCode) {
