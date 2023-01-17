@@ -41,16 +41,16 @@ springdoc:
         name: API-22.10
       - url: /SDFactoryApi-v22.04.yml
         name: API-22.04
-      - url: /SDFactoryApi-v1.0.6.yml
-        name: API-1.0.6
+      - url: /SDFactoryApi-vRel3.yml
+        name: API-Release3
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema106Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld
-    schema2204Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
-    schema2210Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schemaRel3Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld
+    schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   custodianWallet:
     #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth

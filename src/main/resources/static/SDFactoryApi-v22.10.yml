@@ -36,7 +36,8 @@ paths:
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
                   registrationNumber:
-                    local: o12345678
+                    - type: local
+                      value: o12345678
                   headquarterAddress:
                     countryCode: DE
                   legalAddress:
