@@ -4,7 +4,7 @@ COPY . /sdfactory/
 
 WORKDIR /sdfactory
 
-RUN dnf install dos2unix && dnf clean all
+RUN microdnf install dos2unix && microdnf clean all
 
 RUN dos2unix mvnw
 RUN chmod +x mvnw
