@@ -69,7 +69,7 @@ when will be provided by Trusted Framework. Currently, three vocabularies are su
 The SD-Factory provides interfaces to create Verifiable Credential for one of mentioned documents.
 Only the authorized user can call these interfaces. They are protected with keycloak. The configuration 
 parameters are given in `application.yml`.
-The user role for creating Self-Descriptions is specified in `application.yml` as well.
+The user role for creating Self-Descriptions is specified in `application.yml` as well
 
 Depending on the required version a SD-document goes to one of those endpoint to be converted to the 
 signed Verifiable Credential:
