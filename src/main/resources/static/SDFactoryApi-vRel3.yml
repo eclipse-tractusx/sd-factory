@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  version: 1.0.6
+  version: Release3
   title: SD-Factory API
   description: API for creating and storing the Verifiable Credentials
 paths:
-  /api/1.0.6/selfdescription:
+  /api/rel3/selfdescription:
     post:
       summary: Creates a Verifiable Credential and returns it
       operationId: selfdescriptionPost
@@ -29,7 +29,9 @@ paths:
                     type: LegalPerson
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
-                    registrationNumber: o12345678
+                    registrationNumber:
+                      - type: local
+                        value: o12345678
                     headquarterAddress.country: DE
                     legalAddress.country: DE
                     bpn: BPNL000000000000
@@ -40,9 +42,9 @@ paths:
                   issuer: CAXSDUMMYCATENAZZ
                   type: ServiceOffering
                   providedBy: https://participant.url
-                  aggregationOf: to be clarified
-                  termsAndConditions: to be clarified
-                  policies: to be clarified
+                  aggregationOf: https://aggr1.url, https://aggr2.url
+                  termsAndConditions: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/LICENSE
+                  policies: policy1, policy2
       responses:
         '201':
           description: Created
@@ -58,37 +60,46 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld",
+                        "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
                         "VerifiableCredential",
                         "LegalPerson"
                       ],
-                      "issuer": "did:sov:AmTGK5u8HdFgzidzTxM9B8",
-                      "issuanceDate": "2022-12-28T12:16:55Z",
-                      "expirationDate": "2023-03-28T12:16:55Z",
+                      "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
+                      "issuanceDate": "2023-01-17T09:47:10Z",
+                      "expirationDate": "2023-04-17T09:47:10Z",
                       "credentialSubject": {
-                        "type": "LegalPerson",
-                        "registrationNumber": "o12345678",
-                        "headquarterAddress.country": "DE",
-                        "legalAddress.country": "DE",
                         "bpn": "BPNL000000000000",
-                        "id": "BPNL000000000000"
+                        "registrationNumber": [
+                          {
+                            "type": "local",
+                            "value": "o12345678"
+                          }
+                        ],
+                        "headquarterAddress": {
+                          "countryCode": "DE"
+                        },
+                        "type": "LegalPerson",
+                        "legalAddress": {
+                          "countryCode": "DE"
+                        },
+                        "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#46",
+                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#11",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
-                        "statusListIndex": "46",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListIndex": "11",
+                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
-                        "created": "2022-12-28T12:16:56Z",
+                        "created": "2023-01-17T09:47:39Z",
                         "proofPurpose": "assertionMethod",
-                        "verificationMethod": "did:sov:AmTGK5u8HdFgzidzTxM9B8#key-1",
-                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..-khhTGsBnHvXT_0jpD78sA6M_D4CFROMQu-uEy-3kWcXbEqbHlhkqLyJUnuuSFhBJENxwm7azB2tbOL1rTa5DA"
+                        "verificationMethod": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs#key-1",
+                        "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..fLTkACLGMoP4tO5J6Xf-j8GHSohfhG5O-tnNhdt2jJCdgwHmAI5208RLGg-kWMqXiUuuT8wT9bgzwOqmMOQdCg"
                       }
                     }
                 jsonServiceOfferingObject:
@@ -150,6 +161,24 @@ components:
         - type
         - holder
         - issuer
+    RegistrationNumberSchema:
+      type: object
+      description: Registration Number element
+      properties:
+        type:
+          type: string
+          description: the mean to request data retrieval
+          enum:
+            - local
+            - EUID
+            - EORI
+            - vatID
+            - leiCode
+        value:
+          type: string
+          description: Registration Number value
+          minLength: 1
+          maxLength: 128
     LegalPersonSchema:
       type: object
       allOf:
@@ -157,7 +186,13 @@ components:
         - type: object
           properties:
             registrationNumber:
-              type: string
+              type: array
+              uniqueItems: true
+              minItems: 1
+              maxItems: 512
+              description: A list of registration numbers
+              items:
+                $ref: '#/components/schemas/RegistrationNumberSchema'
             headquarterAddress.country:
               type: string
             legalAddress.country:

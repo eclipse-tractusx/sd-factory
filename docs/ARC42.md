@@ -224,7 +224,7 @@ signed Verifiable Credential:
 
 OpenAPI specification for each version is given there:
 
-1. [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-v1.0.6.yml).
+1. [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-vRel3.yml).
 2. [Version 22.04 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.04.yml).
 3. [Version 22.10 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.10.yml).
 

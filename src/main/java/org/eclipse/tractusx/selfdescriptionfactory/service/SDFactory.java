@@ -33,10 +33,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,15 +53,15 @@ public class SDFactory {
     private final ConversionService conversionService;
 
     @PreAuthorize("hasRole(@securityRoles.createRole)")
-    @SuppressWarnings("unchecked")
-    public ResponseEntity<Map<String, Object>> createVC(Object document, String contextUri) {
-        var claims = Optional.ofNullable(conversionService.convert(document, Map.class)).orElseThrow();
+    public ResponseEntity<Map<String, Object>> createVC(Object document) {
+        var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
+        var claims = new HashMap<>(claimsHolder.claims());
         var holder = claims.remove("holder");
         var issuer = claims.remove("issuer");
         var type = claims.get("type");
         var credentialSubject = CredentialSubject.fromJsonObject(claims);
         var verifiableCredential = VerifiableCredential.builder()
-                .context(URI.create(contextUri))
+                .context(claimsHolder.vocabulary())
                 .issuanceDate(new Date())
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
                 .credentialSubject(credentialSubject)

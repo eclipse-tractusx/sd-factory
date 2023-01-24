@@ -60,7 +60,7 @@ For the VC we have to provide valid JSON context where we have a reference to an
 from known ontology. This object carries the claims the SD-Factory signs. The document
 is published on the github repository of the project. The vocabulary URL can be changed 
 when will be provided by Trusted Framework. Currently, three vocabularies are supported:
-1. [Pre-22.4 schema, AKA 1.06](src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld).
+1. [Pre-22.4 schema, AKA 1.06](src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld).
 2. [Version 22.04 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld).
 3. [Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld).
 
@@ -80,7 +80,7 @@ signed Verifiable Credential:
 
 OpenAPI specification for each version is given there:
 
-1. [Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-v1.0.6.yml).
+1. [Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-vRel3.yml).
 2. [Version 22.04 of Trust Framework](src/main/resources/static/SDFactoryApi-v22.04.yml).
 3. [Version 22.10 of Trust Framework](src/main/resources/static/SDFactoryApi-v22.10.yml).
 
@@ -200,14 +200,14 @@ springdoc:
         name: API-22.10
       - url: /SDFactoryApi-v22.04.yml
         name: API-22.04
-      - url: /SDFactoryApi-v1.0.6.yml
+      - url: /SDFactoryApi-vRel3.yml
         name: API-1.0.6
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema106Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v1.0.6.jsonld
+    schema106Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld
     schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
     schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   custodianWallet:
@@ -290,5 +290,5 @@ To see how to deploy an application on 'Hotel Budapest':
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
-[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
 

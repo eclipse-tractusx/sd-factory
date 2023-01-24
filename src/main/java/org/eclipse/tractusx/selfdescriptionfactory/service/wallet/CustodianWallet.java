@@ -68,7 +68,7 @@ public class CustodianWallet {
                         Case($(instanceOf(WebClientResponseException.class)), err ->
                                 Try.of(() -> objectMapper.readValue(err.getResponseBodyAsByteArray(), JsonNode.class).get("message").asText()
                                 ).map(errString -> new ResponseStatusException(err.getStatusCode(), "Custodian Wallet problem: " + errString, err)
-                                ).recover(mapperErr -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Mapper Error", mapperErr)
+                                ).recover(mapperErr -> new ResponseStatusException(err.getStatusCode(), err.getMessage(), err)
                                 ).get()
                         ),
                         Case($(instanceOf(WebClientRequestException.class)), err ->
@@ -77,7 +77,8 @@ public class CustodianWallet {
                         Case($(), err -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", err)
                         )
                 )
-        )).get();
+        )).onFailure(err -> Try.of(() -> objectMapper.writeValueAsString(objToSign)).onSuccess(json -> log.error("Error in custodian. Original JSON is: {}", json)))
+                .get();
     }
 
 }

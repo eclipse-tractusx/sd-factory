@@ -21,8 +21,11 @@
 package org.eclipse.tractusx.selfdescriptionfactory;
 
 import io.vavr.control.Try;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.function.Function;
@@ -51,5 +54,11 @@ public class Utils {
         } else {
             return connection;
         }
+    }
+
+    public static URI uriFromStr(String uriStr) {
+        return Try.of(() -> URI.create(uriStr))
+                .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coud not create an URI from '" + uriStr + "'", err)))
+                .get();
     }
 }

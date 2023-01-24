@@ -18,14 +18,18 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
-apiVersion: v1                # API version
-kind: Service                 # Type of the kubernetes resource
-metadata:                     
- name: {{ .Values.name }}  
-spec:                         
- type: ClusterIP             # The service will be exposed by opening a Port on each node and proxying it. 
- selector:
-  app: {{ .Values.name }}    # The service exposes Pods with label `app idss-sdhub`
- ports:                      # Forward incoming connections on port 9092 to the target port 9092
- - port: {{ .Values.portService }}
-   targetPort: {{ .Values.portContainer }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sdfactory.fullname" . }}
+  labels:
+    {{- include "sdfactory.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  selector:
+    {{- include "sdfactory.selectorLabels" . | nindent 4 }}
+    
