@@ -31,7 +31,7 @@ spec:
         {{- range .hosts }}
         - {{ . | quote }}
         {{- end }}
-      secretName: {{ .secretName }}
+      secretName: {{ .tlsName }}
     {{- end }}
   {{- end }}
   rules:
