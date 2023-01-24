@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "sdhub.name" -}}
+{{- define "sdfactory.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "sdhub.fullname" -}}
+{{- define "sdfactory.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "sdhub.chart" -}}
+{{- define "sdfactory.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "sdhub.labels" -}}
-helm.sh/chart: {{ include "sdhub.chart" . }}
-{{ include "sdhub.selectorLabels" . }}
+{{- define "sdfactory.labels" -}}
+helm.sh/chart: {{ include "sdfactory.chart" . }}
+{{ include "sdfactory.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,24 +45,24 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "sdhub.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sdhub.name" . }}
+{{- define "sdfactory.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "sdfactory.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create name of application secret
 */}}
-{{- define "sdhub.applicationSecret.name" -}}
-{{- printf "%s-application" (include "sdhub.fullname" .) }}
+{{- define "sdfactory.applicationSecret.name" -}}
+{{- printf "%s-application" (include "sdfactory.fullname" .) }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "sdhub.serviceAccountName" -}}
+{{- define "sdfactory.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "sdhub.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "sdfactory.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

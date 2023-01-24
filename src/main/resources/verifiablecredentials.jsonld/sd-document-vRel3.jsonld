@@ -27,7 +27,18 @@
             "@id": "ctx:LegalPerson",
             "@context": {
                 "registrationNumber": {
-                   "@id": "ctx:registrationNumber"
+                    "@id": "ctx:registrationNumber",
+                    "@container": "@set",
+                    "@context": {
+                        "type": {
+                            "@id": "ctx:type",
+                            "@type": "schema:name"
+                        },
+                        "value": {
+                            "@id": "ctx:value",
+                            "@type": "schema:name"
+                        }
+                    }
                 },
                 "headquarterAddress.country": {
                     "@id": "ctx:headquarterAddress.country"
