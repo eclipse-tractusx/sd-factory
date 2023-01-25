@@ -17,6 +17,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
+---
 
 name: "Trivy"
 on:
@@ -72,7 +73,7 @@ jobs:
         if: always()
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/catenax-ng/tx-sd-factory/sdfactory:latest'
+          image-ref: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory:latest"
           format: "sarif"
           output: "trivy-results.sarif"
           exit-code: "1"
@@ -83,3 +84,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
+
