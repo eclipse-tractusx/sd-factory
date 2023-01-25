@@ -48,9 +48,9 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaRel3Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld
-    schema2204Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schemaRel3Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/static/SDFactoryApi-vRel3.yml
+    schema2204Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/static/SDFactoryApi-v22.04.yml
+    schema2210Url: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/static/SDFactoryApi-v22.10.yml
   custodianWallet:
     #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
     #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
