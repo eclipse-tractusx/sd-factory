@@ -53,7 +53,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
-    - secretName: tls-secret
+    - tlsName: sdfactory.beta.demo.catena-x.net-tls 
       hosts:
         - sdfactory.beta.demo.catena-x.net
 

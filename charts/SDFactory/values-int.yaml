@@ -53,7 +53,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: sdfactory-r3.int.demo.catena-x.net-tls
+    - tlsName: sdfactory-r3.int.demo.catena-x.net-tls
       hosts:
         - sdfactory-r3.int.demo.catena-x.net
 
