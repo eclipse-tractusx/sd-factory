@@ -17,7 +17,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
----
 
 name: "Trivy"
 on:
@@ -84,7 +83,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
-<<<<<<< remove-22.04
-=======
-
->>>>>>> A1IDSES-PI7-S4

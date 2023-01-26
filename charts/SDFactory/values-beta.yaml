@@ -51,16 +51,17 @@ ingress:
     - host: "sdfactory.beta.demo.catena-x.net"
       paths:
         - path: /
-          pathType: ImplementationSpecific
-  tls: []
-<<<<<<< remove-22.04
+          pathType: Prefix
+  tls:
     - tlsName: sdfactory.beta.demo.catena-x.net-tls
-=======
-    - tlsName: sdfactory.beta.demo.catena-x.net-tls 
->>>>>>> A1IDSES-PI7-S4
+
       hosts:
         - sdfactory.beta.demo.catena-x.net
-
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  
 sdfactory:
   secret:
     clientId: "<path:essential-services/data/custodian-beta#clientId>"
