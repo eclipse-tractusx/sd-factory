@@ -22,7 +22,7 @@ name: "KICS"
 
 on:
   push:
-    branches: [main]
+    branches: [main, A1IDSES-PI7-S4]
   # pull_request:
   # The branches below must be a subset of the branches above
   # branches: [main, A1IDSES-PI7-S4]
