@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+
+### Changed
+- schema was changed so registrationNumber is an array of documents
+  with type and value fields  
+- removed support for 22.10 as OpenAPI yaml is buggy and there ara 
+  complains from KICS
+
 ## [1.2.0] - 2023-01-16
 
 ### Added

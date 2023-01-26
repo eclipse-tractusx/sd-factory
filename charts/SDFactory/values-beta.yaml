@@ -53,7 +53,11 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
+<<<<<<< remove-22.04
+    - tlsName: sdfactory.beta.demo.catena-x.net-tls
+=======
     - tlsName: sdfactory.beta.demo.catena-x.net-tls 
+>>>>>>> A1IDSES-PI7-S4
       hosts:
         - sdfactory.beta.demo.catena-x.net
 
