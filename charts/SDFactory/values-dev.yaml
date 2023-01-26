@@ -51,12 +51,17 @@ ingress:
     - host: "sdfactory.dev.demo.catena-x.net"
       paths:
         - path: /
-          pathType: ImplementationSpecific
-  tls: []
+          pathType: Prefix
+  tls:
     - tlsName: sdfactory.dev.demo.catena-x.net-tls
       hosts:
         - sdfactory.dev.demo.catena-x.net
 
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  
 sdfactory:
   secret:
     clientId: "<path:essential-services/data/custodian-dev#clientId>"
