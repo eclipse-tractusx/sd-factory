@@ -10,7 +10,7 @@ based on the Custodian for the signature. The result is passed back to the reque
 
 # Solution Strategy 
 
-Here the flow of Self-Description creation is shown:
+Here the flow of Self-Description creation is shown:-
 
 ```mermaid
 sequenceDiagram
