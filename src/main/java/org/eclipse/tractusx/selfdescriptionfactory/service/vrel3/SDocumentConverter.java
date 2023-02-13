@@ -67,7 +67,7 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
 
     @Override
     public Claims convert(@NonNull SelfdescriptionPostRequest source) {
-        return API.Match(source).of(
+        var res =  API.Match(source).of(
                 Case($(instanceOf(LegalPersonSchema.class)), s -> Function.<LegalPersonSchema>identity()
                         .andThen(validator.validated(this::convertRel3LegalPerson2210))
                         .andThen(converter2210::convert)
@@ -78,6 +78,13 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
                     .apply(s)),
                 Case($(), s -> new Claims(objectMapper.convertValue(s, new TypeReference<>() {}), URI.create(schemaRel3)))
         );
+        if (source instanceof LegalPersonSchema) {
+            res.claims().put("externalId", ((LegalPersonSchema)source).getExternalId());
+        }
+        if (source instanceof ServiceOfferingSchema) {
+            res.claims().put("externalId", ((ServiceOfferingSchema)source).getExternalId());
+        }
+        return res;
     }
 
     private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema convertRel3LegalPerson2210(

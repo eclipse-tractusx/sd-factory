@@ -24,17 +24,17 @@ import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.api.vrel3.ApiApiDelegate;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.SDFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ApiDelegate implements ApiApiDelegate {
     private final SDFactory sdFactory;
 
-    public ResponseEntity<Map<String, Object>> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
-        return sdFactory.createVC(selfdescriptionPostRequest);
+    public ResponseEntity<Void> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        sdFactory.createVC(selfdescriptionPostRequest);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
