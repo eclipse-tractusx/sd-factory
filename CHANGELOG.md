@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - removed support for 22.10 as OpenAPI yaml is buggy and there ara 
   complains from KICS
 
+## [1.2.0] - 2023-02-23
+QG5 changes
+
 ## [1.2.0] - 2023-01-16
 
 ### Added
