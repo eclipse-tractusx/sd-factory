@@ -8,6 +8,14 @@ creates a Verifiable Credential and passes the document to the
 [Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallets)
 based on the Custodian for the signature. The result is passed back to the requester.
 
+
+## Version
+
+```shell
+Application version: 1.2.0
+Helm Chart version: 1.2.0
+```
+
 # Solution Strategy 
 
 Here the flow of Self-Description creation is shown:
@@ -263,13 +271,13 @@ and the Custodian Wallet.
 
 ## Installation Steps:-
 
-Helm charts are provided inside https://github.com/catenax-ng/tx-sd-factory
+Helm charts are provided inside https://github.com/eclipse-tractusx/sd-factory
 
 There are diffrent ways to do the installation
 
 1. Using helm commands:-  
 
-    a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
+    a.) git clone https://github.com/eclipse-tractusx/sd-factory.git  <br />
     b.) Modify values file according to your requirement.  <br />
     c.) You need to define the secrets as well in values.yaml
         secret:  <br />
@@ -285,7 +293,7 @@ There are diffrent ways to do the installation
 
 2. Using ArgoCD. 
 
-To see how to deploy an application on 'Hotel Budapest': 
+To see how to deploy an application:-
 [How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
