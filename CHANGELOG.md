@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - schema was changed so registrationNumber is an array of documents
   with type and value fields  
 
+## [1.2.0] - 2023-02-23
+QG5 changes
+
 ## [1.2.0] - 2023-01-16
 
 ### Added
