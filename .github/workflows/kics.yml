@@ -22,15 +22,16 @@ name: "KICS"
 
 on:
   push:
-    branches: [main]
+    branches: [main, A1IDSES-PI7-S4]
   # pull_request:
   # The branches below must be a subset of the branches above
-  # branches: [main, master]
+  # branches: [main, A1IDSES-PI7-S4]
   # paths-ignore:
   #   - "**/*.md"
   #   - "**/*.txt"
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   analyze:
@@ -72,4 +73,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: kicsResults/results.sarif
-          
+
