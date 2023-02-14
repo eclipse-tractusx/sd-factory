@@ -159,11 +159,11 @@ work with are defined in [Trust Framework]. SDFactory supports schema from diffe
 versions of [Trust Framework] depending on the endpoint address.
 Take a look at the section describing [REST interface](#REST Interface) for details.
 Currently, these documents are supported by SD-Factory:
-- LegalPerson (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
-- ServiceOffering (API v1.0.6, [Trust Framework V.22.04], [Trust Framework V.22.10])
-- PhysicalResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
-- VirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
-- InstantiatedVirtualResource ([Trust Framework V.22.04], [Trust Framework V.22.10])
+- LegalPerson (API v1.0.6, [Trust Framework V.22.10])
+- ServiceOffering (API v1.0.6, [Trust Framework V.22.10])
+- PhysicalResource ([Trust Framework V.22.10])
+- VirtualResource ([Trust Framework V.22.10])
+- InstantiatedVirtualResource ([Trust Framework V.22.10])
 
 
 ## Solution Strategy
@@ -218,38 +218,29 @@ The user role for creating Self-Descriptions is specified in `application.yml` a
 Depending on the required version a SD-document goes to one of those endpoint to be converted to the
 signed Verifiable Credential:
 
-1. `POST /api/1.0.6/selfdescription`
-2. `POST /api/22.04/selfdescription`
-3. `POST /api/22.10/selfdescription`
+1. `POST /api/rel3/selfdescription`
+2. `POST /api/22.10/selfdescription`
 
 OpenAPI specification for each version is given there:
 
 1. [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-vRel3.yml).
-2. [Version 22.04 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.04.yml).
-3. [Version 22.10 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.10.yml).
+2. [Version 22.10 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.10.yml).
 
-An example of the body for LegalPerson from  22.04 specification is given bellow:
+An example of the body for LegalPerson from rel3 API is given bellow:
 
 ```json
 {
   "type": "LegalPerson",
+  "holder": "BPNL000000000000",
   "issuer": "CAXSDUMMYCATENAZZ",
-  "registrationNumber": "o12345678",
-  "headquarterAddress": {
-    "country": "DE"
-  },
-  "legalAddress": {
-    "country": "DE"
-  },
-  "leiCode": "20_digit_code",
-  "parentOrganisation": [
-    "https://parent.organisation1.org",
-    "https://parent.organisation2.org"
+  "registrationNumber": [
+    {
+      "type": "local",
+      "value": "o12345678"
+    }
   ],
-  "subOrganisation": [
-    "https://sub.organisation1.org",
-    "https://sub.organisation2.org"
-  ],
+  "headquarterAddress.country": "DE",
+  "legalAddress.country": "DE",
   "bpn": "BPNL000000000000"
 }
 ```
@@ -261,50 +252,46 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.04.jsonld",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
     "VerifiableCredential",
     "LegalPerson"
   ],
-  "issuer": "did:sov:BEumURwPdXCobgbPYQZXge",
-  "issuanceDate": "2022-11-23T12:02:41Z",
-  "expirationDate": "2023-02-21T12:02:41Z",
+  "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
+  "issuanceDate": "2023-01-25T13:52:48Z",
+  "expirationDate": "2023-04-25T13:52:48Z",
   "credentialSubject": {
-    "type": "LegalPerson",
-    "registrationNumber": "o12345678",
-    "headquarterAddress": {
-      "country": "DE"
-    },
-    "legalAddress": {
-      "country": "DE"
-    },
-    "leiCode": "20_digit_code",
-    "parentOrganisation": [
-      "https://parent.organisation1.org",
-      "https://parent.organisation2.org"
-    ],
-    "subOrganisation": [
-      "https://sub.organisation1.org",
-      "https://sub.organisation2.org"
-    ],
     "bpn": "BPNL000000000000",
-    "id": "did:indy:idunion:test:P5TFvs9PQ6e6nMB18XVTJw"
+    "registrationNumber": [
+      {
+        "type": "local",
+        "value": "o12345678"
+      }
+    ],
+    "headquarterAddress": {
+      "countryCode": "DE"
+    },
+    "type": "LegalPerson",
+    "legalAddress": {
+      "countryCode": "DE"
+    },
+    "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
   },
   "credentialStatus": {
-    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d#452",
+    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#36",
     "type": "StatusList2021Entry",
     "statusPurpose": "revocation",
-    "statusListIndex": "452",
-    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/fe5da20d-35c1-4154-b764-1e7dc875ca1d"
+    "statusListIndex": "36",
+    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
   },
   "proof": {
     "type": "Ed25519Signature2018",
-    "created": "2022-11-23T12:02:43Z",
+    "created": "2023-01-25T13:52:49Z",
     "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:sov:BEumURwPdXCobgbPYQZXge#key-1",
-    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..KALYtsHMI62J0x3ILqkuOc8hu30YzBevanddWesaEd2j776fKZN5dvJBfUH_Lo7Q97jXhmZMiYt7HW7k-8duBA"
+    "verificationMethod": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs#key-1",
+    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..rdRVga4MQ-M_t2baOyo--FxaSHm9xPzxJ4QkUW53HMxD9E783WWtkfT4Oo8FYc7AYv5fpXrEiwIeCUrTFhgbDw"
   }
 }
 ```    
@@ -425,4 +412,4 @@ In Catena-X we use [ARGO-CD](https://confluence.catena-x.net/display/ARTI/ArgoCD
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.04]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
-[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.04
+[Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
