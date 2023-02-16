@@ -13,7 +13,7 @@ based on the Custodian for the signature. The result is passed back to the reque
 
 ```shell
 Software version: 1.2.0
-Helm Chart version: 1.2.0
+Helm Chart version: 1.2.1
 ```
 
 # Solution Strategy 
@@ -252,17 +252,30 @@ the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
 
+
+
 ## Installation Steps:-
 
 Helm charts are provided inside https://github.com/eclipse-tractusx/sd-factory
 
-There are diffrent ways to do the installation
+1.) Using helm commands:- <br />
 
-1. Using helm commands:-  
+How to install application using helm:-
+    helm install ReleaseName ChartName
+    
+    a.) Add helm repository in tractusx:-
+           helm repo add sd-factory https://eclipse-tractusx.github.io/charts/dev
+    b.) To search the specific repo in helm repositories 
+           helm search repo tractusx-dev
+    c.) To install using helm command:-   
+           helm install sd-factory tractusx-dev/sd-factory
 
-    a.) git clone https://github.com/eclipse-tractusx/sd-factory.git  <br />
+
+2.) Local installation:
+
+    a.) git clone https://github.com/eclipse-tractusx/sd-factory.git <br />
     b.) Modify values file according to your requirement.  <br />
-    c.) You need to define the secrets as well in values.yaml
+    c.) You need to define the secrets as well in values.yaml  <br />
         secret:  <br />
           clientId: ""  -> Custodian wallet client id  <br />
           clientSecret: ""  -> Custodian wallet client secret  <br />
@@ -273,11 +286,7 @@ There are diffrent ways to do the installation
     d.) These secrets should be defined in Hashicorp vault
     e.) Deploy in a kubernetes cluster  <br />
         helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
-
-2. Using ArgoCD. 
-
-To see how to deploy an application: 
-[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
+	
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
