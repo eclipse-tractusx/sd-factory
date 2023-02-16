@@ -68,11 +68,10 @@ sdfactory:
     resource: ""
     custodianWalletUri: ""
 
-
 service:
-  type: ""
-  port: ""
-  targetPort: ""
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
   
 ingress:
   enabled: false
