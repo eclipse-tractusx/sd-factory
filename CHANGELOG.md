@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - schema was changed so registrationNumber is an array of documents
   with type and value fields  
 
+## [1.2.1] - 2023-02-16
+- Added pen env
+- Changed Readme
+- Added service port to values.yaml
+- QG5 changes
+
 ## [1.2.0] - 2023-01-16
 
 ### Added

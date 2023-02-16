@@ -28,7 +28,7 @@ image:
   repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory"
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.1.0"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -68,9 +68,9 @@ sdfactory:
 
 
 service:
-  type: ""
-  port: ""
-  targetPort: ""
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
   
 ingress:
   enabled: false
