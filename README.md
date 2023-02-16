@@ -14,6 +14,7 @@ based on the Custodian for the signature. The result is passed back to the reque
 ```shell
 Software version: 1.2.0
 Helm Chart version: 1.2.1
+
 ```
 
 # Solution Strategy 
@@ -287,7 +288,6 @@ How to install application using helm:-
     e.) Deploy in a kubernetes cluster  <br />
         helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
         
-
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10

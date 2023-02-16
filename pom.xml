@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.tsystems</groupId>
     <artifactId>sd-factory</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0-SNAPSHOT</version>
     <name>factory</name>
     <description>Self-Description Hub Prototype</description>
     <packaging>jar</packaging>
@@ -211,29 +211,6 @@
                             <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.vrel3</apiPackage>
                             <apiNameSuffix>v106</apiNameSuffix>
                             <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.vrel3</modelPackage>
-                            <supportingFilesToGenerate>
-                                ApiUtil.java
-                            </supportingFilesToGenerate>
-                            <configOptions>
-                                <delegatePattern>true</delegatePattern>
-                                <openApiNullable>false</openApiNullable>
-                                <dateLibrary>java8</dateLibrary>
-                                <java8>true</java8>
-                                <useBeanValidation>true</useBeanValidation>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>api-22.04</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-v22.04.yml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.v2204</apiPackage>
-                            <apiNameSuffix>v2210</apiNameSuffix>
-                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.v2204</modelPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>

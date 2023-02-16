@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - schema was changed so registrationNumber is an array of documents
   with type and value fields  
+- removed support for 22.10 as OpenAPI yaml is buggy and there ara 
+  complains from KICS
+
+## [1.2.0] - 2023-02-23
+QG5 changes
 
 ## [1.2.1] - 2023-02-16
 - Added pen env
