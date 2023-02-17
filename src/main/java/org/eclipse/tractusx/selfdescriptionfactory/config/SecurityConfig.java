@@ -41,16 +41,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URL = { "/ping", "/*/public/**", "/api-docs/**", "/swagger-ui/**",
@@ -68,10 +66,10 @@ public class SecurityConfig {
         // This is a converter for roles as embedded in the JWT by a Keycloak server
         // Roles are taken from both realm_access.roles & resource_access.{client}.roles
         return jwt -> Stream.of(
-                (Map<String, Object>) jwt.getClaims().getOrDefault("realm_access", Map.of()),
-                (Map<String, Object>) ((Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of()))
-                        .getOrDefault(resourceName, Map.<String, Object>of())
-        ).flatMap(roleMap -> ((List<String>)roleMap.get("roles")).stream())
+                        (Map<String, Object>) jwt.getClaims().getOrDefault("realm_access", Map.of()),
+                        (Map<String, Object>) ((Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of())).getOrDefault(resourceName, Map.of())
+                ).map(roleMap -> ((List<String>) roleMap.getOrDefault("roles", List.of())))
+                .flatMap(Collection::stream)
                 .distinct()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
@@ -119,10 +117,10 @@ public class SecurityConfig {
     protected CorsConfigurationSource corsConfigurationSource() {
         // Very permissive CORS config...
         final var configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("*"));
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
         // Limited to API routes (neither actuator nor Swagger-UI)
         final var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
