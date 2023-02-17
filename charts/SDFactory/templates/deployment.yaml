@@ -63,7 +63,7 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientSecret
-          - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
+          - name: APP_CUSTODIANWALLET_SERVERURL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
@@ -77,6 +77,37 @@ spec:
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: realm 
+                key: realm
+          - name: APP_CALLBACK_URLLEGALPERSON
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-urlLegalPerson
+          - name: APP_CALLBACK_URLSERVICEOFFERING
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-urlServiceOffering        
+          - name: APP_CALLBACK_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-serverUrl                
+          - name: APP_CALLBACK_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-realm
+          - name: APP_CALLBACK_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-clientId               
+          - name: APP_CALLBACK_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-clientSecret                
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

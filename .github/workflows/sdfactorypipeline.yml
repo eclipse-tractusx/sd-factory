@@ -27,7 +27,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
-      - 'main'
+      - 'clearing-house'
     paths:
       - 'SDFactory/**'
     tags:
@@ -64,7 +64,7 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=semver,pattern={{version}},value=1.1.1
+            type=semver,pattern={{version}},value=2.0.0-SNAPSHOT
 
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
