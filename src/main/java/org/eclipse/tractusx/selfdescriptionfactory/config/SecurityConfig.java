@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Configuration
@@ -71,6 +72,7 @@ public class SecurityConfig {
                 (Map<String, Object>) ((Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of()))
                         .getOrDefault(resourceName, Map.<String, Object>of())
         ).flatMap(roleMap -> ((List<String>)roleMap.get("roles")).stream())
+                .distinct()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }
