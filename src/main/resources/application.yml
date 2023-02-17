@@ -23,18 +23,19 @@ server:
   error:
     include-message: always
 keycloak:
-  #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
-  #realm: CX-Central
-  #resource: Cl2-CX-Portal
-  bearer-only: true
-  use-resource-role-mappings: true
-  principal-attribute: preferred_username
+  resource:
+    clientid: Cl2-CX-Portal
 spring:
   jackson:
     default-property-inclusion: non_null
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
     url: /SDFactoryApi-vRel3.yml
 app:
@@ -42,15 +43,21 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
-  custodianWallet:
-    #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-    #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
-    #realm: CX-Central
-    #clientId: ${CLIENTID}
-    #clientSecret: ${CLIENTSECRET}
-  clearingHouse:
-    uri:
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+  usersDetails:
+    custodianWallet:
+      uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+      serverUrl: https://centralidp.int.demo.catena-x.net/auth
+      realm: CX-Central
+      clientId: sa-cl5-custodian-1
+      clientSecret: secret
+    callback:
+      urlLegalPerson: https://portal-backend.int.demo.catena-x.net/api/administration/registration/clearinghouse/selfDescription
+      urlServiceOffering: https://portal-backend.int.demo.catena-x.net/api/administration/Connectors/clearinghouse/selfDescription
+      serverUrl: https://centralidp.int.demo.catena-x.net/auth
+      realm: CX-Central
+      clientId: sa-cl2-02
+      clientSecret: secret
   security:
     createRole: add_self_descriptions
 logging:

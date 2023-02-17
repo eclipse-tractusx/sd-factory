@@ -26,6 +26,7 @@ paths:
               LegalPerson:
                 description: payload to create LegalPerson
                 value:
+                    externalId: ID01234-123-4321
                     type: LegalPerson
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
@@ -38,9 +39,10 @@ paths:
               ServiceOffering:
                 description: payload to create ServiceOffering
                 value:
+                  externalId: ID01234-123-4321
+                  type: ServiceOffering
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
-                  type: ServiceOffering
                   providedBy: https://participant.url
                   aggregationOf: https://aggr1.url, https://aggr2.url
                   termsAndConditions: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/LICENSE

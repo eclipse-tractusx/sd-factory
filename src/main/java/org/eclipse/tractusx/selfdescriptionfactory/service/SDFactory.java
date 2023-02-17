@@ -54,7 +54,7 @@ public class SDFactory {
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
 
-    @PreAuthorize("hasRole(@securityRoles.createRole)")
+    @PreAuthorize("hasAuthority(@securityRoles.createRole)")
     public void createVC(Object document) {
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
         var claims = new HashMap<>(claimsHolder.claims());
@@ -72,7 +72,7 @@ public class SDFactory {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
-        var result = custodianWallet.getSignedVC(verifiableCredential);
-        clearingHouse.sendToClearingHouse(result, externalId.toString());
+        var vc = custodianWallet.getSignedVC(verifiableCredential);
+        clearingHouse.sendToClearingHouse(vc, externalId.toString());
     }
 }

@@ -27,6 +27,7 @@ import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
+import org.eclipse.tractusx.selfdescriptionfactory.service.KeycloakManager;
 import org.keycloak.admin.client.token.TokenManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -45,15 +46,21 @@ import static io.vavr.Predicates.instanceOf;
 @Slf4j
 @RequiredArgsConstructor
 public class CustodianWallet {
-    @Value("${app.custodianWallet.uri}")
+    @Value("${app.usersDetails.custodianWallet.uri}")
     private String uri;
-    private final TokenManager tokenManager;
+    private final KeycloakManager keycloakManager;
     private final ObjectMapper objectMapper;
 
     public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
+        String token = Try.of(() -> keycloakManager.getKeycloack("custodianWallet").tokenManager().getAccessTokenString())
+                .getOrElseThrow(err -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Error when get Access Token for the Custodian Wallet",
+                        err
+                ));
         return Try.of(() -> WebClient.create(uri).post()
                 .uri(uriBuilder -> uriBuilder.pathSegment("credentials").build())
-                .header("Authorization", "Bearer ".concat(tokenManager.getAccessTokenString()))
+                .header("Authorization", "Bearer ".concat(token))
                 .bodyValue(objToSign)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
