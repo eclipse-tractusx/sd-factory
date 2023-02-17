@@ -53,52 +53,52 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientID
-          - name: APP_CUSTODIANWALLET_CLIENTSECRET
+          - name: APP_USERDETAILS_CUSTODIANWALLET_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientSecret
-          - name: APP_CUSTODIANWALLET_SERVERURL
+          - name: APP_USERDETAILS_CUSTODIANWALLET_SERVERURL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: auth-server-url
-          - name: APP_CUSTODIANWALLET_URI
+          - name: APP_USERDETAILS_CUSTODIANWALLET_URI
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: custodianWalletUri
-          - name: APP_CUSTODIANWALLET_REALM
+          - name: APP_USERDETAILS_CUSTODIANWALLET_REALM
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: realm
-          - name: APP_CALLBACK_URLLEGALPERSON
+          - name: APP_USERDETAILS_CALLBACK_URLLEGALPERSON
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: callback-urlLegalPerson
-          - name: APP_CALLBACK_URLSERVICEOFFERING
+          - name: APP_USERDETAILS_CALLBACK_URLSERVICEOFFERING
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: callback-urlServiceOffering        
-          - name: APP_CALLBACK_SERVERURL
+          - name: APP_USERDETAILS_CALLBACK_SERVERURL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: callback-serverUrl                
-          - name: APP_CALLBACK_REALM
+          - name: APP_USERDETAILS_CALLBACK_REALM
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: callback-realm
-          - name: APP_CALLBACK_CLIENTID
+          - name: APP_USERDETAILS_CALLBACK_CLIENTID
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: callback-clientId               
-          - name: APP_CALLBACK_CLIENTSECRET
+          - name: APP_USERDETAILS_CALLBACK_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
