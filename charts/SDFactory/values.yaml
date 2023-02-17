@@ -24,6 +24,7 @@
 
 replicaCount: 1
 
+  # The image used for the application
 image:
   repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory"
   pullPolicy: Always
@@ -68,7 +69,7 @@ sdfactory:
     resource: ""
     custodianWalletUri: ""
 
-
+  # Port details for sevice
 service:
   type: ClusterIP
   port: 80

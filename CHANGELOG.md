@@ -12,14 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - removed support for 22.10 as OpenAPI yaml is buggy and there ara 
   complains from KICS
 
-## [1.2.0] - 2023-02-23
-QG5 changes
-
 ## [1.2.1] - 2023-02-16
-- Added pen env
-- Changed Readme
+- Added AUTHORS.md, INSTALL.md file
+- Changed versions in Readme
+- Added .helmignore file
 - Added service port to values.yaml
-- QG5 changes
+- Changed secrets manifest in secret.yaml
 
 ## [1.2.0] - 2023-01-16
 
