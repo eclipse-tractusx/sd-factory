@@ -40,8 +40,6 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -68,21 +66,13 @@ public class SecurityConfig {
     public Jwt2AuthoritiesConverter authoritiesConverter() {
         // This is a converter for roles as embedded in the JWT by a Keycloak server
         // Roles are taken from both realm_access.roles & resource_access.{client}.roles
-
-        return jwt -> {
-            final var realmAccess = (Map<String, Object>) jwt.getClaims().getOrDefault("realm_access", Map.of());
-            final var realmRoles = (Collection<String>) realmAccess.getOrDefault("roles", List.of());
-
-            final var resourceAccess = (Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of());
-            // read all roles from resource
-            final var confidentialClientAccess = (Map<String, Object>) resourceAccess.getOrDefault(resourceName,
-                    Map.of());
-            final var confidentialClientRoles = (Collection<String>) confidentialClientAccess.getOrDefault("roles",
-                    List.of());
-
-            return Stream.concat(realmRoles.stream(), confidentialClientRoles.stream()).map(SimpleGrantedAuthority::new)
-                    .toList();
-        };
+        return jwt -> Stream.of(
+                (Map<String, Object>) jwt.getClaims().getOrDefault("realm_access", Map.of()),
+                (Map<String, Object>) ((Map<String, Object>) jwt.getClaims().getOrDefault("resource_access", Map.of()))
+                        .getOrDefault(resourceName, Map.<String, Object>of())
+        ).flatMap(roleMap -> ((List<String>)roleMap.get("roles")).stream())
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     public interface Jwt2AuthenticationConverter extends Converter<Jwt, AbstractAuthenticationToken> {
@@ -113,13 +103,8 @@ public class SecurityConfig {
         // Disable CSRF because of state-less session-management
         http.csrf().disable();
 
-        // Route security: authenticated to all routes but actuator and Swagger-UI
-        // @formatter:off
         http.authorizeHttpRequests()
                 .anyRequest().permitAll();
-                //.requestMatchers(PUBLIC_URL).permitAll()
-               // .anyRequest().permitAll();
-        // @formatter:on
 
         http.headers().xssProtection().and()
                 .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline'").and()
