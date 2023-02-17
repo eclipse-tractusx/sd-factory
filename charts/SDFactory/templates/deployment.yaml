@@ -37,6 +37,18 @@ spec:
               containerPort: 8080
               protocol: TCP
                        
-
-          resources:
+          env:
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: ClientSecret
+          - name: APP_USERSDETAILS_CALLBACK_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-clientSecret                   
+                
+                
+                     resources:
             {{- toYaml .Values.resources | nindent 12 }}
