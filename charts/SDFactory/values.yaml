@@ -67,12 +67,12 @@ sdfactory:
     realm: ""
     resource: ""
     custodianWalletUri: ""
-    callback-urlLegalPerson: ""
-    callback-urlServiceOffering: ""
-    callback-serverUrl: ""
-    callback-realm: ""
-    callback-clientId: ""
-    callback-clientSecret: ""
+    callbackUrlLegalPerson: ""
+    callbackUrlServiceOffering: ""
+    callbackServerUrl: ""
+    callbackRealm: ""
+    callbackClientId: ""
+    callbackClientSecret: ""
 
 service:
   type: ""
