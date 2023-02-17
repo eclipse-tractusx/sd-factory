@@ -61,6 +61,7 @@ securityContext:
 
 sdfactory:
   secret:
+    jwkSetUri: ""
     clientId: ""
     clientSecret: ""
     authServerUrl: ""

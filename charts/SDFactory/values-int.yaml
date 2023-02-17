@@ -64,6 +64,7 @@ service:
   
 sdfactory:
   secret:
+    jwkSetUri: "<path:essential-services/data/custodian#jwkSetUri>"
     clientId: "<path:essential-services/data/custodian#clientId>"
     clientSecret: "<path:essential-services/data/custodian#clientSecret>"
     authServerUrl: "<path:essential-services/data/custodian#auth-server-url>"

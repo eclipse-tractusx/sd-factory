@@ -38,21 +38,16 @@ spec:
               protocol: TCP
               
           env:
-          - name: KEYCLOAK_AUTH-SERVER-URL
+          #- name: KEYCLOAK_AUTH-SERVER-URL
+          # valueFrom: 
+          #   secretKeyRef:
+          #     name: {{ include "sdfactory.applicationSecret.name" . }}
+          #     key: auth-server-url
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: auth-server-url
-          - name: KEYCLOAK_REALM
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: realm
-          - name: KEYCLOAK_RESOURCE
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: resource
+                key: jwk-set-uri
           - name: APP_CUSTODIANWALLET_CLIENTID
             valueFrom: 
               secretKeyRef:
