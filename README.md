@@ -255,9 +255,10 @@ and the Custodian Wallet.
 
 
 
-## Installation Steps:-
+## Installation Steps
 
 https://github.com/eclipse-tractusx/sd-factory/blob/main/INSTALL.md
+
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10

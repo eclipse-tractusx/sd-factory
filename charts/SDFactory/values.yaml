@@ -22,13 +22,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+    # -- Number of Replicas for pods
 replicaCount: 1
 
-  # The image used for the application
+
 image:
+    # -- Image to use for deploying an application
   repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory"
+    # -- Set the Image Pull Policy
   pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
+    # -- Image tage is defined in chart appVersion.
   tag: ""
 
 imagePullSecrets: []
@@ -36,12 +39,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+    # -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+    # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+    # -- The name of the service account to use.
+    # -- If not set and create is true, a name is generated using the fullname template
   name: ""
 
 podAnnotations: {}
@@ -51,6 +54,7 @@ podSecurityContext:
   fsGroup: 2000
 
 securityContext:
+    # -- Controls whether a process can gain more privileges
   allowPrivilegeEscalation: false
   # capabilities:
   #   drop:
@@ -62,30 +66,44 @@ securityContext:
 
 sdfactory:
   secret:
+    # -- Custodian wallet client id 
     clientId: ""
+    # -- Custodian wallet client secret 
     clientSecret: ""
+    # -- Keycloak URL
     authServerUrl: ""
+    # -- Keycloak Realm detail
     realm: ""
+    # -- Keycloak Resource detail
     resource: ""
+    # -- Details for Custodian wallet URI
     custodianWalletUri: ""
 
-  # Port details for sevice
+
 service:
+    # -- Type of service
   type: ClusterIP
+    # -- Port details for sevice
   port: 80
+    # -- Container Port details for sevice
   targetPort: 8080
   
 ingress:
+    # -- If you want to enable the ingress
   enabled: false
+    # -- a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class.
   className: ""
-  issuer: "letsencrypt-prod"
+    # -- Kubernetes resources that represent certificate authorities that are able to generate signed certificates by honoring certificate signing requests.
+  issuer: "letsencrypt-prod" 
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
+    # -- Host of the application on which application runs
     - host: ""
       paths:
         - path: /
+    # -- ImplementationSpecific path type matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types.
           pathType: ImplementationSpecific
   tls:
     - tlsName: chart-example-tls

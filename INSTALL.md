@@ -1,4 +1,4 @@
-## Installation Steps:-
+## Installation Steps
 
 Helm charts are provided inside https://github.com/eclipse-tractusx/sd-factory
 
