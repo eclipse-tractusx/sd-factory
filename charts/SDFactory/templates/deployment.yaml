@@ -48,7 +48,7 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: jwk-set-uri
-          - name: APP_CUSTODIANWALLET_CLIENTID
+          - name: APP_USERDETAILS_CUSTODIANWALLET_CLIENTID
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
