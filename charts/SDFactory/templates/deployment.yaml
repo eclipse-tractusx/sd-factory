@@ -50,5 +50,5 @@ spec:
                 key: callback-clientSecret                   
                 
                 
-                     resources:
+          resources:
             {{- toYaml .Values.resources | nindent 12 }}
