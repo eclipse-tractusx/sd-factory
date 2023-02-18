@@ -36,19 +36,68 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-                       
+              
           env:
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: jwk-set-uri
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: ClientID
           - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientSecret
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: auth-server-url
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: custodianWalletUri
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: realm
+          - name: APP_USERSDETAILS_CALLBACK_URLLEGALPERSON
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-urlLegalPerson
+          - name: APP_USERSDETAILS_CALLBACK_URLSERVICEOFFERING
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-urlServiceOffering        
+          - name: APP_USERSDETAILS_CALLBACK_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-serverUrl                
+          - name: APP_USERSDETAILS_CALLBACK_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-realm
+          - name: APP_USERSDETAILS_CALLBACK_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: callback-clientId               
           - name: APP_USERSDETAILS_CALLBACK_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-clientSecret                   
-                
-                
+                key: callback-clientSecret                
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

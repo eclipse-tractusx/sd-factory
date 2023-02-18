@@ -32,7 +32,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
+          #jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
@@ -46,17 +46,17 @@ app:
     schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   usersDetails:
     custodianWallet:
-      uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-      serverUrl: https://centralidp.int.demo.catena-x.net/auth
-      realm: CX-Central
-      clientId: sa-cl5-custodian-1
+      #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+      #serverUrl: https://centralidp.int.demo.catena-x.net/auth
+      #realm: CX-Central
+      #clientId: sa-cl5-custodian-1
       #clientSecret: 
     callback:
-      urlLegalPerson: https://portal-backend.int.demo.catena-x.net/api/administration/registration/clearinghouse/selfDescription
-      urlServiceOffering: https://portal-backend.int.demo.catena-x.net/api/administration/Connectors/clearinghouse/selfDescription
-      serverUrl: https://centralidp.int.demo.catena-x.net/auth
-      realm: CX-Central
-      clientId: sa-cl2-02
+      #urlLegalPerson: https://portal-backend.int.demo.catena-x.net/api/administration/registration/clearinghouse/selfDescription
+      #urlServiceOffering: https://portal-backend.int.demo.catena-x.net/api/administration/Connectors/clearinghouse/selfDescription
+      #serverUrl: https://centralidp.int.demo.catena-x.net/auth
+      #realm: CX-Central
+      #clientId: sa-cl2-02
       #clientSecret:
   security:
     createRole: add_self_descriptions
