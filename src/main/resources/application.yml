@@ -50,14 +50,14 @@ app:
       serverUrl: https://centralidp.int.demo.catena-x.net/auth
       realm: CX-Central
       clientId: sa-cl5-custodian-1
-      clientSecret: 
+      #clientSecret: 
     callback:
       urlLegalPerson: https://portal-backend.int.demo.catena-x.net/api/administration/registration/clearinghouse/selfDescription
       urlServiceOffering: https://portal-backend.int.demo.catena-x.net/api/administration/Connectors/clearinghouse/selfDescription
       serverUrl: https://centralidp.int.demo.catena-x.net/auth
       realm: CX-Central
       clientId: sa-cl2-02
-      clientSecret: 
+      #clientSecret:
   security:
     createRole: add_self_descriptions
 logging:
