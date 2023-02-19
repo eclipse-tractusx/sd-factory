@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.eclipse.tractusx.selfdescriptionfactory.service.KeycloakManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
@@ -25,7 +26,9 @@ public abstract class ClearingHouse {
     public abstract void doWork(String url, Object payload);
 
     @SneakyThrows
+    @Async
     public void sendToClearingHouse(VerifiableCredential verifiableCredential, String externalId) {
+        Thread.sleep(2000);
         String url;
         if (verifiableCredential.getTypes().contains("LegalPerson")) {
             url = legalPersonUrl;

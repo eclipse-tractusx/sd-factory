@@ -20,6 +20,7 @@ public class ClearingHouseTest extends ClearingHouse{
     @SneakyThrows
     public void doWork(String url, Object payload) {
         log.debug("URL: {}", url);
+        log.debug("Bearer: {}", keycloakManager.getKeycloack("callback").tokenManager().getAccessTokenString());
         log.debug("Payload: {}", objectMapper.writeValueAsString(payload));
     }
 }

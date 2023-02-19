@@ -26,10 +26,12 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @ComponentScan(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @ConfigurationPropertiesScan
+@EnableAsync
 public class SelfDescriptionFactoryApplication {
 
     public static void main(String[] args) {
