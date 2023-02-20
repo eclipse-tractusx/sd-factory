@@ -48,21 +48,21 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "sdfactory-r3.beta.demo.catena-x.net"
+    - host: "sdfactory-pen.int.demo.catena-x.net"
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - tlsName: sdfactory-r3.beta.demo.catena-x.net-tls
+    - tlsName: sdfactory-pen.int.demo.catena-x.net-tls
       hosts:
-        - sdfactory-r3.beta.demo.catena-x.net
+        - sdfactory-pen.int.demo.catena-x.net
 
-
+  
 sdfactory:
   secret:
-    clientId: "<path:essential-services/data/custodian-beta#clientId>"
-    clientSecret: "<path:essential-services/data/custodian-beta#clientSecret>"
-    authServerUrl: "<path:essential-services/data/custodian-beta#auth-server-url>"
-    realm: "<path:essential-services/data/custodian-beta#realm>"
-    resource: "<path:essential-services/data/custodian-beta#resource>"
-    custodianWalletUri: "<path:essential-services/data/custodian-beta#uri>"
+    clientId: "<path:essential-services/data/custodian-pen#clientId>"
+    clientSecret: "<path:essential-services/data/custodian-pen#clientSecret>"
+    authServerUrl: "<path:essential-services/data/custodian-pen#auth-server-url>"
+    realm: "<path:essential-services/data/custodian-pen#realm>"
+    resource: "<path:essential-services/data/custodian-pen#resource>"
+    custodianWalletUri: "<path:essential-services/data/custodian-pen#uri>"

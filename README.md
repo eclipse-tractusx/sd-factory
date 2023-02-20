@@ -13,7 +13,8 @@ based on the Custodian for the signature. The result is passed back to the reque
 
 ```shell
 Software version: 1.2.0
-Helm Chart version: 1.2.0
+Helm Chart version: 1.2.1
+
 ```
 
 # Solution Strategy 
@@ -252,32 +253,12 @@ the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
 
-## Installation Steps:-
 
-Helm charts are provided inside https://github.com/eclipse-tractusx/sd-factory
 
-There are diffrent ways to do the installation
+## Installation Steps
 
-1. Using helm commands:-  
+https://github.com/eclipse-tractusx/sd-factory/blob/main/INSTALL.md
 
-    a.) git clone https://github.com/eclipse-tractusx/sd-factory.git  <br />
-    b.) Modify values file according to your requirement.  <br />
-    c.) You need to define the secrets as well in values.yaml
-        secret:  <br />
-          clientId: ""  -> Custodian wallet client id  <br />
-          clientSecret: ""  -> Custodian wallet client secret  <br />
-          authServerUrl: ""  ->  Keycloak URL   <br />
-          realm: ""   -> Keycloak Realm  <br />
-          resource: ""  ->  Keycloak Resource   <br />
-          custodianWalletUri: "" -> Custodian wallet URI  <br /> 
-    d.) These secrets should be defined in Hashicorp vault
-    e.) Deploy in a kubernetes cluster  <br />
-        helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
-
-2. Using ArgoCD. 
-
-To see how to deploy an application: 
-[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
