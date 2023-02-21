@@ -52,7 +52,7 @@ app:
       #clientId: sa-cl5-custodian-1
       #clientSecret:
     clearingHouse:
-      uri: http://ch.dev.demo.catena-x.net/api
+      uri: https://dummy.dev.demo.catena-x.net/api/credentials
       #serverUrl: https://centralidp.int.demo.catena-x.net/auth
       #realm: CX-Central
       #clientId: sa-cl2-02
