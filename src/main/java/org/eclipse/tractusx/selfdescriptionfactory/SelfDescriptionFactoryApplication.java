@@ -31,7 +31,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @ComponentScan(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @ConfigurationPropertiesScan
-@EnableAsync
 public class SelfDescriptionFactoryApplication {
 
     public static void main(String[] args) {
