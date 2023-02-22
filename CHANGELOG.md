@@ -6,8 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+- call compliance service after getting the signature for asynchronous processing
+- add async support.
+
+### Removed
+- Remove 22.10 API from endpoint
+
 ### Changed
-- add async support. Remove 22.10 API from endpoint
 - schema was changed so registrationNumber is an array of documents
   with type and value fields  
 - removed support for 22.10 as OpenAPI yaml is buggy and there ara 
@@ -22,7 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - rename endpoint path to reflect API version (/api/22.04/selfdescription)
-- better error propagation from the Custodian to get more details on a error
+- better error propagation from the Custodian to get more details on an error
 - update Spring Boot from 2.7.5 -> 2.7.6
 - update springdoc-openapi-ui 1.6.12 -> 1.6.13
 - update keycloak-admin-client 19.0.3 -> 20.0.2
@@ -43,8 +49,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 Added helm release, versioning & tagging
 
 ### Added
-- Generate self description for LegalPerson 
-- Generate self description for ServiceOffering
+- Generate self-description for LegalPerson 
+- Generate self-description for ServiceOffering
 - Keycloak protection is added
 
 ### Changed
@@ -57,6 +63,6 @@ Added helm release, versioning & tagging
 ### Removed
 - Controller has been removed
 
-### Known knowns
+### Known issues
 - Cross side scripting (XSS) shall be mitigated (low risk)
 - Improving the validation of the input parameters (low risk)
