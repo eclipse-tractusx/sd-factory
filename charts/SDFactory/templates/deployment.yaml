@@ -68,36 +68,31 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: realm
-          - name: APP_USERSDETAILS_CALLBACK_URLLEGALPERSON
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_URI
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-urlLegalPerson
-          - name: APP_USERSDETAILS_CALLBACK_URLSERVICEOFFERING
+                key: clearingHouse-uri        
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_SERVERURL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-urlServiceOffering        
-          - name: APP_USERSDETAILS_CALLBACK_SERVERURL
+                key: clearingHouse-serverUrl                
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_REALM
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-serverUrl                
-          - name: APP_USERSDETAILS_CALLBACK_REALM
+                key: clearingHouse-realm
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTID
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-realm
-          - name: APP_USERSDETAILS_CALLBACK_CLIENTID
+                key: clearingHouse-clientId               
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-clientId               
-          - name: APP_USERSDETAILS_CALLBACK_CLIENTSECRET
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: callback-clientSecret                
+                key: clearingHouse-clientSecret                
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

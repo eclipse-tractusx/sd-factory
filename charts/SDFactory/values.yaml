@@ -68,12 +68,11 @@ sdfactory:
     realm: ""
     resource: ""
     custodianWalletUri: ""
-    callbackUrlLegalPerson: ""
-    callbackUrlServiceOffering: ""
-    callbackServerUrl: ""
-    callbackRealm: ""
-    callbackClientId: ""
-    callbackClientSecret: ""
+    clearingHouseUri: ""
+    clearingHouseServerUrl: ""
+    clearingHouseRealm: ""
+    clearingHouseClientId: ""
+    clearingHouseClientSecret: ""
 
 service:
   type: ClusterIP
