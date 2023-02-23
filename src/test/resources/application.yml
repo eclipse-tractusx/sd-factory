@@ -28,6 +28,8 @@ keycloak:
 spring:
   jackson:
     default-property-inclusion: non_null
+  profiles:
+    active: test
   security:
     oauth2:
       resourceserver:
@@ -51,10 +53,8 @@ app:
       realm: CX-Central
       clientId: sa-cl5-custodian-1
       clientSecret: secret
-    callback:
-      ## uri: https://6c6a6b1c-b039-4c3d-aeae-98986f941827.mock.pstmn.io/ch
-      urlLegalPerson: https://portal-backend.int.demo.catena-x.net/api/administration/registration/clearinghouse/selfDescription
-      urlServiceOffering: https://portal-backend.int.demo.catena-x.net/api/administration/Connectors/clearinghouse/selfDescription
+    clearingHouse:
+      uri: http://ch.dev.demo.catena-x.net/api
       serverUrl: https://centralidp.int.demo.catena-x.net/auth
       realm: CX-Central
       clientId: sa-cl2-02

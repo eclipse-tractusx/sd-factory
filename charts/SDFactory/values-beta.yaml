@@ -48,25 +48,27 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "sdfactory.beta.demo.catena-x.net"
+    - host: "sdfactory-r3.beta.demo.catena-x.net"
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - tlsName: sdfactory.beta.demo.catena-x.net-tls
-
+    - tlsName: sdfactory-r3.beta.demo.catena-x.net-tls
       hosts:
-        - sdfactory.beta.demo.catena-x.net
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
-  
+        - sdfactory-r3.beta.demo.catena-x.net
+
+
 sdfactory:
   secret:
+    jwkSetUri: "<path:essential-services/data/custodian-beta#jwkSetUri>"
     clientId: "<path:essential-services/data/custodian-beta#clientId>"
     clientSecret: "<path:essential-services/data/custodian-beta#clientSecret>"
     authServerUrl: "<path:essential-services/data/custodian-beta#auth-server-url>"
     realm: "<path:essential-services/data/custodian-beta#realm>"
     resource: "<path:essential-services/data/custodian-beta#resource>"
     custodianWalletUri: "<path:essential-services/data/custodian-beta#uri>"
+    clearingHouseUri: "<path:essential-services/data/custodian-beta#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/custodian-beta#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/custodian-beta#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/custodian-beta#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/custodian-beta#clearingHouse-clientSecret>"

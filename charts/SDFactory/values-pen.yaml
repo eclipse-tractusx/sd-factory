@@ -48,27 +48,28 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "sdfactory.int.demo.catena-x.net"
+    - host: "sdfactory-pen.int.demo.catena-x.net"
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - tlsName: sdfactory.int.demo.catena-x.net-tls
+    - tlsName: sdfactory-pen.int.demo.catena-x.net-tls
       hosts:
-        - sdfactory.int.demo.catena-x.net
+        - sdfactory-pen.int.demo.catena-x.net
 
   
 sdfactory:
   secret:
-    jwkSetUri: "<path:essential-services/data/custodian#jwkSetUri>"
-    clientId: "<path:essential-services/data/custodian#clientId>"
-    clientSecret: "<path:essential-services/data/custodian#clientSecret>"
-    authServerUrl: "<path:essential-services/data/custodian#auth-server-url>"
-    realm: "<path:essential-services/data/custodian#realm>"
-    resource: "<path:essential-services/data/custodian#resource>"
-    custodianWalletUri: "<path:essential-services/data/custodian#uri>"
-    clearingHouseUri: "<path:essential-services/data/custodian#clearingHouse-uri>"
-    clearingHouseServerUrl: "<path:essential-services/data/custodian#clearingHouse-serverUrl>"
-    clearingHouseRealm: "<path:essential-services/data/custodian#clearingHouse-realm>"
-    clearingHouseClientId: "<path:essential-services/data/custodian#clearingHouse-clientId>"
-    clearingHouseClientSecret: "<path:essential-services/data/custodian#clearingHouse-clientSecret>"
+    jwkSetUri: "<path:essential-services/data/custodian-pen#jwkSetUri>"
+    clientId: "<path:essential-services/data/custodian-pen#clientId>"
+    clientSecret: "<path:essential-services/data/custodian-pen#clientSecret>"
+    authServerUrl: "<path:essential-services/data/custodian-pen#auth-server-url>"
+    realm: "<path:essential-services/data/custodian-pen#realm>"
+    resource: "<path:essential-services/data/custodian-pen#resource>"
+    custodianWalletUri: "<path:essential-services/data/custodian-pen#uri>"
+    clearingHouseUri: "<path:essential-services/data/custodian-pen#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/custodian-pen#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/custodian-pen#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/custodian-pen#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/custodian-pen#clearingHouse-clientSecret>"
+

@@ -6,7 +6,17 @@ Factory component is responsible for the creation of Self Descriptions. This com
 gets input data from the Onboarding Tool, which prepares the data for the SD-Factory,
 creates a Verifiable Credential and passes the document to the
 [Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallets)
-based on the Custodian for the signature. The result is passed back to the requester.
+based on the Custodian for the signature. The result is sent to the Compliance Service for
+further processing.
+
+
+## Software Version
+
+```shell
+Software version: 2.0.0
+Helm Chart version: 2.0.0
+
+```
 
 # Solution Strategy 
 
@@ -22,7 +32,9 @@ sequenceDiagram
     SDFactory-->>Identity Provider: technical user to acees the Wallet
     SDFactory->>+Managed Identity Wallet: Verifiable Credential
     Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
-    SDFactory->>+Onboarding Service: Signed Verifiable Credential
+    SDFactory->>+Compliance Service: Signed Verifiable Credential
+    Compliance Service->>Compliance Service: asynchronous processing
+    Compliance Service->>+Onboarding Service: Signed Verifiable Credential
 	
 ```
 
@@ -30,17 +42,11 @@ sequenceDiagram
    and receives the authentication ticket.
 2. User calls On-boarding Service with request for creating and publishing
    SD-document. The service authenticates the user and prepare the data
-   SD-Factory needs for creating SD-document. The documents SD-Factory can 
-   work with are defined in [Trust Framework]. SDFactory supports schema from different 
-   versions of [Trust Framework] depending on the endpoint address. 
-   Take a look at the section describing [REST interface](#REST Interface) for details. 
-   Currently, these documents are supported by SD-Factory:
-    - LegalPerson (API v1.0.6, [Trust Framework V.22.10])
-    - ServiceOffering (API v1.0.6, [Trust Framework V.22.10])
-    - PhysicalResource ([Trust Framework V.22.10])
-    - VirtualResource ([Trust Framework V.22.10])
-    - InstantiatedVirtualResource ([Trust Framework V.22.10])
-
+   SD-Factory needs for creating SD-document. SDFactory takes document in a format,
+   specified in [Catena-X Confluence](https://confluence.catena-x.net/display/CORE/Self+Description+Interface)]
+   and convert it to [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
+    - LegalPerson;
+    - ServiceOffering;
    **Organization wallet of the company which runs the service shall
    be available at this point of time as it signs the Verifiable Credential
    with SD document. The wallet associated with the service shall be available
@@ -53,15 +59,15 @@ sequenceDiagram
    OS and signs it with organization key. The organization is acting as an Issuer.
    The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
    for this operation.
-5. SD-Factory returns signed Verifiable Credential to the requester (On-boarding service),
-   which is responsible for publishing it. 
+5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further (asynchronous) processing.
+   In the end the Compliance Service sends Self-Description document back to the On-boarding service endpoint. 
+   OS is responsible for storing and publishing it. 
 
 For the VC we have to provide valid JSON context where we have a reference to an object
 from known ontology. This object carries the claims the SD-Factory signs. The document
 is published on the github repository of the project. The vocabulary URL can be changed 
-when will be provided by Trusted Framework. Currently, two vocabularies are supported:
-1. [Pre-22.4 schema, AKA 1.06](src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld).
-2. [Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld).
+when will be provided by Trusted Framework. Currently, we support 
+[a vocabulary for Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld).
 
 # REST Interface
 
@@ -70,18 +76,15 @@ Only the authorized user can call these interfaces. They are protected with keyc
 parameters are given in `application.yml`.
 The user role for creating Self-Descriptions is specified in `application.yml` as well
 
-Depending on the required version a SD-document goes to one of those endpoint to be converted to the 
-signed Verifiable Credential:
+To trigger creation of the SD-document one shall call the endpoint available by path :
 
-1. `POST /api/rel3/selfdescription`
-2. `POST /api/22.10/selfdescription`
+`POST /api/rel3/selfdescription`
 
-OpenAPI specification for each version is given there:
+OpenAPI specification is given there:
 
-1. [Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-vRel3.yml).
-2. [Version 22.10 of Trust Framework](src/main/resources/static/SDFactoryApi-v22.10.yml).
+[Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-vRel3.yml).
 
-An example of the body for LegalPerson from rel3 API is given bellow:
+An example of the body for LegalPerson is given bellow:
 
 ```json
 {
@@ -100,14 +103,14 @@ An example of the body for LegalPerson from rel3 API is given bellow:
 }
 ```
 
-The Self-Description in the format of Verifiable Credential is returned. Here is an example of
+The Self-Description in the format of Verifiable Credential is created. Here is an example of
 Verifiable Credentials for LegalPerson:
 
 ```json
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
@@ -151,6 +154,8 @@ Verifiable Credentials for LegalPerson:
 }
 ```
 
+Then Verifiable Credential is sent to the Compliance Service.
+
 # Configuration
 The configuration property file is located under `resources` folder and is incorporated 
 into the fat jar during build process. It can be customized before building if needed.
@@ -168,37 +173,40 @@ server:
   error:
     include-message: always
 keycloak:
-  #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
-  #realm: CX-Central
-  #resource: Cl2-CX-Portal
-  bearer-only: true
-  use-resource-role-mappings: true
-  principal-attribute: preferred_username
+  resource:
+    clientid: Cl2-CX-Portal
 spring:
   jackson:
     default-property-inclusion: non_null
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+        #jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    urls:
-      - url: /SDFactoryApi-v22.10.yml
-        name: API-22.10
-      - url: /SDFactoryApi-vRel3.yml
-        name: API-1.0.6
+    url: /SDFactoryApi-vRel3.yml
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schemaRel3Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-vRel3.jsonld
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
-  custodianWallet:
-    uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-    #auth-server-url: https://centralidp.int.demo.catena-x.net/auth
-    realm: CX-Central
-    #clientId: ${CLIENTID}
-    #clientSecret: ${CLIENTSECRET}
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+  usersDetails:
+    custodianWallet:
+    #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
+    #serverUrl: https://centralidp.int.demo.catena-x.net/auth
+    #realm: CX-Central
+    #clientId: sa-cl5-custodian-1
+    #clientSecret:
+    clearingHouse:
+    #uri: https://dummy.dev.demo.catena-x.net/api/credentials
+    #serverUrl: https://centralidp.int.demo.catena-x.net/auth
+    #realm: CX-Central
+    #clientId: sa-cl2-02
+    #clientSecret:
   security:
     createRole: add_self_descriptions
 ```
@@ -207,14 +215,14 @@ Here `keycloak` section defines keycloak's parameters for client requests authen
 
 `app.verifiableCredentials.durationDays` defines for how many days the VC is issued.
 
-`schemaRel3Url` and `schema2210Url` specify the JSON-LD vocabulary URLs for API 1.0.6 (pre-22.04)
-and 22.10 versions respectively.  
+`schema2210Url` specify the JSON-LD vocabulary URL
 
 `app.custodianWallet` contains parameters for accessing Custodian Wallet:
 - `uri` is custodian Wallet url
 - `auth-server-url`, `realm`, `clientId`, `clientSecret` are keycloak parameters for 
    a user which calls the Custodian Wallet. This user shall have enough rights to create 
    Verifiable Credentials and Verifiable Presentations.
+`app.clearingHouse` contains authentication parameters for calling the Compliance Service.
 
 `app.security` sets a role a user must have for creating Self-Description.
 
@@ -228,7 +236,7 @@ cd SDFactory
 Then fat jar file can be found in `target` folder as well as in local Maven repository.
 it can be run with this command:
 ```shell
-java -jar target/sd-factory-1.2.0.jar
+java -jar target/sd-factory-2.0.0.jar
 ```
 Please note the name of jar-file as it may differ if version is changed.
 
@@ -244,32 +252,11 @@ the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
 
-## Installation Steps:-
 
-Helm charts are provided inside https://github.com/catenax-ng/tx-sd-factory
+## Installation Steps
 
-There are diffrent ways to do the installation
+https://github.com/eclipse-tractusx/sd-factory/blob/main/INSTALL.md
 
-1. Using helm commands:-  
-
-    a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
-    b.) Modify values file according to your requirement.  <br />
-    c.) You need to define the secrets as well in values.yaml
-        secret:  <br />
-          clientId: ""  -> Custodian wallet client id  <br />
-          clientSecret: ""  -> Custodian wallet client secret  <br />
-          authServerUrl: ""  ->  Keycloak URL   <br />
-          realm: ""   -> Keycloak Realm  <br />
-          resource: ""  ->  Keycloak Resource   <br />
-          custodianWalletUri: "" -> Custodian wallet URI  <br /> 
-    d.) These secrets should be defined in Hashicorp vault
-    e.) Deploy in a kubernetes cluster  <br />
-        helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
-
-2. Using ArgoCD. 
-
-To see how to deploy an application on 'Hotel Budapest': 
-[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10

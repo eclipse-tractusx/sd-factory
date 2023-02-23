@@ -133,6 +133,5 @@ components:
               type: string
           required:
             - providedBy
-            - termsAndConditions
 security:
   - bearerAuth: []

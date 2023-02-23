@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -100,20 +101,36 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
     private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.ServiceOfferingSchema convertRel3ServiceOffering2210(
             org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema source
     ) {
+        var aggregationOf = Optional.ofNullable(source.getAggregationOf())
+                .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
+                .filter(Predicate.not(String::isBlank)).map(String::trim)
+                .map(Utils::uriFromStr).toList();
+        if (aggregationOf.isEmpty()) {
+            aggregationOf = null;
+        }
+        var termsAndConditions = Optional.ofNullable(source.getTermsAndConditions())
+                .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
+                .filter(Predicate.not(String::isBlank)).map(String::trim)
+                .map(this::getTermsAndConditions)
+                .toList();
+        if (termsAndConditions.isEmpty()) {
+            termsAndConditions = null;
+        }
+        var policy = Optional.ofNullable(source.getPolicies())
+                .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
+                .filter(Predicate.not(String::isBlank)).map(String::trim)
+                .toList();
+        if (policy.isEmpty()) {
+            policy = null;
+        }
         return new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.ServiceOfferingSchema()
                 .type(source.getType())
                 .holder(source.getHolder())
                 .issuer(source.getIssuer())
                 .providedBy(source.getProvidedBy())
-                .aggregationOf(Optional.ofNullable(source.getAggregationOf())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream).map(String::trim)
-                        .map(Utils::uriFromStr).collect(Collectors.toList()))
-                .termsAndConditions(Optional.ofNullable(source.getTermsAndConditions())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream).map(String::trim)
-                        .map(this::getTermsAndConditions).collect(Collectors.toList()))
-                .policy(Optional.ofNullable(source.getPolicies())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream).map(String::trim)
-                        .collect(Collectors.toList()))
+                .aggregationOf(aggregationOf)
+                .termsAndConditions(termsAndConditions)
+                .policy(policy)
                 .dataAccountExport(List.of(
                         new DataAccountExportSchema()
                                 .requestType(DataAccountExportSchema.RequestTypeEnum.EMAIL)
@@ -122,6 +139,7 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
                         )
                 );
     }
+
     private TermsAndConditionsSchema getTermsAndConditions(String urlStr) {
         return Try.of(() -> new URL(urlStr))
                 .mapTry(url -> Utils.getConnectionIfRedirected(url, maxRedirect))

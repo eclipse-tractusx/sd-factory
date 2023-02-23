@@ -746,8 +746,6 @@ components:
                 $ref: '#/components/schemas/DataAccountExportSchema'
           required:
             - providedBy
-            - termsAndConditions
-            - policy
             - dataAccountExport
     TermsAndConditionsSchema:
       type: object
