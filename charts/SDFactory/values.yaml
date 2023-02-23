@@ -67,29 +67,29 @@ securityContext:
 sdfactory:
   secret:
   
-    jwkSetUri: "<path:essential-services/data/custodian#jwkSetUri>"
+    jwkSetUri: ""
     # -- Custodian wallet client id
-    clientId: "<path:essential-services/data/custodian#clientId>"
+    clientId: ""
     # -- Custodian wallet client secret
-    clientSecret: "<path:essential-services/data/custodian#clientSecret>"
+    clientSecret: ""
     # -- Keycloak URL
-    authServerUrl: "<path:essential-services/data/custodian#auth-server-url>"
+    authServerUrl: ""
     # -- Keycloak Realm detail
-    realm: "<path:essential-services/data/custodian#realm>"
+    realm: ""
     # -- Keycloak Resource detail
-    resource: "<path:essential-services/data/custodian#resource>"
+    resource: ""
     # -- Details for Custodian wallet URI
-    custodianWalletUri: "<path:essential-services/data/custodian#uri>"
+    custodianWalletUri: ""
     # -- Details for Clearing House URI
-    clearingHouseUri: "<path:essential-services/data/custodian#clearingHouse-uri>"
+    clearingHouseUri: "
     # -- Details for Clearing House URL
-    clearingHouseServerUrl: "<path:essential-services/data/custodian#clearingHouse-serverUrl>"
+    clearingHouseServerUrl: ""
     # -- Details for Clearing House Realm
-    clearingHouseRealm: "<path:essential-services/data/custodian#clearingHouse-realm>"
+    clearingHouseRealm: ""
     # -- Details for Clearing House Client ID
-    clearingHouseClientId: "<path:essential-services/data/custodian#clearingHouse-clientId>"
+    clearingHouseClientId: ""
     # -- Details for Clearing House Client Secret
-    clearingHouseClientSecret: "<path:essential-services/data/custodian#clearingHouse-clientSecret>"
+    clearingHouseClientSecret: ""
 
 service:
     # -- Type of service
