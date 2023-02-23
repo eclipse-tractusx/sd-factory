@@ -9,6 +9,15 @@ creates a Verifiable Credential and passes the document to the
 based on the Custodian for the signature. The result is sent to the Compliance Service for
 further processing.
 
+
+## Software Version
+
+```shell
+Software version: 2.0.0
+Helm Chart version: 2.0.0
+
+```
+
 # Solution Strategy 
 
 Here the flow of Self-Description creation is shown:-
@@ -101,7 +110,7 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
@@ -184,7 +193,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house-dummy-service/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   usersDetails:
     custodianWallet:
     #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
@@ -243,32 +252,10 @@ the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
 
-## Installation Steps:-
+## Installation Steps
 
-Helm charts are provided inside https://github.com/catenax-ng/tx-sd-factory
+https://github.com/eclipse-tractusx/sd-factory/blob/main/INSTALL.md
 
-There are diffrent ways to do the installation
-
-1. Using helm commands:-  
-
-    a.) git clone https://github.com/catenax-ng/product-sd-hub.git  <br />
-    b.) Modify values file according to your requirement.  <br />
-    c.) You need to define the secrets as well in values.yaml
-        secret:  <br />
-          clientId: ""  -> Custodian wallet client id  <br />
-          clientSecret: ""  -> Custodian wallet client secret  <br />
-          authServerUrl: ""  ->  Keycloak URL   <br />
-          realm: ""   -> Keycloak Realm  <br />
-          resource: ""  ->  Keycloak Resource   <br />
-          custodianWalletUri: "" -> Custodian wallet URI  <br /> 
-    d.) These secrets should be defined in Hashicorp vault
-    e.) Deploy in a kubernetes cluster  <br />
-        helm install sdfactory charts/SDFactory/ -n NameSpace  <br />
-
-2. Using ArgoCD. 
-
-To see how to deploy an application on 'Hotel Budapest': 
-[How to deploy](https://catenax-ng.github.io/docs/guides/ArgoCD/how-to-deploy-an-application)
 
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10

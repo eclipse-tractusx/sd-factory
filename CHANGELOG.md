@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
+  N/A
+
+## [2.0.0] - 2023-02-23
 
 ### Added
 - call compliance service after getting the signature for asynchronous processing
@@ -18,6 +21,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   with type and value fields  
 - removed support for 22.10 as OpenAPI yaml is buggy and there ara 
   complains from KICS
+
+## [1.2.1] - 2023-02-17
+
+### Added
+- Added AUTHORS.md, INSTALL.md file
+- Added .helmignore file
+- Added service port to values.yaml
+
+### Changed
+- Changed versions & installations steps in Readme
+- Changed secrets manifest in secret.yaml
 
 ## [1.2.0] - 2023-01-16
 
@@ -49,8 +63,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 Added helm release, versioning & tagging
 
 ### Added
-- Generate self-description for LegalPerson 
-- Generate self-description for ServiceOffering
+- Generate self description for LegalPerson 
+- Generate self description for ServiceOffering
 - Keycloak protection is added
 
 ### Changed
@@ -62,7 +76,3 @@ Added helm release, versioning & tagging
 
 ### Removed
 - Controller has been removed
-
-### Known issues
-- Cross side scripting (XSS) shall be mitigated (low risk)
-- Improving the validation of the input parameters (low risk)
