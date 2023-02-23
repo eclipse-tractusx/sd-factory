@@ -63,10 +63,9 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
-
 sdfactory:
   secret:
-  
+    # -- JWK Set URI
     jwkSetUri: ""
     # -- Custodian wallet client id
     clientId: ""
@@ -76,12 +75,12 @@ sdfactory:
     authServerUrl: ""
     # -- Keycloak Realm detail
     realm: ""
-    # -- Keycloak Resource detail
+    # -- Details for Custodian wallet URI
     resource: ""
     # -- Details for Custodian wallet URI
     custodianWalletUri: ""
     # -- Details for Clearing House URI
-    clearingHouseUri: "
+    clearingHouseUri: ""
     # -- Details for Clearing House URL
     clearingHouseServerUrl: ""
     # -- Details for Clearing House Realm
@@ -90,6 +89,7 @@ sdfactory:
     clearingHouseClientId: ""
     # -- Details for Clearing House Client Secret
     clearingHouseClientSecret: ""
+
 
 service:
     # -- Type of service

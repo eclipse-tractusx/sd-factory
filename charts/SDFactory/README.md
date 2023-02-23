@@ -36,18 +36,18 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | podSecurityContext.fsGroup | int | `2000` |  |
 | replicaCount | int | `1` | Number of Replicas for pods |
 | resources | object | `{}` |  |
-| sdfactory.secret.authServerUrl | string | `"<path:essential-services/data/custodian#auth-server-url>"` | Keycloak URL |
-| sdfactory.secret.clearingHouseClientId | string | `"<path:essential-services/data/custodian#clearingHouse-clientId>"` | Details for Clearing House Client ID |
-| sdfactory.secret.clearingHouseClientSecret | string | `"<path:essential-services/data/custodian#clearingHouse-clientSecret>"` | Details for Clearing House Client Secret |
-| sdfactory.secret.clearingHouseRealm | string | `"<path:essential-services/data/custodian#clearingHouse-realm>"` | Details for Clearing House Realm |
-| sdfactory.secret.clearingHouseServerUrl | string | `"<path:essential-services/data/custodian#clearingHouse-serverUrl>"` | Details for Clearing House URL |
-| sdfactory.secret.clearingHouseUri | string | `"<path:essential-services/data/custodian#clearingHouse-uri>"` | Details for Clearing House URI |
-| sdfactory.secret.clientId | string | `"<path:essential-services/data/custodian#clientId>"` | Custodian wallet client id |
-| sdfactory.secret.clientSecret | string | `"<path:essential-services/data/custodian#clientSecret>"` | Custodian wallet client secret |
-| sdfactory.secret.custodianWalletUri | string | `"<path:essential-services/data/custodian#uri>"` | Details for Custodian wallet URI |
-| sdfactory.secret.jwkSetUri | string | `"<path:essential-services/data/custodian#jwkSetUri>"` |  |
-| sdfactory.secret.realm | string | `"<path:essential-services/data/custodian#realm>"` | Keycloak Realm detail |
-| sdfactory.secret.resource | string | `"<path:essential-services/data/custodian#resource>"` | Keycloak Resource detail |
+| sdfactory.secret.authServerUrl | string | `""` | Keycloak URL |
+| sdfactory.secret.clearingHouseClientId | string | `""` | Details for Clearing House Client ID |
+| sdfactory.secret.clearingHouseClientSecret | string | `""` | Details for Clearing House Client Secret |
+| sdfactory.secret.clearingHouseRealm | string | `""` | Details for Clearing House Realm |
+| sdfactory.secret.clearingHouseServerUrl | string | `""` | Details for Clearing House URL |
+| sdfactory.secret.clearingHouseUri | string | `""` | Details for Clearing House URI |
+| sdfactory.secret.clientId | string | `""` | Custodian wallet client id |
+| sdfactory.secret.clientSecret | string | `""` | Custodian wallet client secret |
+| sdfactory.secret.custodianWalletUri | string | `""` | Details for Custodian wallet URI |
+| sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
+| sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
+| sdfactory.secret.resource | string | `""` | Details for Custodian wallet URI |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privileges |
 | service.port | int | `80` | Port details for sevice |
 | service.targetPort | int | `8080` | Container Port details for sevice |
