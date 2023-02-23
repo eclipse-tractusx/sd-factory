@@ -57,10 +57,6 @@ ingress:
       hosts:
         - sdfactory.int.demo.catena-x.net
 
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
   
 sdfactory:
   secret:

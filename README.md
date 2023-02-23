@@ -252,6 +252,7 @@ the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
 
+
 ## Installation Steps
 
 https://github.com/eclipse-tractusx/sd-factory/blob/main/INSTALL.md

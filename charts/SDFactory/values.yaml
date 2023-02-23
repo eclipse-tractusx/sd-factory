@@ -75,7 +75,7 @@ sdfactory:
     authServerUrl: ""
     # -- Keycloak Realm detail
     realm: ""
-    # -- Details for Custodian wallet URI
+    # -- Keycloak Resource detail
     resource: ""
     # -- Details for Custodian wallet URI
     custodianWalletUri: ""
