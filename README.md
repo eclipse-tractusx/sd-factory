@@ -18,6 +18,7 @@ Helm Chart version: 2.0.0
 
 ```
 
+
 # Solution Strategy 
 
 Here the flow of Self-Description creation is shown:-
