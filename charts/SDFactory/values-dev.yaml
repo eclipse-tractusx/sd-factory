@@ -5,18 +5,18 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   className: "nginx"
-  host: "dummy.dev.demo.catena-x.net"
+  host: "sdfactory.dev.demo.catena-x.net"
   hosts:
-    - host: dummy.dev.demo.catena-x.net
+    - host: sdfactory.dev.demo.catena-x.net
       paths:
         - path: /
           pathType: ImplementationSpecific
 
 
   tls:
-    - tlsName: dummy.dev.demo.catena-x.net-tls
+    - tlsName: sdfactory.dev.demo.catena-x.net-tls
       hosts:
-        - dummy.dev.demo.catena-x.net
+        - sdfactory.dev.demo.catena-x.net
 
 
 service:
