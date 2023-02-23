@@ -1,6 +1,7 @@
 # sdfactory
 
-![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.2.0](https://img.shields.io/badge/AppVersion-1.2.0-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+
 
 Helm Charts for SD Factory application. Self-Description Factory component is responsible for the creation of Self Descriptions.
 
@@ -37,11 +38,17 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | replicaCount | int | `1` | Number of Replicas for pods |
 | resources | object | `{}` |  |
 | sdfactory.secret.authServerUrl | string | `""` | Keycloak URL |
-| sdfactory.secret.clientId | string | `""` | Custodian wallet client id  |
-| sdfactory.secret.clientSecret | string | `""` | Custodian wallet client secret  |
+| sdfactory.secret.clearingHouseClientId | string | `""` | Details for Clearing House Client ID |
+| sdfactory.secret.clearingHouseClientSecret | string | `""` | Details for Clearing House Client Secret |
+| sdfactory.secret.clearingHouseRealm | string | `""` | Details for Clearing House Realm |
+| sdfactory.secret.clearingHouseServerUrl | string | `""` | Details for Clearing House URL |
+| sdfactory.secret.clearingHouseUri | string | `""` | Details for Clearing House URI |
+| sdfactory.secret.clientId | string | `""` | Custodian wallet client id |
+| sdfactory.secret.clientSecret | string | `""` | Custodian wallet client secret |
 | sdfactory.secret.custodianWalletUri | string | `""` | Details for Custodian wallet URI |
+| sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
 | sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
-| sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
+| sdfactory.secret.resource | string | `""` | Details for Custodian wallet URI |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privileges |
 | service.port | int | `80` | Port details for sevice |
 | service.targetPort | int | `8080` | Container Port details for sevice |

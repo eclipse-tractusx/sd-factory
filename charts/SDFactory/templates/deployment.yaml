@@ -38,45 +38,61 @@ spec:
               protocol: TCP
               
           env:
-          - name: KEYCLOAK_AUTH-SERVER-URL
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: auth-server-url
-          - name: KEYCLOAK_REALM
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: realm
-          - name: KEYCLOAK_RESOURCE
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: resource
-          - name: APP_CUSTODIANWALLET_CLIENTID
+                key: jwk-set-uri
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTID
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientID
-          - name: APP_CUSTODIANWALLET_CLIENTSECRET
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: ClientSecret
-          - name: APP_CUSTODIANWALLET_AUTH-SERVER-URL
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_SERVERURL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: auth-server-url
-          - name: APP_CUSTODIANWALLET_URI
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_URI
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: custodianWalletUri
-          - name: APP_CUSTODIANWALLET_REALM
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_REALM
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: realm 
+                key: realm
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-uri        
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-serverUrl                
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-realm
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-clientId               
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-clientSecret                
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

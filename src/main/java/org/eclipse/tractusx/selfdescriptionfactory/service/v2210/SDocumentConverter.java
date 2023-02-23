@@ -40,7 +40,7 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
     private String schemaUrl;
 
     @Override
-    public Claims convert(@NonNull SelfdescriptionPostRequest source) {
+    public @NonNull Claims convert(@NonNull SelfdescriptionPostRequest source) {
         return new Claims(objectMapper.convertValue(source, new TypeReference<>(){}), URI.create(schemaUrl));
     }
 }

@@ -100,6 +100,13 @@ additional attributes for Catena-X purpose
 *   URL: a resolvable link to the document
 *   hash: sha256 hash of the above document
 
+For Catena-X release 3.0 we aligned with GAIA-X to adhere to
+[Trust Framework V.22.10], providing self descriptions for
+
+*   Legal person
+*   Service offering
+
+
 ### GX-Compliance Service
 
 GAIA-X will also provide a service to proof for compliant self descriptions 
@@ -110,7 +117,7 @@ GAIA-X will also provide a service to proof for compliant self descriptions
 
 The Portal provides the necessary information to the SD Factory in plain text format via
 API. SD-Factory creates the Jason-LD document signed by the wallet and provides it to the 
-Portal.
+Compliance Service. After processing, Compliance Service sends Self-Description back to the Portal.
 
 ## Business Context
 
@@ -213,20 +220,17 @@ to sign this SD-Document.
 The SD-Factory provides interfaces to create Verifiable Credential for one of mentioned documents.
 Only the authorized user can call these interfaces. They are protected with keycloak. The configuration
 parameters are given in `application.yml`.
-The user role for creating Self-Descriptions is specified in `application.yml` as well.
+The user role for creating Self-Descriptions is specified in `application.yml` as well
 
-Depending on the required version a SD-document goes to one of those endpoint to be converted to the
-signed Verifiable Credential:
+To trigger creation of the SD-document one shall call the endpoint available by path :
 
-1. `POST /api/rel3/selfdescription`
-2. `POST /api/22.10/selfdescription`
+`POST /api/rel3/selfdescription`
 
-OpenAPI specification for each version is given there:
+OpenAPI specification is given there:
 
-1. [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-vRel3.yml).
-2. [Version 22.10 of Trust Framework](../src/main/resources/static/SDFactoryApi-v22.10.yml).
+[Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-vRel3.yml).
 
-An example of the body for LegalPerson from rel3 API is given bellow:
+An example of the body for LegalPerson is given bellow:
 
 ```json
 {
@@ -245,7 +249,7 @@ An example of the body for LegalPerson from rel3 API is given bellow:
 }
 ```
 
-The Self-Description in the format of Verifiable Credential is returned. Here is an example of
+The Self-Description in the format of Verifiable Credential is created. Here is an example of
 Verifiable Credentials for LegalPerson:
 
 ```json
@@ -342,26 +346,38 @@ sequenceDiagram
     SDFactory-->>Identity Provider: technical user to acees the Wallet
     SDFactory->>+Managed Identity Wallet: Verifiable Credential
     Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
-    SDFactory->>+Onboarding Service: Signed Verifiable Credential
+    SDFactory->>+Compliance Service: Signed Verifiable Credential
+    Compliance Service->>Compliance Service: asynchronous processing
+    Compliance Service->>+Onboarding Service: Signed Verifiable Credential
 	
 ```
 
 Here the flow of Self-Description creation is shown:
 
-1. A user is authenticated in Identity Provider service on behalf of a company and receives the authentication ticket.
-2. User calls Onboarding Service with request for creating and publishing SD-document. The service authenticates the user
-   and prepare the data SD-Factory needs for creating SD-document such as: company\_number, headquarter.country and legal.country.
-   **The ID (DID) of the user shall be known at this point of time as SD-document consist of Verifiable Credentials (VC)
-   issued for a holder of a DID. This means that the Organisation wallet is already available.** The nature of that ID 
-   is not very important for the SD-hub, the only requirement is that it shall be resolvable to a DID document. It can be 
-   a regular http URL even.
-3. Onboarding service (OS) calls SD-Factory for creating and publishing SD-document passing this data as a parameter.
-   OS uses a credential with a role allowing for this request (e.g. ROLE\_SD\_CREATOR). The credential for this operation
-   is taken from ID Provider (keyclock).
-4. SD-Factory creates a Verifiable Credential based on the information taken from OS, unlocks Private Key from 
-   Organisation-wallet (custodian wallet), and signs it with organization key.
-5. SD-Factory returns the Verifiable Credential to the Portal. As the VC is signed with a trusted key the endpoint for
-   publishing at the Portal may be publicly accessible. SD document is not stored in SD-Factory.
+1. A user is authenticated in Identity Provider service on behalf of a company
+   and receives the authentication ticket.
+2. User calls On-boarding Service with request for creating and publishing
+   SD-document. The service authenticates the user and prepare the data
+   SD-Factory needs for creating SD-document. SDFactory takes document in a format,
+   specified in [Catena-X Confluence](https://confluence.catena-x.net/display/CORE/Self+Description+Interface)]
+   and convert it to [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
+    - LegalPerson;
+    - ServiceOffering;
+      **Organization wallet of the company which runs the service shall
+      be available at this point of time as it signs the Verifiable Credential
+      with SD document. The wallet associated with the service shall be available
+      as well.**
+3. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
+   data as a parameter. OS uses a credential with a role allowing for this request
+   (e.g. `add_self_descriptions`, the default role for SD-document creation). The
+   credential for this operation is taken from Identity Provider (keyclock).
+4. SD-Factory creates a Verifiable Credential based on the information taken from
+   OS and signs it with organization key. The organization is acting as an Issuer.
+   The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
+   for this operation.
+5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further (asynchronous) processing.
+   In the end the Compliance Service sends Self-Description document back to the On-boarding service endpoint.
+   OS is responsible for storing and publishing it.
 
 ## Deployment View
 

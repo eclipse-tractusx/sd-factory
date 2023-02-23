@@ -2,19 +2,19 @@ package org.eclipse.tractusx.selfdescriptionfactory.service;
 
 import io.vavr.Lazy;
 import io.vavr.control.Try;
+import jakarta.validation.Valid;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Service
+@Component
 @Validated
 public class Validator {
     private final Lazy<Validator> self;

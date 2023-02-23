@@ -25,11 +25,10 @@ import com.danubetech.verifiablecredentials.VerifiableCredential;
 import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
 import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -51,14 +49,16 @@ public class SDFactory {
     private int duration;
     private final CustodianWallet custodianWallet;
     private final ConversionService conversionService;
+    private final ClearingHouse clearingHouse;
 
-    @PreAuthorize("hasRole(@securityRoles.createRole)")
-    public ResponseEntity<Map<String, Object>> createVC(Object document) {
+    @PreAuthorize("hasAuthority(@securityRoles.createRole)")
+    public void createVC(Object document) {
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
         var claims = new HashMap<>(claimsHolder.claims());
         var holder = claims.remove("holder");
         var issuer = claims.remove("issuer");
         var type = claims.get("type");
+        var externalId = claims.remove("externalId");
         var credentialSubject = CredentialSubject.fromJsonObject(claims);
         var verifiableCredential = VerifiableCredential.builder()
                 .context(claimsHolder.vocabulary())
@@ -69,7 +69,7 @@ public class SDFactory {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
-        var result = custodianWallet.getSignedVC(verifiableCredential);
-        return new ResponseEntity<>(result.toMap(), HttpStatus.CREATED);
+        var vc = custodianWallet.getSignedVC(verifiableCredential);
+        clearingHouse.sendToClearingHouse(vc, externalId.toString());
     }
 }
