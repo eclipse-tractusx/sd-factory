@@ -33,6 +33,11 @@ import java.util.function.Function;
 import static io.vavr.control.Try.failure;
 
 public class Utils {
+
+    private Utils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static <T> Function<? super Throwable, ? extends Try<? extends T>>
     mapFailure(Function<? super Throwable, ? extends Throwable> f) {
         return ex -> failure(f.apply(ex));

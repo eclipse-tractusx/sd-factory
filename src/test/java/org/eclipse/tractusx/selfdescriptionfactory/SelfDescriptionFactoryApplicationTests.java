@@ -28,6 +28,7 @@ class SelfDescriptionFactoryApplicationTests {
 
     @Test
     void contextLoads() {
+        // here we assert the context is brought up
     }
 
 }
