@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
-  N/A
+
+### Changed
+- upgrade Spring Boot to 3.0.3
+- upgrade Snakeyaml to 2.0 as 1.33 has security issue
 
 ## [2.0.0] - 2023-02-23
 
