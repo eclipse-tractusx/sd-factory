@@ -64,9 +64,15 @@ service:
   
 sdfactory:
   secret:
+    jwkSetUri: "<path:essential-services/data/custodian#jwkSetUri>"
     clientId: "<path:essential-services/data/custodian#clientId>"
     clientSecret: "<path:essential-services/data/custodian#clientSecret>"
     authServerUrl: "<path:essential-services/data/custodian#auth-server-url>"
     realm: "<path:essential-services/data/custodian#realm>"
     resource: "<path:essential-services/data/custodian#resource>"
     custodianWalletUri: "<path:essential-services/data/custodian#uri>"
+    clearingHouseUri: "<path:essential-services/data/custodian#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/custodian#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/custodian#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/custodian#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/custodian#clearingHouse-clientSecret>"
