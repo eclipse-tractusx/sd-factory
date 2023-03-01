@@ -5,9 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
-  N/A
 
-## [2.0.0] - 2023-02-23
+
+## [2.0.2] - 2023-03-01
+
+### Changed
+- upgrade Spring Boot to 3.0.3
+- upgrade Snakeyaml to 2.0 as 1.33 has security issue
+
+## [2.0.1] - 2023-02-23
 
 ### Added
 - call compliance service after getting the signature for asynchronous processing

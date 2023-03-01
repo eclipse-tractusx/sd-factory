@@ -1,7 +1,6 @@
 # sdfactory
 
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
-
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.1](https://img.shields.io/badge/AppVersion-2.0.1-informational?style=flat-square)
 
 Helm Charts for SD Factory application. Self-Description Factory component is responsible for the creation of Self Descriptions.
 
@@ -48,7 +47,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | sdfactory.secret.custodianWalletUri | string | `""` | Details for Custodian wallet URI |
 | sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
 | sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
-| sdfactory.secret.resource | string | `""` | Details for Custodian wallet URI |
+| sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privileges |
 | service.port | int | `80` | Port details for sevice |
 | service.targetPort | int | `8080` | Container Port details for sevice |
