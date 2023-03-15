@@ -25,18 +25,18 @@ service:
   
 sdfactory:
   secret:
-    jwkSetUri: "<path:essential-services/data/custodian-dev#jwkSetUri>"
-    clientId: "<path:essential-services/data/custodian-dev#clientId>"
-    clientSecret: "<path:essential-services/data/custodian-dev#clientSecret>"
-    authServerUrl: "<path:essential-services/data/custodian-dev#auth-server-url>"
-    realm: "<path:essential-services/data/custodian-dev#realm>"
-    resource: "<path:essential-services/data/custodian-dev#resource>"
-    custodianWalletUri: "<path:essential-services/data/custodian-dev#uri>"
-    clearingHouseUri: "<path:essential-services/data/custodian-dev#clearingHouse-uri>"
-    clearingHouseServerUrl: "<path:essential-services/data/custodian-dev#clearingHouse-serverUrl>"
-    clearingHouseRealm: "<path:essential-services/data/custodian-dev#clearingHouse-realm>"
-    clearingHouseClientId: "<path:essential-services/data/custodian-dev#clearingHouse-clientId>"
-    clearingHouseClientSecret: "<path:essential-services/data/custodian-dev#clearingHouse-clientSecret>"
+    jwkSetUri: "<path:essential-services/data/dev/custodian-dev#jwkSetUri>"
+    clientId: "<path:essential-services/data/dev/custodian-dev#clientId>"
+    clientSecret: "<path:essential-services/data/dev/custodian-dev#clientSecret>"
+    authServerUrl: "<path:essential-services/data/dev/custodian-dev#auth-server-url>"
+    realm: "<path:essential-services/data/dev/custodian-dev#realm>"
+    resource: "<path:essential-services/data/dev/custodian-dev#resource>"
+    custodianWalletUri: "<path:essential-services/data/dev/custodian-dev#uri>"
+    clearingHouseUri: "<path:essential-services/data/dev/custodian-dev#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/dev/custodian-dev#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/dev/custodian-dev#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/dev/custodian-dev#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/dev/custodian-dev#clearingHouse-clientSecret>"
 
 
 # -- Pod resources requests and limits configuration
