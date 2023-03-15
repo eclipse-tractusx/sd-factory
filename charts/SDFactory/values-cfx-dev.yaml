@@ -1,0 +1,50 @@
+ingress:
+  enabled: true
+  annotations:
+    #kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  className: "nginx"
+  host: "sdfactory.dev.demo.cofinity-x.net"
+  hosts:
+    - host: sdfactory.dev.demo.cofinity-x.net
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+
+  tls:
+    - tlsName: sdfactory.dev.demo.cofinity-x.net-tls
+      hosts:
+        - sdfactory.dev.demo.cofinity-x.net
+
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  
+sdfactory:
+  secret:
+    jwkSetUri: "<path:essential-services/data/custodian-dev#jwkSetUri>"
+    clientId: "<path:essential-services/data/custodian-dev#clientId>"
+    clientSecret: "<path:essential-services/data/custodian-dev#clientSecret>"
+    authServerUrl: "<path:essential-services/data/custodian-dev#auth-server-url>"
+    realm: "<path:essential-services/data/custodian-dev#realm>"
+    resource: "<path:essential-services/data/custodian-dev#resource>"
+    custodianWalletUri: "<path:essential-services/data/custodian-dev#uri>"
+    clearingHouseUri: "<path:essential-services/data/custodian-dev#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/custodian-dev#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/custodian-dev#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/custodian-dev#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/custodian-dev#clearingHouse-clientSecret>"
+
+
+# -- Pod resources requests and limits configuration
+resources:
+  limits:
+    cpu: 200m
+    memory: 300Mi
+  requests:
+    cpu: 200m
+    memory: 300Mi
