@@ -41,57 +41,57 @@ spec:
           - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: jwk-set-uri
           - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTID
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: ClientID
           - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: ClientSecret
           - name: APP_USERSDETAILS_CUSTODIANWALLET_SERVERURL
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: auth-server-url
           - name: APP_USERSDETAILS_CUSTODIANWALLET_URI
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: custodianWalletUri
           - name: APP_USERSDETAILS_CUSTODIANWALLET_REALM
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: realm
           - name: APP_USERSDETAILS_CLEARINGHOUSE_URI
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: clearingHouse-uri        
           - name: APP_USERSDETAILS_CLEARINGHOUSE_SERVERURL
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: clearingHouse-serverUrl                
           - name: APP_USERSDETAILS_CLEARINGHOUSE_REALM
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: clearingHouse-realm
           - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTID
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: clearingHouse-clientId               
           - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTSECRET
             valueFrom: 
               secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
+                name: {{ include "sdfactory.secret.name" . }}
                 key: clearingHouse-clientSecret                
 
           resources:
