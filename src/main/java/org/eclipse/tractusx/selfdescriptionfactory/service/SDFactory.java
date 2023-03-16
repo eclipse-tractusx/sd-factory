@@ -70,6 +70,8 @@ public class SDFactory {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
         var vc = custodianWallet.getSignedVC(verifiableCredential);
+        log.info("Verifiable credential from MIW :  "  + vc);
         clearingHouse.sendToClearingHouse(vc, externalId.toString());
+        log.info("Call to clearing house has been completed.");
     }
 }
