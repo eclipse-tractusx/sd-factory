@@ -1,0 +1,49 @@
+ingress:
+  enabled: true
+  annotations:
+    #kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  className: "nginx"
+  host: "sdfactory.int.cofinity-x.com"
+  hosts:
+    - host: sdfactory.int.cofinity-x.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+
+  tls:
+    - tlsName: tls-secret
+      hosts:
+        - sdfactory.int.cofinity-x.com
+
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  
+sdfactory:
+  secret:
+    jwkSetUri: "<path:essential-services/data/int/custodian-int#jwkSetUri>"
+    clientId: "<path:essential-services/data/int/custodian-int#clientId>"
+    clientSecret: "<path:essential-services/data/int/custodian-int#clientSecret>"
+    authServerUrl: "<path:essential-services/data/int/custodian-int#auth-server-url>"
+    realm: "<path:essential-services/data/int/custodian-int#realm>"
+    resource: "<path:essential-services/data/int/custodian-int#resource>"
+    custodianWalletUri: "<path:essential-services/data/int/custodian-int#uri>"
+    clearingHouseUri: "<path:essential-services/data/int/custodian-int#clearingHouse-uri>"
+    clearingHouseServerUrl: "<path:essential-services/data/int/custodian-int#clearingHouse-serverUrl>"
+    clearingHouseRealm: "<path:essential-services/data/int/custodian-int#clearingHouse-realm>"
+    clearingHouseClientId: "<path:essential-services/data/int/custodian-int#clearingHouse-clientId>"
+    clearingHouseClientSecret: "<path:essential-services/data/int/custodian-int#clearingHouse-clientSecret>"
+
+
+# -- Pod resources requests and limits configuration
+resources:
+  limits:
+    cpu: 200m
+    memory: 300Mi
+  requests:
+    cpu: 200m
+    memory: 300Mi
