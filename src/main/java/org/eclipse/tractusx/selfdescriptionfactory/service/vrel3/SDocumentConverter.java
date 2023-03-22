@@ -33,6 +33,7 @@ import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPo
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
@@ -50,6 +51,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Profile("catena-x-ctx")
 public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Claims> {
     private final ObjectMapper objectMapper;
     private final org.eclipse.tractusx.selfdescriptionfactory.service.v2210.SDocumentConverter converter2210;
@@ -76,7 +78,7 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
         var mapOf2210 = converter2210.convert(converted2210);
         var withExternalId = new HashMap<>(mapOf2210.claims());
         withExternalId.put("externalId", externalId);
-        return new Claims(withExternalId, mapOf2210.vocabulary());
+        return new Claims(withExternalId, mapOf2210.vocabularies());
     }
 
     private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema convertRel3LegalPerson2210(

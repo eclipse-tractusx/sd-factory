@@ -26,14 +26,17 @@ import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
+@Profile("catena-x-ctx")
 public class SDocumentConverter implements Converter<SelfdescriptionPostRequest, Claims> {
     private final ObjectMapper objectMapper;
     @Value("${app.verifiableCredentials.schema2210Url}")
@@ -41,6 +44,6 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
 
     @Override
     public @NonNull Claims convert(@NonNull SelfdescriptionPostRequest source) {
-        return new Claims(objectMapper.convertValue(source, new TypeReference<>(){}), URI.create(schemaUrl));
+        return new Claims(objectMapper.convertValue(source, new TypeReference<>(){}), Collections.singletonList(URI.create(schemaUrl)));
     }
 }

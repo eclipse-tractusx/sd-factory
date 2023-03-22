@@ -65,7 +65,7 @@ public class Utils {
 
     public static URI uriFromStr(String uriStr) {
         return Try.of(() -> URI.create(uriStr))
-                .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coud not create an URI from '" + uriStr + "'", err)))
+                .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not create an URI from '" + uriStr + "'", err)))
                 .get();
     }
 }
