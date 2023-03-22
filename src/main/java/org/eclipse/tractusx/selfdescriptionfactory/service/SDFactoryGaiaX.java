@@ -26,7 +26,6 @@ import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
-import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -36,7 +35,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 /**
@@ -49,7 +48,6 @@ import java.util.Optional;
 public class SDFactoryGaiaX implements SDFactory{
     @Value("${app.verifiableCredentials.durationDays:90}")
     private int duration;
-    private final CustodianWallet custodianWallet;
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
 
@@ -57,7 +55,7 @@ public class SDFactoryGaiaX implements SDFactory{
     @PreAuthorize("hasAuthority(@securityRoles.createRole)")
     public void createVC(Object document) {
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
-        var claims = new HashMap<>(claimsHolder.claims());
+        var claims = new LinkedHashMap<>(claimsHolder.claims());
         claims.remove("holder");
         claims.remove("issuer");
         var type = claims.remove("type");

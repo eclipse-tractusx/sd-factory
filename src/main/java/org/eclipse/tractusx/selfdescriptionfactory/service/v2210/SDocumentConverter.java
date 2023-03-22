@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 @Component
 @RequiredArgsConstructor
@@ -44,6 +45,9 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
 
     @Override
     public @NonNull Claims convert(@NonNull SelfdescriptionPostRequest source) {
-        return new Claims(objectMapper.convertValue(source, new TypeReference<>(){}), Collections.singletonList(URI.create(schemaUrl)));
+        return new Claims(
+                objectMapper.convertValue(source, new TypeReference<LinkedHashMap<String, Object>>(){}),
+                Collections.singletonList(URI.create(schemaUrl))
+        );
     }
 }

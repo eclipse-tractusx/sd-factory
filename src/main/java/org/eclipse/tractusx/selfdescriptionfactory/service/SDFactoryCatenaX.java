@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 /**
@@ -57,7 +57,7 @@ public class SDFactoryCatenaX implements SDFactory{
     @PreAuthorize("hasAuthority(@securityRoles.createRole)")
     public void createVC(Object document) {
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
-        var claims = new HashMap<>(claimsHolder.claims());
+        var claims = new LinkedHashMap<>(claimsHolder.claims());
         var holder = claims.remove("holder");
         var issuer = claims.remove("issuer");
         var type = claims.get("type");

@@ -52,24 +52,28 @@ public class CustodianWallet {
     private String uri;
     private final KeycloakManager keycloakManager;
     private final ObjectMapper objectMapper;
-    private final Function<? super Throwable, ? extends ResponseStatusException> errMapper;
+    private final Function<Throwable, ResponseStatusException> errMapper;
     private JsonNode walletInfo = null;
 
     public CustodianWallet(KeycloakManager keycloakManager, ObjectMapper objectMapper) {
         this.keycloakManager = keycloakManager;
         this.objectMapper = objectMapper;
         errMapper = e -> io.vavr.API.Match(e).of(
-                Case($(instanceOf(WebClientResponseException.class)), err ->
-                        Try.of(() -> objectMapper.readValue(err.getResponseBodyAsByteArray(), JsonNode.class).get("message").asText()
-                        ).map(errString -> new ResponseStatusException(err.getStatusCode(), "Custodian Wallet problem: " + errString, err)
-                        ).recover(mapperErr -> new ResponseStatusException(err.getStatusCode(), err.getMessage(), err)
-                        ).get()
-                ),
-                Case($(instanceOf(WebClientRequestException.class)), err ->
-                        new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", err)
-                ),
-                Case($(), err -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", err)
-                )
+                Case($(instanceOf(WebClientResponseException.class)), err -> {
+                    log.error("WebClientResponseException", err);
+                    return Try.of(() -> objectMapper.readValue(err.getResponseBodyAsByteArray(), JsonNode.class).get("message").asText()
+                    ).map(errString -> new ResponseStatusException(err.getStatusCode(), "Custodian Wallet problem: " + errString, err)
+                    ).recover(mapperErr -> new ResponseStatusException(err.getStatusCode(), err.getMessage(), err)
+                    ).get();
+                }),
+                Case($(instanceOf(WebClientRequestException.class)), err -> {
+                    log.error("WebClientRequestException", err);
+                    return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Custodian Wallet problem", err);
+                }),
+                Case($(), err -> {
+                    log.error("unknown error", err);
+                    return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", err);
+                })
         );
     }
 
@@ -91,10 +95,6 @@ public class CustodianWallet {
                         .retrieve()
                         .bodyToMono(VerifiableCredential.class)
                         .block()
-                ).onFailure(WebClientResponseException.class, err ->
-                        log.error("WebClientResponseException", err)
-                ).onFailure(WebClientRequestException.class, err ->
-                        log.error("WebClientRequestException", err)
                 ).recoverWith(Utils.mapFailure(errMapper))
                 .onFailure(err -> Try.of(() -> objectMapper.writeValueAsString(objToSign)).onSuccess(json -> log.error("Error in custodian. Original JSON is: {}", json)))
                 .get();
@@ -109,10 +109,6 @@ public class CustodianWallet {
                             .retrieve()
                             .bodyToMono(JsonNode.class)
                             .block()
-                    ).onFailure(WebClientResponseException.class, err ->
-                            log.error("WebClientResponseException", err)
-                    ).onFailure(WebClientRequestException.class, err ->
-                            log.error("WebClientRequestException", err)
                     ).recoverWith(Utils.mapFailure(errMapper))
                     .get();
         }
