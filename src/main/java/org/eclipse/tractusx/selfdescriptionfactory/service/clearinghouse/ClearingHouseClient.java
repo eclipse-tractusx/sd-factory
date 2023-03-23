@@ -18,35 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
+package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import io.vavr.Function1;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Map;
-
-@Slf4j
-@Service
-@RequestScope
-public class CustodianWallet {
-
-    private final CustodianClient custodianClient;
-    private Function1<String, Map<String, Object>> walletInfoFn;
-
-    public CustodianWallet(CustodianClient custodianClient) {
-        this.custodianClient = custodianClient;
-        walletInfoFn = ((Function1<String, Map<String, Object>>)custodianClient::getWalletData).memoized();
-    }
-
-    public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
-        return custodianClient.getSignedVC(objToSign);
-    }
-
-    public Map<String, Object> getWalletData(String bpnNumber) {
-        return walletInfoFn.apply(bpnNumber);
-    }
-
+@FeignClient(name = "clearingHouse", url = "${app.usersDetails.clearingHouse.uri}")
+public interface ClearingHouseClient {
+    @PostMapping
+    void send(@RequestBody VerifiableCredential verifiableCredential, @RequestParam("externalId") String externalId);
 }

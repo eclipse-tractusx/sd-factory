@@ -1,3 +1,23 @@
+/********************************************************************************
+ * Copyright (c) 2021,2022 T-Systems International GmbH
+ * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License, Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+
 package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 
 import lombok.RequiredArgsConstructor;
@@ -16,8 +36,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Component
@@ -62,16 +85,16 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
 
     private Map<String, Object> legalPerson(LegalPersonSchema legalPersonSchema) {
         Map<String, Object> res = new LinkedHashMap<>();
-        res.put("id", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("did").asText());
+        res.put("id", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("did"));
         res.put("type", legalPersonSchema.getType());
         res.put("ctxsd:bpn", legalPersonSchema.getBpn());
-        res.put("gx-participant:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name").asText());
+        res.put("gx-participant:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name"));
         res.put(
                 "gx-participant:registrationNumber",
                 legalPersonSchema.getRegistrationNumber().stream().map(
                     regNum -> {
                         var regNumNode = new LinkedHashMap<String, Object>();
-                        regNumNode.put("gx-participant:registrationNumberType", regNum.getType().toString());
+                        regNumNode.put("gx-participant:registrationNumberType", regNum.getType());
                         regNumNode.put("gx-participant:registrationNumberNumber", regNum.getValue());
                         return regNumNode;
                     }).toList()
@@ -81,34 +104,24 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
 
     private Map<String, Object> serviceOffering(ServiceOfferingSchema serviceOfferingSchema) {
         Map<String, Object> res = new LinkedHashMap<>();
-        res.put("id", custodianWallet.getWalletData(serviceOfferingSchema.getHolder()).get("did").asText());
+        res.put("id", custodianWallet.getWalletData(serviceOfferingSchema.getHolder()).get("did"));
         res.put("type", serviceOfferingSchema.getType());
-        res.put("ctxsd:connector-url", "http://connector-placeholder.net");
+        res.put("ctxsd:connector-url", "https://connector-placeholder.net");
         res.put("gx-service:providedBy", serviceOfferingSchema.getProvidedBy());
         Map<String, Object> dataAccountExportNode = new LinkedHashMap<>();
         dataAccountExportNode.put("gx-service:requestType", "email");
         dataAccountExportNode.put("gx-service:accessType", "digital");
         dataAccountExportNode.put("gx-service:formatType", "json");
         res.put("gx-service:dataAccountExport", List.of(dataAccountExportNode));
-        Optional.of(
-                Optional.ofNullable(serviceOfferingSchema.getAggregationOf())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
-                        .filter(Predicate.not(String::isBlank)).map(String::trim)
-                        .map(Utils::uriFromStr).toList()
-        ).filter(Predicate.not(Collection::isEmpty)).ifPresent(aggrOf -> res.put("gx-service:aggregationOf", aggrOf));
-        Optional.of(
-                Optional.ofNullable(serviceOfferingSchema.getTermsAndConditions())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
-                        .filter(Predicate.not(String::isBlank)).map(String::trim)
-                        .map(this::getTermsAndConditions)
-                        .toList()
-        ).filter(Predicate.not(Collection::isEmpty)).ifPresent(termCond -> res.put("gx-service:termsAndConditions", termCond));
-        Optional.of(
-                Optional.ofNullable(serviceOfferingSchema.getPolicies())
-                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
-                        .filter(Predicate.not(String::isBlank)).map(String::trim)
-                        .toList()
-        ).filter(Predicate.not(Collection::isEmpty)).ifPresent(policies -> res.put("gx-service:policy", policies));
+        var setter = new Object() {
+            <T> Consumer<T> set(String fieldName) {
+                return t -> res.put(fieldName, t);
+            }
+        };
+        Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getAggregationOf(), Utils::uriFromStr).ifPresent(setter.set("gx-service:aggregationOf"));
+        Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getTermsAndConditions(), this::getTermsAndConditions).ifPresent(setter.set("gx-service:termsAndConditions"));
+        Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getPolicies(), Function.identity()).ifPresent(setter.set("gx-service:policy"));
         return res;
     }
 }
+

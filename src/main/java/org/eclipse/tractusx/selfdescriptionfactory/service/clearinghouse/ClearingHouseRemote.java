@@ -1,43 +1,42 @@
+/********************************************************************************
+ * Copyright (c) 2021,2022 T-Systems International GmbH
+ * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License, Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+
 package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Optional;
-
-@ConditionalOnMissingBean(ClearingHouseTest.class)
+@ConditionalOnMissingBean(ClearingHouseMock.class)
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ClearingHouseRemote extends ClearingHouse{
-    private final ObjectMapper objectMapper;
+    private final ClearingHouseClient clearingHouseClient;
 
     @Override
     @SneakyThrows
-    public void doWork(String url, Object payload, String externalId, String token) {
-        try {
-            WebClient.create(url).post()
-                    .uri(uriBuilder -> uriBuilder.queryParam("externalId", externalId).build())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .headers(headers -> Optional.ofNullable(token)
-                            .ifPresent(keycloakManager ->
-                                    headers.add(HttpHeaders.AUTHORIZATION, token)
-                            ))
-                    .bodyValue(payload)
-                    .accept(MediaType.ALL)
-                    .retrieve()
-                    .toBodilessEntity()
-                    .block();
-        } catch (Exception exception) {
-            log.debug("payload: {}", objectMapper.writeValueAsString(payload));
-            throw exception;
-        }
+    public void doWork(String url, VerifiableCredential payload, String externalId, String token) {
+        clearingHouseClient.send(payload, externalId);
     }
 }

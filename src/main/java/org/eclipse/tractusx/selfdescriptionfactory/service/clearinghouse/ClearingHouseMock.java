@@ -18,35 +18,28 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
+package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import io.vavr.Function1;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 
-import java.util.Map;
-
-@Slf4j
 @Service
-@RequestScope
-public class CustodianWallet {
-
-    private final CustodianClient custodianClient;
-    private Function1<String, Map<String, Object>> walletInfoFn;
-
-    public CustodianWallet(CustodianClient custodianClient) {
-        this.custodianClient = custodianClient;
-        walletInfoFn = ((Function1<String, Map<String, Object>>)custodianClient::getWalletData).memoized();
+@Profile("test")
+@Slf4j
+@RequiredArgsConstructor
+public class ClearingHouseMock extends ClearingHouse{
+    private final ObjectMapper objectMapper;
+    @Override
+    @SneakyThrows
+    public void doWork(String url, VerifiableCredential payload, String externalId, String token) {
+        log.debug("URL: {}", url);
+        log.debug("Authorization: {}", token);
+        log.debug("ExternalId: {}", externalId);
+        log.debug("Payload: {}", objectMapper.writeValueAsString(payload));
     }
-
-    public VerifiableCredential getSignedVC(VerifiableCredential objToSign) {
-        return custodianClient.getSignedVC(objToSign);
-    }
-
-    public Map<String, Object> getWalletData(String bpnNumber) {
-        return walletInfoFn.apply(bpnNumber);
-    }
-
 }

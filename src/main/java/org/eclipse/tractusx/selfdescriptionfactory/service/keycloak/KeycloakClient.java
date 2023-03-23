@@ -1,3 +1,4 @@
+
 /********************************************************************************
  * Copyright (c) 2021,2022 T-Systems International GmbH
  * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
@@ -18,24 +19,20 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
+package org.eclipse.tractusx.selfdescriptionfactory.service.keycloak;
 
-import com.danubetech.verifiablecredentials.VerifiableCredential;
-import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.service.keycloak.KeycloakManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-@RequiredArgsConstructor
-public abstract class ClearingHouse {
-    @Value("${app.usersDetails.clearingHouse.uri}")
-    private String clearingHouseUrl;
-    @Autowired
-    protected KeycloakManager keycloakManager;
+import feign.Body;
+import feign.Headers;
+import feign.Param;
+import feign.RequestLine;
 
-    public abstract void doWork(String url, VerifiableCredential payload, String externalId, String token);
+import java.net.URI;
+import java.util.Map;
 
-    public void sendToClearingHouse(VerifiableCredential verifiableCredential, String externalId) {
-        doWork(clearingHouseUrl, verifiableCredential, externalId, "Bearer ".concat(keycloakManager.getToken("clearingHouse")));
-    }
+public interface KeycloakClient {
+    @RequestLine("POST /realms/{realm}/protocol/openid-connect/token")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @Body("grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}&scope=openid")
+    Map<String, Object> getTokens(URI serverUrl, @Param("realm") String realm, @Param("client_id") String clientId, @Param("client_secret") String clientSecret);
 }
