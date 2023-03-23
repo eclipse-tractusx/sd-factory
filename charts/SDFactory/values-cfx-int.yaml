@@ -1,3 +1,12 @@
+image:
+  # -- Image to use for deploying an application
+  repository: "ghcr.io/cofinity-x/cofinity-x-sd-factory-core/sdfactory"
+  # -- Set the Image Pull Policy
+  pullPolicy: Always
+  # -- Image tage is defined in chart appVersion.
+  # -- For PROD tag needs to be empty "" to be picked up from Chart.yaml
+  tag: "latest"
+
 ingress:
   enabled: true
   annotations:
