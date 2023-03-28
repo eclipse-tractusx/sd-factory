@@ -2,6 +2,19 @@ apiVersion: v1
 entries:
   sdfactory:
   - apiVersion: v2
+    appVersion: 2.0.2
+    created: "2023-03-28T09:23:02.922131678Z"
+    description: Helm Charts for SD Factory application. Self-Description Factory
+      component is responsible for the creation of Self Descriptions.
+    digest: 3fe13b5d939bab5e8f50cceae221b1134fc5e850c6a4169cd3d63e9273b14eff
+    name: sdfactory
+    sources:
+    - https://github.com/eclipse-tractusx/sd-factory
+    type: application
+    urls:
+    - https://github.com/eclipse-tractusx/sd-factory/releases/download/sdfactory-2.0.2/sdfactory-2.0.2.tgz
+    version: 2.0.2
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2023-02-24T09:50:53.116136866Z"
     description: Helm Charts for SD Factory application. Self-Description Factory
@@ -77,4 +90,4 @@ entries:
     urls:
     - https://github.com/eclipse-tractusx/sd-factory/releases/download/sdfactory-1.0.8/sdfactory-1.0.8.tgz
     version: 1.0.8
-generated: "2023-02-24T09:50:53.116251369Z"
+generated: "2023-03-28T09:23:02.922304679Z"
