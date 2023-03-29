@@ -17,7 +17,18 @@ Software version: 2.0.2
 Helm Chart version: 2.0.2
 
 ```
+# Container image
 
+This application provides container images for demonstration purposes.
+The base image used, to build this demo application image is `eclipse-temurin:17-jre-alpine`
+
+Docker Hub:
+- [eclipse-temurin](https://hub.docker.com/_/eclipse-temurin)
+- [17-jre-alpine image](https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine/images/sha256:02c04793fa49ad5cd193c961403223755f9209a67894622e05438598b32f210e?context=explore)
+
+Source:
+- [temurin-build](https://github.com/adoptium/temurin-build)
+- [temurin docker repo info](https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin)
 
 # Solution Strategy 
 
@@ -252,19 +263,6 @@ SD-Factory can be fired up locally in Docker environment. Before that
 the images need to be created as it is [described here](#docker). Do not forget
 to provide necessary configuration parameters in application.yml for keycloak 
 and the Custodian Wallet.
-
-# Container image
-
-This application provides container images for demonstration purposes.
-The base image used, to build this demo application image is `eclipse-temurin:17-jre-alpine`
-
-Docker Hub:
-- [eclipse-temurin](https://hub.docker.com/_/eclipse-temurin)
-- [17-jre-alpine image](https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine/images/sha256:02c04793fa49ad5cd193c961403223755f9209a67894622e05438598b32f210e?context=explore)
-
-Source:
-- [temurin-build](https://github.com/adoptium/temurin-build)
-- [temurin docker repo info](https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin)
 
 ## Installation Steps
 
