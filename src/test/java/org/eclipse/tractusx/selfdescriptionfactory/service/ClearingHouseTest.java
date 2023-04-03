@@ -61,8 +61,7 @@ public class ClearingHouseTest {
 
     @BeforeAll
     public void setUp() throws JsonProcessingException {
-
-
+        //Tests
         String sdRequest = "{\n" +
                 "  \"externalId\": \"ID01234-123-4321\",\n" +
                 "  \"type\": \"LegalPerson\",\n" +
@@ -100,7 +99,6 @@ public class ClearingHouseTest {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
-
 
     }
 
