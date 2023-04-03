@@ -51,7 +51,7 @@ public class SDFactory {
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
 
-    @PreAuthorize("hasAuthority(@securityRoles.createRole)")
+    //@PreAuthorize("hasAuthority(@securityRoles.createRole)")
     public void createVC(Object document) {
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
         var claims = new HashMap<>(claimsHolder.claims());

@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
-@ConditionalOnMissingBean(ClearingHouseTest.class)
+@ConditionalOnMissingBean(ClearingHouseTests.class)
 @Service
 @Slf4j
 @RequiredArgsConstructor

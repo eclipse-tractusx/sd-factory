@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Profile("test")
 @Slf4j
 @RequiredArgsConstructor
-public class ClearingHouseTest extends ClearingHouse{
+public class ClearingHouseTests extends ClearingHouse{
     private final ObjectMapper objectMapper;
     @Override
     @SneakyThrows

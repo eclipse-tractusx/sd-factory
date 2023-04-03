@@ -52,13 +52,13 @@ app:
       serverUrl: https://centralidp.int.demo.catena-x.net/auth
       realm: CX-Central
       clientId: sa-cl5-custodian-1
-      clientSecret: secret
+      clientSecret: iim6OwFYD10QsCueq4EEK5VaQ3cLOzaA
     clearingHouse:
-      uri: http://ch.dev.demo.catena-x.net/api
+      uri: https://dummy.dev.demo.catena-x.net/api/credentials
       serverUrl: https://centralidp.int.demo.catena-x.net/auth
       realm: CX-Central
       clientId: sa-cl2-02
-      clientSecret: secret
+      clientSecret: c7uhxqYONsR1SG5QO2lhh06Wzn1whifH
   security:
     createRole: add_self_descriptions
 logging:
