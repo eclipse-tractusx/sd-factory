@@ -60,17 +60,8 @@ class ClearingHouseRemoteTest {
     @Value("${app.usersDetails.clearingHouse.uri}")
     private String clearingHouseUrl;
 
-    @Autowired
-    protected KeycloakManager keycloakManager;
-
     @SpyBean
     private ConversionService conversionService;
-
-    @MockBean
-    private CustodianWallet custodianWallet;
-
-    @Autowired
-    private ClearingHouse clearingHouse;
 
     @Mock
     private WebClient.Builder webClientBuilder;
@@ -78,12 +69,10 @@ class ClearingHouseRemoteTest {
     @Mock
     private WebClient webClient;
 
-    VerifiableCredential verifiableCredential ;
-
+    VerifiableCredential verifiableCredential;
 
     @Mock
     ObjectMapper objectMapper;
-
 
     @InjectMocks
     private ClearingHouseRemote chr;
@@ -107,8 +96,6 @@ class ClearingHouseRemoteTest {
 
     @BeforeEach
     public void setUp() throws JsonProcessingException {
-
-
         String sdRequest = "{\n" +
                 "  \"externalId\": \"ID01234-123-4321\",\n" +
                 "  \"type\": \"LegalPerson\",\n" +
@@ -149,10 +136,10 @@ class ClearingHouseRemoteTest {
 
 
     }
+
     @Test
-    public void doWorkTest(){
-        //  clearingHouse.doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        ClearingHouseRemote chr = mock(ClearingHouseRemote.class,Mockito.CALLS_REAL_METHODS);
+    public void doWorkTest() {
+        ClearingHouseRemote chr = mock(ClearingHouseRemote.class, Mockito.CALLS_REAL_METHODS);
         MockedStatic<WebClient> webClientStatic = Mockito.mockStatic(WebClient.class);
         webClientStatic.when(() -> WebClient.create(anyString())).thenReturn(webClient);
         Mockito.when(webClient.post()).thenReturn(requestBodyUriSpec);
@@ -165,22 +152,18 @@ class ClearingHouseRemoteTest {
         ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
         Mockito.when(responseSpec.toBodilessEntity())
                 .thenReturn((Mono.just(responseEntity)));
-       // webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
-        // webClientStatic.when(WebClient::create).thenReturn(webClient);
-        //Mockito.when(customClien).thenReturn()
-        chr.doWork("test",verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
+        chr.doWork("test", verifiableCredential, externalId.toString(), "Bearer.shdgsajdjdh");
         webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
         webClientStatic.closeOnDemand();
     }
 
     @Test
-    public void doWorkWhileExceptionTest(){
+    public void doWorkWhileExceptionTest() {
         ObjectMapper mapper = new ObjectMapper();
-        //ClearingHouseRemote chr = mock(ClearingHouseRemote.class,Mockito.CALLS_REAL_METHODS);
         MockedStatic<WebClient> webClientStatic = Mockito.mockStatic(WebClient.class);
         webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
 
-        chr.doWork("test",verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
+        chr.doWork("test", verifiableCredential, externalId.toString(), "Bearer.shdgsajdjdh");
 
     }
 

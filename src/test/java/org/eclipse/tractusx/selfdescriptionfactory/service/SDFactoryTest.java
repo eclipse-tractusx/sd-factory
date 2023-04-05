@@ -55,7 +55,7 @@ public class SDFactoryTest {
     private VerifiableCredential vfc;
 
     @BeforeAll
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         sdRequest = "{\n" +
                 "  \"externalId\": \"ID01234-123-4321\",\n" +
@@ -90,8 +90,8 @@ public class SDFactoryTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Object document = mapper.readValue(sdRequest, SelfdescriptionPostRequest.class);
-        Claims pclaim  = conversionService.convert(document,Claims.class);
-        Mockito.when(conversionService.convert(document,Claims.class)).thenReturn(pclaim);
+        Claims pclaim = conversionService.convert(document, Claims.class);
+        Mockito.when(conversionService.convert(document, Claims.class)).thenReturn(pclaim);
         var claims = new HashMap<>(pclaim.claims());
         var credentialSubject = CredentialSubject.fromJsonObject(claims);
         var claimsHolder = Optional.of(claims).orElseThrow();
@@ -101,13 +101,13 @@ public class SDFactoryTest {
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(90))))
                 .credentialSubject(credentialSubject)
                 .build();
-        var vc  = new VerifiableCredential();
+        var vc = new VerifiableCredential();
         Mockito.when(custodianWallet.getSignedVC(Mockito.any())).thenReturn(vc);
-        Mockito.doNothing().when(clearingHouse).sendToClearingHouse(Mockito.any(),Mockito.any());
+        Mockito.doNothing().when(clearingHouse).sendToClearingHouse(Mockito.any(), Mockito.any());
         sdFactory.createVC(mapper.readValue(sdRequest, SelfdescriptionPostRequest.class));
-        Mockito.verify(clearingHouse,Mockito.times(1)).sendToClearingHouse(Mockito.any(),Mockito.any());
-        Mockito.verify(custodianWallet,Mockito.times(1)).getSignedVC(Mockito.any());
-        Mockito.verify(conversionService,Mockito.times(3)).convert(Mockito.any(),Mockito.any());
+        Mockito.verify(clearingHouse, Mockito.times(1)).sendToClearingHouse(Mockito.any(), Mockito.any());
+        Mockito.verify(custodianWallet, Mockito.times(1)).getSignedVC(Mockito.any());
+        Mockito.verify(conversionService, Mockito.times(3)).convert(Mockito.any(), Mockito.any());
     }
 
 

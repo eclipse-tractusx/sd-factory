@@ -61,31 +61,21 @@ class CustodianWalletTest {
     private ConversionService conversionService;
     @Autowired
     CustodianWallet custodianWallet;
-
     @MockBean
     Keycloak keycloak;
-
-    VerifiableCredential verifiableCredential ;
-
+    VerifiableCredential verifiableCredential;
     Object externalId;
-
     @Mock
     WebClient.RequestBodyUriSpec requestBodyUriSpec;
-
-    @Mock
-    MediaType contentType;
-
     @Mock
     WebClient.RequestBodySpec requestBodySpec;
-
     @Mock
     private WebClient webClient;
-
     @Mock
     WebClient.RequestHeadersSpec requestHeadersSpec;
-
     @Mock
     WebClient.ResponseSpec responseSpec;
+
     @BeforeAll
     public void setUp() throws JsonProcessingException {
         String sdRequest = "{\n" +
@@ -127,8 +117,9 @@ class CustodianWalletTest {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
 
     }
+
     @Test
-    public void custodianWalletTest(){
+    public void custodianWalletTest() {
 
         MockedStatic<WebClient> webClientStatic = Mockito.mockStatic(WebClient.class);
         webClientStatic.when(() -> WebClient.create(anyString())).thenReturn(webClient);
@@ -139,23 +130,13 @@ class CustodianWalletTest {
         Mockito.when(requestBodySpec.bodyValue(any())).thenReturn(requestHeadersSpec);
         Mockito.when(requestHeadersSpec.accept(MediaType.ALL)).thenReturn(requestBodySpec);
         Mockito.when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-//      keycloakManager = Mockito.mock(KeycloakManager.class);
-//      keycloak = Mockito.mock(Keycloak.class);
-          TokenManager tkm = Mockito.mock(TokenManager.class);
+        TokenManager tkm = Mockito.mock(TokenManager.class);
 
-          Keycloak klk = Keycloak.getInstance("https://centralidp.int.demo.catena-x.net/auth","CX-Central","sa-cl5-custodian-1",null,"sa-cl5-custodian-1","iim6OwFYD10QsCueq4EEK5VaQ3cLOzaA",null,null);
-          Mockito.when(keycloakManager.getKeycloack(any())).thenReturn(keycloak);
-          Mockito.when(keycloak.tokenManager()).thenReturn(klk.tokenManager());
-          Mockito.when(tkm.getAccessTokenString()).thenReturn("Bearer.jakdhaksbdabdadb");
-          CustodianWallet cw  = Mockito.mock(CustodianWallet.class);
-
-       //   Mockito.when(keycloakManager.getKeycloack("CustodianWallet").tokenManager().getAccessTokenString()).thenReturn("Bearer.fsdfdsfsfgdfg");
-        //  Mockito.when(keycloakManager.getKeycloack("custodianWallet").tokenManager()).thenReturn( k.tokenManager());
-        //Mockito.when(k.tokenManager()).thenReturn(k.tokenManager());
-         // Mockito.when(keycloak.tokenManager().getAccessTokenString()).thenReturn("dsadada");
-//
-//
-//        //Mockito.when(k.tokenManager()).thenReturn(new TokenManager(k.tokenManager()))
+        Keycloak klk = Keycloak.getInstance("https://centralidp.int.demo.catena-x.net/auth", "CX-Central", "sa-cl5-custodian-1", null, "sa-cl5-custodian-1", "iim6OwFYD10QsCueq4EEK5VaQ3cLOzaA", null, null);
+        Mockito.when(keycloakManager.getKeycloack(any())).thenReturn(keycloak);
+        Mockito.when(keycloak.tokenManager()).thenReturn(klk.tokenManager());
+        Mockito.when(tkm.getAccessTokenString()).thenReturn("Bearer.jakdhaksbdabdadb");
+        CustodianWallet cw = Mockito.mock(CustodianWallet.class);
         cw.getSignedVC(verifiableCredential);
 
 
