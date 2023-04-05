@@ -1,6 +1,7 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
@@ -17,8 +18,15 @@ import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWalle
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.token.TokenManager;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,7 +45,8 @@ import java.util.Optional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ClearingHouseTest {
+@MockitoSettings(strictness = Strictness.LENIENT)
+class ClearingHouseTest {
 
     @Value("${app.usersDetails.clearingHouse.uri}")
     private String clearingHouseUrl;
@@ -58,6 +67,9 @@ public class ClearingHouseTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @MockBean
+    Keycloak keycloak;
 
     Object externalId;
 
@@ -109,14 +121,10 @@ public class ClearingHouseTest {
 
     @Test
     public void doWorkTest(){
-        //  clearingHouse.doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
         ClearingHouse chr = Mockito.mock(ClearingHouse.class,Mockito.CALLS_REAL_METHODS);
-        //   Mockito.verify(chr,Mockito.times(1)).doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        //  Mockito.doNothing().when(chr).doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        //  chr.doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        //  Mockito.verify(chr).doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-
-        Mockito.doThrow(new NotFoundException()).when(chr).sendToClearingHouse(verifiableCredential,externalId.toString());
+        chr.keycloakManager = keycloakManager;
+        Mockito.doThrow(new NotFoundException()).when(chr).doWork(null,verifiableCredential,externalId.toString(),"Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJIVUgzYjZrMzZvbFNQVTRDRTRaMVUxUjhVeHg4eFQwS3p4QXdLb3NkVk1VIn0.eyJleHAiOjE2ODA2MDAyNDcsImlhdCI6MTY4MDU5OTk0NywianRpIjoiNTAwNTJjOGYtMjgyZS00NTM4LWI5YzYtODk0NTY1ZGYzNTY4IiwiaXNzIjoiaHR0cHM6Ly9jZW50cmFsaWRwLmludC5kZW1vLmNhdGVuYS14Lm5ldC9hdXRoL3JlYWxtcy9DWC1DZW50cmFsIiwiYXVkIjpbInJlYWxtLW1hbmFnZW1lbnQiLCJDbDItQ1gtUG9ydGFsIiwiYWNjb3VudCJdLCJzdWIiOiIxOGMzYTZiMy1lY2ZlLTQ1NzItYmJiNC1hZjBjMTgyM2YyMDYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzYS1jbDItMDIiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1jYXRlbmEteCByZWFsbSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJtYW5hZ2UtdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJxdWVyeS1jbGllbnRzIl19LCJDbDItQ1gtUG9ydGFsIjp7InJvbGVzIjpbInVwZGF0ZV9hcHBsaWNhdGlvbl9jaGVja2xpc3RfdmFsdWUiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJzYS1jbDItMDIiLCJjbGllbnRIb3N0IjoiMTAuMjQwLjAuNiIsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1zYS1jbDItMDIiLCJjbGllbnRBZGRyZXNzIjoiMTAuMjQwLjAuNiJ9.IzYx5uZlT9qDvls4Lxw6uZXxL3-rMtFq6C8gzylDWZD-A_QD6umdbYJRVEXM--_7qvlHoSac6cDTsYo0XfoojhTuXZhlnnrZON1qyxC3GWEGbG8tqIM7Ns74jIIVhE4lJoB_Q4zNRfVCC1EHfOc7OlEBeJCUSiVeesE1qHpD-gzkHPjIFGPOsXM1aMFo1uAQUbg8oKzwPYkmylXK7LDQ0h8qppoJUKfZs0dP2SoOwJsPROc2tpLJMQcpGxC-Eojxi2slUAWHP6DqR2kaBM2PP7lsISFkvaoGSdDaJvaDpc0Gb69CupnOGwpwdbd3B9Kpe4FzOE1UVDcENyhT1WzQJA");
+        chr.sendToClearingHouse(verifiableCredential,externalId.toString());
     }
 
 

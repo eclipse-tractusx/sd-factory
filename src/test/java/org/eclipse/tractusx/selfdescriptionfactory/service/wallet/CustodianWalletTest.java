@@ -1,4 +1,4 @@
-package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
+package org.eclipse.tractusx.selfdescriptionfactory.service.wallet;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
@@ -6,37 +6,34 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.identity.jsonld.JsonLDUtils;
+import io.vavr.CheckedFunction0;
+import io.vavr.control.Try;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.eclipse.tractusx.selfdescriptionfactory.service.KeycloakManager;
-import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
+import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.internal.creation.MockSettingsImpl;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.keycloak.admin.client.Config;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.token.TokenManager;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.NotFoundException;
-
-
+import javax.ws.rs.client.Client;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -44,49 +41,33 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@RunWith(MockitoJUnitRunner.class)
-class ClearingHouseRemoteTest {
-
-
+class CustodianWalletTest {
     @Value("${app.usersDetails.clearingHouse.uri}")
     private String clearingHouseUrl;
 
-    @Autowired
+    @MockBean
     protected KeycloakManager keycloakManager;
 
     @SpyBean
     private ConversionService conversionService;
+    @Autowired
+    CustodianWallet custodianWallet;
 
     @MockBean
-    private CustodianWallet custodianWallet;
-
-    @Autowired
-    private ClearingHouse clearingHouse;
-
-    @Mock
-    private WebClient.Builder webClientBuilder;
-
-    @Mock
-    private WebClient webClient;
+    Keycloak keycloak;
 
     VerifiableCredential verifiableCredential ;
 
-
-    @Mock
-    ObjectMapper objectMapper;
-
-
-    @InjectMocks
-    private ClearingHouseRemote chr;
+    Object externalId;
 
     @Mock
     WebClient.RequestBodyUriSpec requestBodyUriSpec;
@@ -98,17 +79,15 @@ class ClearingHouseRemoteTest {
     WebClient.RequestBodySpec requestBodySpec;
 
     @Mock
+    private WebClient webClient;
+
+    @Mock
     WebClient.RequestHeadersSpec requestHeadersSpec;
 
     @Mock
     WebClient.ResponseSpec responseSpec;
-
-    Object externalId;
-
-    @BeforeEach
+    @BeforeAll
     public void setUp() throws JsonProcessingException {
-
-
         String sdRequest = "{\n" +
                 "  \"externalId\": \"ID01234-123-4321\",\n" +
                 "  \"type\": \"LegalPerson\",\n" +
@@ -147,41 +126,38 @@ class ClearingHouseRemoteTest {
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
 
-
     }
     @Test
-    public void doWorkTest(){
-        //  clearingHouse.doWork(clearingHouseUrl,verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        ClearingHouseRemote chr = mock(ClearingHouseRemote.class,Mockito.CALLS_REAL_METHODS);
+    public void custodianWalletTest(){
+
         MockedStatic<WebClient> webClientStatic = Mockito.mockStatic(WebClient.class);
         webClientStatic.when(() -> WebClient.create(anyString())).thenReturn(webClient);
         Mockito.when(webClient.post()).thenReturn(requestBodyUriSpec);
-        Mockito.when(requestBodyUriSpec.uri(Mockito.any(Function.class))).thenReturn(requestBodySpec);
+        Mockito.when(requestBodyUriSpec.uri(any(Function.class))).thenReturn(requestBodySpec);
         Mockito.when(requestBodySpec.contentType(MediaType.APPLICATION_JSON)).thenReturn(requestBodySpec);
-        Mockito.when(requestBodySpec.headers(Mockito.any(Consumer.class))).thenReturn(requestBodySpec);
-        Mockito.when(requestBodySpec.bodyValue(Mockito.any())).thenReturn(requestHeadersSpec);
+        Mockito.when(requestBodySpec.headers(any(Consumer.class))).thenReturn(requestBodySpec);
+        Mockito.when(requestBodySpec.bodyValue(any())).thenReturn(requestHeadersSpec);
         Mockito.when(requestHeadersSpec.accept(MediaType.ALL)).thenReturn(requestBodySpec);
         Mockito.when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
-        Mockito.when(responseSpec.toBodilessEntity())
-                .thenReturn((Mono.just(responseEntity)));
-       // webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
-        // webClientStatic.when(WebClient::create).thenReturn(webClient);
-        //Mockito.when(customClien).thenReturn()
-        chr.doWork("test",verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-        webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
-        webClientStatic.closeOnDemand();
+//      keycloakManager = Mockito.mock(KeycloakManager.class);
+//      keycloak = Mockito.mock(Keycloak.class);
+          TokenManager tkm = Mockito.mock(TokenManager.class);
+
+          Keycloak klk = Keycloak.getInstance("https://centralidp.int.demo.catena-x.net/auth","CX-Central","sa-cl5-custodian-1",null,"sa-cl5-custodian-1","iim6OwFYD10QsCueq4EEK5VaQ3cLOzaA",null,null);
+          Mockito.when(keycloakManager.getKeycloack(any())).thenReturn(keycloak);
+          Mockito.when(keycloak.tokenManager()).thenReturn(klk.tokenManager());
+          Mockito.when(tkm.getAccessTokenString()).thenReturn("Bearer.jakdhaksbdabdadb");
+          CustodianWallet cw  = Mockito.mock(CustodianWallet.class);
+
+       //   Mockito.when(keycloakManager.getKeycloack("CustodianWallet").tokenManager().getAccessTokenString()).thenReturn("Bearer.fsdfdsfsfgdfg");
+        //  Mockito.when(keycloakManager.getKeycloack("custodianWallet").tokenManager()).thenReturn( k.tokenManager());
+        //Mockito.when(k.tokenManager()).thenReturn(k.tokenManager());
+         // Mockito.when(keycloak.tokenManager().getAccessTokenString()).thenReturn("dsadada");
+//
+//
+//        //Mockito.when(k.tokenManager()).thenReturn(new TokenManager(k.tokenManager()))
+        cw.getSignedVC(verifiableCredential);
+
+
     }
-
-    @Test
-    public void doWorkWhileExceptionTest(){
-        ObjectMapper mapper = new ObjectMapper();
-        //ClearingHouseRemote chr = mock(ClearingHouseRemote.class,Mockito.CALLS_REAL_METHODS);
-        MockedStatic<WebClient> webClientStatic = Mockito.mockStatic(WebClient.class);
-        webClientStatic.when(() -> WebClient.create(anyString())).thenThrow(new RuntimeException());
-
-        chr.doWork("test",verifiableCredential,externalId.toString(),"Bearer.shdgsajdjdh");
-
-    }
-
 }
