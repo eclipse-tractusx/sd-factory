@@ -20,7 +20,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` | Set the Image Pull Policy |
 | image.repository | string | `"ghcr.io/catenax-ng/tx-sd-factory/sdfactory"` | Image to use for deploying an application |
-| image.tag | string | `""` | Image tage is defined in chart appVersion. |
+| image.tag | string | `"2.0.3-SNAPSHOT"` | Image tage is defined in chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` | a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class. |

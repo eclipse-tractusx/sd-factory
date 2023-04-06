@@ -12,7 +12,7 @@ image:
     # -- Set the Image Pull Policy
   pullPolicy: Always
     # -- Image tage is defined in chart appVersion.
-  tag: ""
+  tag: "2.0.3-SNAPSHOT"
 
 imagePullSecrets: []
 nameOverride: ""
