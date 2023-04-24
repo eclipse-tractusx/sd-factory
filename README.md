@@ -13,8 +13,8 @@ further processing.
 ## Software Version
 
 ```shell
-Software version: 2.0.4
-Helm Chart version: 2.0.4
+Software version: 2.0.5
+Helm Chart version: 2.0.5
 
 ```
 
