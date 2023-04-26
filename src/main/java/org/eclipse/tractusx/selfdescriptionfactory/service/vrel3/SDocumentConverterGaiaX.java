@@ -23,6 +23,7 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
@@ -56,6 +57,8 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
     @Value("${app.verifiableCredentials.catena-x-schema}")
     private String catenaxSchema;
 
+    private Map<RegistrationNumberSchema.TypeEnum, String> regCodeMapper = new RegCodeMapper();
+
     @Override
     public Claims convert(@NonNull SelfdescriptionPostRequest source) {
         String externalId;
@@ -88,17 +91,16 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
         res.put("id", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("did"));
         res.put("type", legalPersonSchema.getType());
         res.put("ctxsd:bpn", legalPersonSchema.getBpn());
-        res.put("gx-participant:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name"));
+        res.put("gx:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name"));
         res.put(
-                "gx-participant:registrationNumber",
-                legalPersonSchema.getRegistrationNumber().stream().map(
-                    regNum -> {
-                        var regNumNode = new LinkedHashMap<String, Object>();
-                        regNumNode.put("gx-participant:registrationNumberType", regNum.getType());
-                        regNumNode.put("gx-participant:registrationNumberNumber", regNum.getValue());
-                        return regNumNode;
-                    }).toList()
+                "gx:legalRegistrationNumber",
+                legalPersonSchema.getRegistrationNumber().stream()
+                        .map(
+                            regNum -> Map.of(regCodeMapper.get(regNum.getType()), regNum.getValue())
+                        ).toList()
         );
+        res.put("gx:headquarterAddress", Map.of("gx:addressCountryCode", legalPersonSchema.getHeadquarterAddressCountry()));
+        res.put("gx:legalAddress", Map.of("gx:addressCountryCode", legalPersonSchema.getLegalAddressCountry()));
         return res;
     }
 

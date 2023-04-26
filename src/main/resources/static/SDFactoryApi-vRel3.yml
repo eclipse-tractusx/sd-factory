@@ -31,7 +31,7 @@ paths:
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
                     registrationNumber:
-                      - type: local
+                      - type: taxID
                         value: o12345678
                     headquarterAddress.country: DE
                     legalAddress.country: DE
@@ -81,10 +81,10 @@ components:
           type: string
           description: the mean to request data retrieval
           enum:
-            - local
+            - taxID
+            - vatID
             - EUID
             - EORI
-            - vatID
             - leiCode
         value:
           type: string
