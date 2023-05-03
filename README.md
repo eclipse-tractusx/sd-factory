@@ -1,6 +1,6 @@
 # <a id="introduction"></a>Self-Description Factory
 
-In Catena-X we provide self-descriptions for any participant of this data space.
+We provide self-descriptions for any participant of this data space.
 The Self Descriptions are stored inside the Self Description Hub. Self-Description 
 Factory component is responsible for the creation of Self Descriptions. This component 
 gets input data from the Onboarding Tool, which prepares the data for the SD-Factory,
