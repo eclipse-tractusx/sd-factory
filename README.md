@@ -1,9 +1,9 @@
 # <a id="introduction"></a>Self-Description Factory
 
-In Catena-X we provide self-descriptions for any participant of this data space.
-The Self Descriptions are stored inside the Self Description Hub. Self-Description 
-Factory component is responsible for the creation of Self Descriptions. This component 
-gets input data from the Onboarding Tool, which prepares the data for the SD-Factory,
+A Self Description document (SD-document) is provided for any participant of this data 
+space. The Self Descriptions are stored inside the Self Description Hub. Self-Description
+Factory (SD-Factory) component is responsible for the creation of Self Descriptions. This 
+component gets input data from the Onboarding Tool, which prepares the data for the SD-Factory,
 creates a Verifiable Credential and passes the document to the
 [Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallets)
 based on the Custodian for the signature. The result is sent to the Compliance Service for
@@ -13,15 +13,15 @@ further processing.
 ## Software Version
 
 ```shell
-Software version: 2.0.5
-Helm Chart version: 2.0.5
+Software version: 2.0.6
+Helm Chart version: 2.0.6
 
 ```
 
 
 # Solution Strategy 
 
-Here the flow of Self-Description creation is shown:-
+Here the flow of Self-Description creation is shown:
 
 ```mermaid
 sequenceDiagram
@@ -44,25 +44,25 @@ sequenceDiagram
 2. User calls On-boarding Service with request for creating and publishing
    SD-document. The service authenticates the user and prepare the data
    SD-Factory needs for creating SD-document. SDFactory takes document in a format,
-   specified in [Catena-X Confluence](https://confluence.catena-x.net/display/CORE/Self+Description+Interface)]
-   and convert it to [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
+   specified in OpenAPI document [Pre-22.4 schema, AKA 1.06]  and convert it to 
+   [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
     - LegalPerson;
     - ServiceOffering;
-   **Organization wallet of the company which runs the service shall
+   **Organization wallet of the company running the service shall
    be available at this point of time as it signs the Verifiable Credential
    with SD document. The wallet associated with the service shall be available
    as well.**
 3. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
    data as a parameter. OS uses a credential with a role allowing for this request
    (e.g. `add_self_descriptions`, the default role for SD-document creation). The
-   credential for this operation is taken from Identity Provider (keyclock).
+   credential for this operation is taken from Identity Provider (keycloak).
 4. SD-Factory creates a Verifiable Credential based on the information taken from
-   OS and signs it with organization key. The organization is acting as an Issuer.
-   The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
-   for this operation.
-5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further (asynchronous) processing.
-   In the end the Compliance Service sends Self-Description document back to the On-boarding service endpoint. 
-   OS is responsible for storing and publishing it. 
+   OS and passes it to the Custodian Wallet to be signed with organization key. The 
+   organization is acting as an Issuer. The wallet ID of the service is used as a Holder.
+5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further 
+   (asynchronous) processing. In the end the Compliance Service sends Self-Description 
+   document back to the On-boarding service endpoint. OS is responsible for storing and 
+   publishing it. 
 
 For the VC we have to provide valid JSON context where we have a reference to an object
 from known ontology. This object carries the claims the SD-Factory signs. The document
@@ -74,16 +74,14 @@ when will be provided by Trusted Framework. Currently, we support
 
 The SD-Factory provides interfaces to create Verifiable Credential for one of mentioned documents.
 Only the authorized user can call these interfaces. They are protected with keycloak. The configuration 
-parameters are given in `application.yml`.
-The user role for creating Self-Descriptions is specified in `application.yml` as well
+parameters are given in `application.yml`. The user role for creating Self-Descriptions is specified in 
+`application.yml` as well.
 
 To trigger creation of the SD-document one shall call the endpoint available by path :
 
 `POST /api/rel3/selfdescription`
 
-OpenAPI specification is given there:
-
-[Pre-22.4 schema, AKA 1.06](src/main/resources/static/SDFactoryApi-vRel3.yml).
+OpenAPI specification is given in [Pre-22.4 schema, AKA 1.06].
 
 An example of the body for LegalPerson is given bellow:
 
@@ -91,7 +89,8 @@ An example of the body for LegalPerson is given bellow:
 {
   "type": "LegalPerson",
   "holder": "BPNL000000000000",
-  "issuer": "CAXSDUMMYCATENAZZ",
+  "issuer": "CAXSDUMMYCATENAZZ", 
+  "externalId": "ID01234-123-4321",
   "registrationNumber": [
     {
       "type": "local",
@@ -111,7 +110,7 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+    "https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
@@ -155,7 +154,7 @@ Verifiable Credentials for LegalPerson:
 }
 ```
 
-Then Verifiable Credential is sent to the Compliance Service.
+Then the Verifiable Credential is sent to the Compliance Service.
 
 # Configuration
 The configuration property file is located under `resources` folder and is incorporated 
@@ -241,24 +240,23 @@ java -jar target/sd-factory-2.0.0.jar
 ```
 Please note the name of jar-file as it may differ if version is changed.
 
-<a name="docker"></a>To build a Docker image one can use this command:
+To build a Docker image one can use this command:
 ```shell
 docker build .
 ```
 A Docker image will be built and installed to the local repository.
 
 # Testing
-SD-Factory can be fired up locally in Docker environment. Before that
-the images need to be created as it is [described here](#docker). Do not forget
-to provide necessary configuration parameters in application.yml for keycloak 
-and the Custodian Wallet.
+SD-Factory can be fired up locally in Docker environment. Before that the image needs
+to be created. Do not forget to provide necessary configuration parameters in `application.yml`
+for keycloak and the Custodian Wallet.
 
 
 ## Installation Steps
 
 [INSTALL.md](INSTALL.md)
 
-
+[Pre-22.4 schema, AKA 1.06]: src/main/resources/static/SDFactoryApi-vRel3.yml
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
 
