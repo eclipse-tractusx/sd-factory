@@ -52,7 +52,7 @@ RUN adduser \
     --no-create-home \
     --uid "$UID" \
     "$USER"
-    
+
 USER sdfuser
 
 WORKDIR /
