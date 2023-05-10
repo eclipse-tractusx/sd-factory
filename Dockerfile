@@ -18,9 +18,24 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-RUN adduser -DH sdfuser && addgroup sdfuser sdfuser
+ENV USER=sdfuser
+ENV UID=1000
+ENV GID=1000
 
+RUN addgroup --gid $GID $USER
+
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --ingroup "$USER" \
+    --no-create-home \
+    --uid "$UID" \
+    "$USER"
+    
 USER sdfuser
+
+WORKDIR /
 
 ENTRYPOINT ["java", "-cp", "app:app/lib/*", "org.eclipse.tractusx.selfdescriptionfactory.SelfDescriptionFactoryApplication"]
 

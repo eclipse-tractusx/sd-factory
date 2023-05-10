@@ -13,8 +13,8 @@ further processing.
 ## Software Version
 
 ```shell
-Software version: 2.0.6
-Helm Chart version: 2.0.6
+Software version: 2.0.7
+Helm Chart version: 2.0.7
 
 ```
 
@@ -251,6 +251,19 @@ SD-Factory can be fired up locally in Docker environment. Before that the image 
 to be created. Do not forget to provide necessary configuration parameters in `application.yml`
 for keycloak and the Custodian Wallet.
 
+# Container images
+
+This application provides container images for demonstration purposes. The base image used, to build this demo application image is eclipse-temurin:17-jdk-alpine
+
+Docker Hub:
+
+ - eclipse-temurin(https://hub.docker.com/_/eclipse-temurin)
+ - 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk-alpine/images/sha256-c093675e143dc8023fb218c144e06491154491a7965d0664a93f99ada5259ec7?context=explore)
+
+Source:
+
+ - temurin-build(https://github.com/adoptium/temurin-build)
+ - temurin docker repo info(https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin)
 
 ## Installation Steps
 
