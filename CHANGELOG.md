@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
- - Updated README.md
- - a figure for arc42
- 
+ - NA
+
+
+## [2.0.8] - 2023-05-15
+
+### Added
+- Added CPU, Memory details
+- Added Header in files
  
 ## [2.0.7] - 2023-05-09
 
