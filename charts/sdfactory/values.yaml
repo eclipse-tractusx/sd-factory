@@ -98,17 +98,14 @@ service:
   port: 80
     # -- Container Port details for sevice
   targetPort: 8080
-  
 ingress:
     # -- If you want to enable the ingress
   enabled: false
     # -- a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class.
   className: ""
     # -- Kubernetes resources that represent certificate authorities that are able to generate signed certificates by honoring certificate signing requests.
-  issuer: "letsencrypt-prod" 
+  issuer: "letsencrypt-prod"
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   hosts:
     # -- Host of the application on which application runs
     - host: ""
