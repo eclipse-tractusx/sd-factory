@@ -1,0 +1,118 @@
+#################################################################################
+# Copyright (c) 2022,2023 T-Systems International GmbH
+# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+################################################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sdfactory.fullname" . }}
+  labels:
+    {{- include "sdfactory.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "sdfactory.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "sdfactory.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+              
+          env:
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: jwk-set-uri
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: ClientID
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: ClientSecret
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: auth-server-url
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: custodianWalletUri
+          - name: APP_USERSDETAILS_CUSTODIANWALLET_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: realm
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_URI
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-uri        
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_SERVERURL
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-serverUrl                
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_REALM
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-realm
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTID
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-clientId               
+          - name: APP_USERSDETAILS_CLEARINGHOUSE_CLIENTSECRET
+            valueFrom: 
+              secretKeyRef:
+                name: {{ include "sdfactory.applicationSecret.name" . }}
+                key: clearingHouse-clientSecret                
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
