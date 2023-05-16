@@ -48,7 +48,7 @@ jobs:
               with:
                 context: .
                 push: true
-                tags: ghcr.io/catenax-ng/tx-sd-factory/sdfactory:test 
+                tags: kind-registry:5000/sd-factory:testing
         
             - name: Set up Helm
               uses: azure/setup-helm@v3
@@ -74,6 +74,6 @@ jobs:
               run: ct lint --validate-maintainers=false --target-branch ${{ github.event.repository.default_branch }}
         
             - name: Run chart-testing (install)
-              run: ct install --charts charts/app-dashboard
+              run: ct install --charts charts/SDFactory --helm-extra-set-args "--set=image.tag=testing"
               if: steps.list-changed.outputs.changed == 'true'
 
