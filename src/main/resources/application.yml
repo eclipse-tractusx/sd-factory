@@ -62,3 +62,11 @@ app:
 logging:
   level:
     org.eclipse.tractusx.selfdescriptionfactory: DEBUG
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
