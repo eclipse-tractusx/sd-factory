@@ -6,7 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
  - NA
+
+
+## [2.0.8] - 2023-05-15
+
+### Added
+- Added CPU, Memory details
+- Added Header in files
  
+## [2.0.7] - 2023-05-09
+
+### Added
+- Added Container images section in the README.md file that contains information about the used base image
+
+### Changed
+- Specified runAsUser for the deployment
+- Specified USER command in Dockerfile using IDs instead of just name
 
 ## [2.0.6] - 2023-05-02
 
