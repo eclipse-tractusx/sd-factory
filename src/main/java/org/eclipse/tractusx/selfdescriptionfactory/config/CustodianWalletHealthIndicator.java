@@ -21,12 +21,11 @@
 package org.eclipse.tractusx.selfdescriptionfactory.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
-
-import java.net.Socket;
 
 @Component("CustodianWalletHealthIndicator")
 @Slf4j
@@ -37,16 +36,13 @@ public class CustodianWalletHealthIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
-        try (Socket socket =
-            new Socket(new java.net.URL(url).getHost(),80)) {
-            log.info("Custodian wallet is up");
-        } catch (Exception e) {
-            log.warn("Failed to connect to: {}",url);
+        if(Utils.checkUrlConnection(url)) {
+            return Health.up()
+                    .build();
+        } else {
             return Health.down()
-                    .withDetail("error", e.getMessage())
+                    .withDetail("error", "Failed to connect to: "+url)
                     .build();
         }
-        return Health.up()
-                .build();
     }
 }
