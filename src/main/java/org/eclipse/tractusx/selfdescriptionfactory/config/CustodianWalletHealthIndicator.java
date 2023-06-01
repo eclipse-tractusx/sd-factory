@@ -21,12 +21,9 @@
 package org.eclipse.tractusx.selfdescriptionfactory.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.net.Socket;
@@ -36,33 +33,20 @@ import java.net.Socket;
 public class CustodianWalletHealthIndicator implements HealthIndicator {
 
     @Value("${app.usersDetails.custodianWallet.uri}")
-    private String URL;
-
-    @Autowired
-    private SecurityRoles securityRoles;
+    private String url;
 
     @Override
     public Health health() {
         try (Socket socket =
-            new Socket(new java.net.URL(URL).getHost(),80)) {
+            new Socket(new java.net.URL(url).getHost(),80)) {
+            log.info("Custodian wallet is up");
         } catch (Exception e) {
-            log.warn("Failed to connect to: {}",URL);
+            log.warn("Failed to connect to: {}",url);
             return Health.down()
                     .withDetail("error", e.getMessage())
                     .build();
         }
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getAuthorities().stream().anyMatch(
-                p -> p.getAuthority().equalsIgnoreCase(securityRoles.getCreateRole()))
-        ) {
-            return Health.up()
-                    .withDetail("Authorization", "User have enough permissions to create SD")
-                    .build();
-        } else {
-            return Health.up()
-                    .withDetail("Authorization", "User doesn't have enough permissions to create SD")
-                    .build();
-        }
+        return Health.up()
+                .build();
     }
 }

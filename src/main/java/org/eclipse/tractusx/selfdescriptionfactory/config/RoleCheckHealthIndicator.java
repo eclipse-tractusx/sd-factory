@@ -20,33 +20,31 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.config;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.net.Socket;
-
-@Component("ClearingHouseHealthIndicator")
-@Slf4j
-public class ClearingHouseHealthIndicator implements HealthIndicator {
-
-    @Value("${app.usersDetails.clearingHouse.uri}")
-    private String url;
+@Component("RoleCheckHealthIndicator")
+public class RoleCheckHealthIndicator implements HealthIndicator {
+    @Autowired
+    private SecurityRoles securityRoles;
 
     @Override
     public Health health() {
-        try (Socket socket =
-            new Socket(new java.net.URL(url).getHost(),80)) {
-            log.info("Clearing house is up");
-        } catch (Exception e) {
-            log.warn("Failed to connect to: {}",url);
-            return Health.down()
-                    .withDetail("error", e.getMessage())
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getAuthorities().stream().anyMatch(
+                p -> p.getAuthority().equalsIgnoreCase(securityRoles.getCreateRole()))
+        ) {
+            return Health.up()
+                    .withDetail("Authorization", "User have enough permissions to create SD")
+                    .build();
+        } else {
+            return Health.up()
+                    .withDetail("Authorization", "User doesn't have enough permissions to create SD")
                     .build();
         }
-        return Health.up()
-                .build();
     }
 }
