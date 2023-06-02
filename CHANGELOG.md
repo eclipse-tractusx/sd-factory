@@ -5,8 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
- - NA
+ - Change the image location
 
+## [2.0.9] - 2023-05-29
+
+### Added
+- Added health check endpoint for SD factory
+
+### Changed
+- Changed Code of Conduct
 
 ## [2.0.8] - 2023-05-15
 
