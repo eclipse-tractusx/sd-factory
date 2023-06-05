@@ -32,6 +32,10 @@ description: Helm Charts for SD Factory application. Self-Description Factory co
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
 
+maintainers:
+  - name: adkumar1
+    email: aditya.kumar@t-systems.com
+
 sources:
   - https://github.com/eclipse-tractusx/sd-factory
 # This is the chart version. This version number should be incremented each time you make changes
