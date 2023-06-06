@@ -22,12 +22,10 @@ package org.eclipse.tractusx.selfdescriptionfactory;
 
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.actuate.health.Health;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -69,15 +67,5 @@ public class Utils {
         return Try.of(() -> URI.create(uriStr))
                 .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coud not create an URI from '" + uriStr + "'", err)))
                 .get();
-    }
-
-    public static boolean checkUrlConnection(String url) {
-        try (Socket socket =
-                     new Socket(new java.net.URL(url).getHost(),80)) {
-            return true;
-        } catch (Exception e) {
-            log.warn("Failed to connect to: {}",url);
-            return false;
-        }
     }
 }
