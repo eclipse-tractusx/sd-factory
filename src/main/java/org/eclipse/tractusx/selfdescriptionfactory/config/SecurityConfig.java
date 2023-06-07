@@ -52,7 +52,7 @@ import java.util.stream.Stream;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URL = { "/ping", "/*/public/**", "/api-docs/**", "/swagger-ui/**",
-            "*/swagger-ui/**", "/actuator/health/readiness", "/actuator/health/liveness", "/v3/api-docs/**" };
+            "*/swagger-ui/**", "/v3/api-docs/**" };
 
     @Value("${keycloak.resource.clientid}")
     private String resourceName;
@@ -104,6 +104,7 @@ public class SecurityConfig {
         http.csrf().disable();
 
         http.authorizeHttpRequests()
+                //.requestMatchers("/actuator/**").authenticated()
                 .anyRequest().permitAll();
 
         http.headers().xssProtection().and()
