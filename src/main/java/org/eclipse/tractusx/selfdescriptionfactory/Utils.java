@@ -21,6 +21,7 @@
 package org.eclipse.tractusx.selfdescriptionfactory;
 
 import io.vavr.control.Try;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,6 +33,7 @@ import java.util.function.Function;
 
 import static io.vavr.control.Try.failure;
 
+@Slf4j
 public class Utils {
 
     private Utils() {
