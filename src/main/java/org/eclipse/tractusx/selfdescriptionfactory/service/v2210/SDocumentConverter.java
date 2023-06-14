@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.ServiceOfferingSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -45,8 +46,12 @@ public class SDocumentConverter implements Converter<SelfdescriptionPostRequest,
 
     @Override
     public @NonNull Claims convert(@NonNull SelfdescriptionPostRequest source) {
+        var sdoc2210Map = objectMapper.convertValue(source, new TypeReference<LinkedHashMap<String, Object>>(){});
+        if (!sdoc2210Map.containsKey("bpn") && source instanceof ServiceOfferingSchema so) {
+            sdoc2210Map.put("bpn", so.getHolder());
+        }
         return new Claims(
-                objectMapper.convertValue(source, new TypeReference<LinkedHashMap<String, Object>>(){}),
+                sdoc2210Map,
                 Collections.singletonList(URI.create(schemaUrl))
         );
     }

@@ -60,7 +60,6 @@ public class SDFactoryCatenaX implements SDFactory{
         var claims = new LinkedHashMap<>(claimsHolder.claims());
         var holder = claims.remove("holder");
         var issuer = claims.remove("issuer");
-        var type = claims.get("type");
         var externalId = claims.remove("externalId");
         var credentialSubject = CredentialSubject.fromJsonObject(claims);
         var verifiableCredential = VerifiableCredential.builder()
@@ -71,7 +70,6 @@ public class SDFactoryCatenaX implements SDFactory{
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
-        JsonLDUtils.jsonLdAdd(verifiableCredential, "type", type);
         var vc = custodianWallet.getSignedVC(verifiableCredential);
         clearingHouse.sendToClearingHouse(vc, externalId.toString());
     }

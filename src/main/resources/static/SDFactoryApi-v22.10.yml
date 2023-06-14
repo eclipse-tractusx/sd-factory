@@ -600,7 +600,7 @@ components:
           type: string
           description: the mean to request data retrieval
           enum:
-            - local
+            - taxID
             - EUID
             - EORI
             - vatID
