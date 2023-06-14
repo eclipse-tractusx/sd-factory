@@ -119,6 +119,10 @@
               "@type": "schema:name"
             }
           }
+        },
+        "bpn": {
+          "@id": "ctxsd:bpn",
+          "@type": "schema:name"
         }
       }
     },
