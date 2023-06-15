@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "sdfactory.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "sdfactory.fullname" . }}:{{ .Values.service.port }}/swagger-ui/index.html']
   restartPolicy: Never
