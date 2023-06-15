@@ -256,7 +256,7 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials/sd-document-v2210",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [

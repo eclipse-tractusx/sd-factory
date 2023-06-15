@@ -68,7 +68,7 @@ For the VC we have to provide valid JSON context where we have a reference to an
 from known ontology. This object carries the claims the SD-Factory signs. The document
 is published on the github repository of the project. The vocabulary URL can be changed 
 when will be provided by Trusted Framework. Currently, we support 
-[a vocabulary for Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld).
+[a vocabulary for Version 22.10 of Trust Framework](src/main/resources/verifiablecredentials/sd-document-v2210).
 
 # REST Interface
 
@@ -110,7 +110,7 @@ Verifiable Credentials for LegalPerson:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+    "https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials/sd-document-v2210",
     "https://w3id.org/vc/status-list/2021/v1"
   ],
   "type": [
