@@ -70,7 +70,7 @@ public class SDFactoryCatenaX implements SDFactory{
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
         JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
-        var vc = custodianWallet.getSignedVC(verifiableCredential);
-        clearingHouse.sendToClearingHouse(vc, externalId.toString());
+        //var vc = custodianWallet.getSignedVC(verifiableCredential);
+        clearingHouse.sendToClearingHouse(verifiableCredential, externalId.toString());
     }
 }
