@@ -29,7 +29,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   profiles:
-    active: gaia-x-ctx
+    active: catena-x-ctx
   security:
     oauth2:
       resourceserver:
@@ -48,7 +48,8 @@ app:
     schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
     gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
-    catena-x-schema: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/catenax.jsonld
+    #catena-x-schema: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/catenax.jsonld
+    catena-x-schema: https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd
   usersDetails:
     custodianWallet:
       #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
@@ -57,10 +58,10 @@ app:
       #clientId: sa-cl5-custodian-1
       #clientSecret:
     clearingHouse:
-      #uri: https://dummy.dev.demo.catena-x.net/api/credentials
-      #serverUrl: https://centralidp.int.demo.catena-x.net/auth
-      #realm: CX-Central
-      #clientId: sa-cl2-02
+      #url: https://validation.dev.dih-cloud.com/api/v1/compliance
+      #auth-server-url: https://iam.dev.dih-cloud.com//auth
+      #realm: notarisation
+      #clientId: CARLA-GXDCH
       #clientSecret:
   security:
     createRole: add_self_descriptions

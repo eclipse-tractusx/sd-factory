@@ -32,7 +32,7 @@ image:
     # -- Set the Image Pull Policy
   pullPolicy: Always
     # -- Image tage is defined in chart appVersion.
-  tag: "main"
+  tag: "3.0.0-gaiax-DEV"
 
 imagePullSecrets: []
 nameOverride: ""
