@@ -88,9 +88,3 @@ jobs:
       - name: Run chart-testing (install)
         run: ct install --charts charts/sdfactory
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
-
-        # Upgrade the released sdfactory chart version with the locally available chart
-      - name: Run helm upgrade
-        run: |
-          helm upgrade dapsregservice charts/sdfactory
-        if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
