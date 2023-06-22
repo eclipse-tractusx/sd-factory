@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - Change the image location
 
+## [2.1.0] - 2023-06-21
+
+### Fixed
+- Upgraded spring boot library due to security issue
+
 ## [2.0.9] - 2023-05-29
 
 ### Added
