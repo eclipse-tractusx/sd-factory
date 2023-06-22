@@ -95,7 +95,7 @@ service:
     # -- Type of service
   type: ClusterIP
     # -- Port details for sevice
-  port: 80
+  port: 8080
     # -- Container Port details for sevice
   targetPort: 8080
 ingress:
