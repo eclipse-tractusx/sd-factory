@@ -46,8 +46,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      hostname: busybox-1
-      subdomain: busybox-subdomain
+      dnsPolicy: default
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
