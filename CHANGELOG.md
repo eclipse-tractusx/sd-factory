@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
  - Change the image location
 
+## [2.1.1] - 2023-06-23
+
+### Added
+- Added helm lint in the repository
+
 ## [2.1.0] - 2023-06-21
 
 ### Fixed
