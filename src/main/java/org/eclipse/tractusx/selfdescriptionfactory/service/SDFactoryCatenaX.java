@@ -68,8 +68,8 @@ public class SDFactoryCatenaX implements SDFactory{
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
                 .credentialSubject(credentialSubject)
                 .build();
-        JsonLDUtils.jsonLdAdd(verifiableCredential, "issuerIdentifier", issuer);
-        JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
+        JsonLDUtils.jsonLdAdd(verifiableCredential, "issuer", issuer);
+       // JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         //var vc = custodianWallet.getSignedVC(verifiableCredential);
         clearingHouse.sendToClearingHouse(verifiableCredential, externalId.toString());
     }
