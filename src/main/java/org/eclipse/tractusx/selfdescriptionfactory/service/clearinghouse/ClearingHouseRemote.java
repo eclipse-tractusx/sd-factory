@@ -21,6 +21,7 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +34,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClearingHouseRemote extends ClearingHouse{
     private final ClearingHouseClient clearingHouseClient;
+    private final ObjectMapper objectMapper;
 
     @Override
     @SneakyThrows
     public void doWork(String url, VerifiableCredential payload, String externalId, String token) {
+        log.info("This is url: " + url);
+        log.info("This is payload: " + objectMapper.writeValueAsString(payload));
         clearingHouseClient.send(payload, externalId);
     }
 }
