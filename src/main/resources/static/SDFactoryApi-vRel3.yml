@@ -20,7 +20,7 @@ paths:
               discriminator:
                 propertyName: type
                 mapping:
-                  LegalPerson: '#/components/schemas/LegalPersonSchema'
+                  LegalParticipant: '#/components/schemas/LegalPersonSchema'
                   ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
             examples:
               LegalPerson:
