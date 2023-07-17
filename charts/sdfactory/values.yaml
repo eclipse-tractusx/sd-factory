@@ -32,7 +32,8 @@ image:
     # -- Set the Image Pull Policy
   pullPolicy: Always
     # -- Image tage is defined in chart appVersion.
-  tag: "2.1.0-DEV3"
+  #tag: "2.1.0-DEV3"
+  tag: "2.1.2-DEV"
 
 imagePullSecrets: []
 nameOverride: ""
