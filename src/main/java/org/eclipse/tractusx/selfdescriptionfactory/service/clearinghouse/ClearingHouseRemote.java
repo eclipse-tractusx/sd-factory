@@ -41,6 +41,7 @@ public class ClearingHouseRemote extends ClearingHouse{
     public void doWork(String url, VerifiableCredential payload, String externalId, String token) {
         log.info("This is url: " + url);
         log.info("This is payload: " + objectMapper.writeValueAsString(payload));
+        log.info("External id " + externalId);
         clearingHouseClient.send(payload, externalId);
     }
 }
