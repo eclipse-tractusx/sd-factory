@@ -58,13 +58,11 @@ public class SDFactoryCatenaX implements SDFactory{
     @Override
     @PreAuthorize("hasAuthority(@securityRoles.createRole)")
     public void createVC(Object document) {
-        log.info("Whole document " + document.toString());
         var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
         var claims = new LinkedHashMap<>(claimsHolder.claims());
         var holder = claims.remove("holder");
         var issuer = claims.remove("issuer");
         var externalId = claims.remove("externalId");
-        log.info("This is external id " + externalId);
         var credentialSubject = CredentialSubject.fromJsonObject(claims);
         var verifiableCredential = VerifiableCredential.builder()
                 .contexts(claimsHolder.vocabularies())
@@ -74,7 +72,6 @@ public class SDFactoryCatenaX implements SDFactory{
                 .credentialSubject(credentialSubject)
                 .build();
         JsonLDUtils.jsonLdAdd(verifiableCredential, "issuer", issuer);
-       // JsonLDUtils.jsonLdAdd(verifiableCredential, "holderIdentifier", holder);
         //var vc = custodianWallet.getSignedVC(verifiableCredential);
         clearingHouse.sendToClearingHouse(verifiableCredential, externalId.toString());
     }
