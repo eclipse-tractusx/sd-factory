@@ -15,19 +15,19 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/LegalPersonSchema'
+                - $ref: '#/components/schemas/LegalParticipantSchema'
                 - $ref: '#/components/schemas/ServiceOfferingSchema'
               discriminator:
                 propertyName: type
                 mapping:
-                  LegalParticipant: '#/components/schemas/LegalPersonSchema'
+                  LegalParticipant: '#/components/schemas/LegalParticipantSchema'
                   ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
             examples:
-              LegalPerson:
-                description: payload to create LegalPerson
+              LegalParticipant:
+                description: payload to create LegalParticipant
                 value:
                     externalId: ID01234-123-4321
-                    type: LegalPerson
+                    type: LegalParticipant
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
                     registrationNumber:
@@ -91,7 +91,7 @@ components:
           description: Registration Number value
           minLength: 1
           maxLength: 128
-    LegalPersonSchema:
+    LegalParticipantSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'

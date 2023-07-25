@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 T-Systems International GmbH
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.AddressSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.DataAccountExportSchema;
-import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.Claims;
@@ -53,16 +53,16 @@ public class SDocumentConverterCatenaX extends SDocumentConverter implements Con
     public Claims convert(@NonNull SelfdescriptionPostRequest source) {
         String externalId;
         org.eclipse.tractusx.selfdescriptionfactory.model.v2210.SelfdescriptionPostRequest converted2210;
-        if (source instanceof LegalPersonSchema lp) {
+        if (source instanceof LegalParticipantSchema lp) {
             externalId = lp.getExternalId();
-            converted2210 = validator.validated(this::convertRel3LegalPerson2210).apply(lp);
+            converted2210 = validator.validated(this::convertRel3LegalParticipant2210).apply(lp);
         } else if (source instanceof ServiceOfferingSchema so) {
             externalId = so.getExternalId();
             converted2210 = validator.validated(this::convertRel3ServiceOffering2210).apply(so);
         } else {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "LegalPersonSchema and ServiceOffering are supported only"
+                    "LegalParticipantSchema and ServiceOffering are supported only"
             );
         }
         var mapOf2210 = converter2210.convert(converted2210);
@@ -71,10 +71,10 @@ public class SDocumentConverterCatenaX extends SDocumentConverter implements Con
         return new Claims(withExternalId, mapOf2210.vocabularies());
     }
 
-    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema convertRel3LegalPerson2210(
-            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema source
+    private org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalParticipantSchema convertRel3LegalParticipant2210(
+            org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema source
     ) {
-        return new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalPersonSchema()
+        return new org.eclipse.tractusx.selfdescriptionfactory.model.v2210.LegalParticipantSchema()
                 .type(source.getType())
                 .holder(source.getHolder())
                 .issuer(source.getIssuer())

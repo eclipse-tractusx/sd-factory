@@ -17,7 +17,7 @@ The Self-Description Factory creates Self Description documents for entities of 
 
 ### High Level Requirement for Release 2
 
-*   Creation of LegalPerson for each company
+*   Creation of LegalParticipant for each company
 *   Creation of PhysicalResource for the place where the service (e.g. connector) will running
 *   Creation of Service Offering and InstantiatedVirtualResource for each connector
 *   Provide API interface exclusively for the Portal
@@ -75,7 +75,7 @@ thus providing self descriptions for
 *   Service offering
 *   Data exchange connector service
 
-**LegalPerson**
+**LegalParticipant**
 
 * **registrationNumber**: Country’s registration number which identify one specific company.
 * **headquarterAddress.country**: Physical location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
@@ -89,7 +89,7 @@ additional attributes for Catena-X purpose
 
 **ServiceOffering**
 
-* **providedBy:** a resolvable link to the participant self-description providing the service (see SD LegalPerson)
+* **providedBy:** a resolvable link to the participant self-description providing the service (see SD LegalParticipant)
 * **termsAndConditions**: a resolvable link to the Terms and Conditions applying to that service
 * **policies**: a list of policy expressed using a DSL (Rego or ODRL)
 * **aggregationOf:** (optional) a resolvable link to the resources self descriptions related to the service and that
@@ -137,7 +137,7 @@ classDiagram
     Resource o-- Resource
     Resource o-- ServiceOffering
     ServiceOffering --> Participant : providedBy
-    Participant <|-- LegalPerson
+    Participant <|-- LegalParticipant
     Participant <|-- NaturalPerson  
 ```
   
@@ -151,7 +151,7 @@ flowchart LR
     AF --> |sign| Wallet 
 	subgraph SD-Factory
 	    direction BT
-		LegalPerson --> AF[AbstractSDFactory]
+		LegalParticipant --> AF[AbstractSDFactory]
 		ServiceOffering --> AF
 		TermsAndConditions --> AF
 		PhysicalResource --> AF
@@ -166,7 +166,7 @@ work with are defined in [Trust Framework]. SDFactory supports schema from diffe
 versions of [Trust Framework] depending on the endpoint address.
 Take a look at the section describing [REST interface](#REST Interface) for details.
 Currently, these documents are supported by SD-Factory:
-- LegalPerson (API v1.0.6, [Trust Framework V.22.10])
+- LegalParticipant (API v1.0.6, [Trust Framework V.22.10])
 - ServiceOffering (API v1.0.6, [Trust Framework V.22.10])
 - PhysicalResource ([Trust Framework V.22.10])
 - VirtualResource ([Trust Framework V.22.10])
@@ -177,18 +177,18 @@ Currently, these documents are supported by SD-Factory:
 
 ### The process for creating SD-Documents:
 
-#### Step 1: Creation of LegalPerson for each company
+#### Step 1: Creation of LegalParticipant for each company
 *   Each SME or Company has to have an SD-Document. This SD document has to be created during the on-boarding process.
-*   Concretely, we have to create the LegalPerson for those companies:
+*   Concretely, we have to create the LegalParticipant for those companies:
     *   SMEs,
     *   Enterprises,
     *   and Third-Party Provider
 
-Example LegalPerson
+Example LegalParticipant
 
 ![](images/image4.png)
 
-*   The SD-Document of a company's LegalPerson is signed by the Catena-X Wallet.
+*   The SD-Document of a company's LegalParticipant is signed by the Catena-X Wallet.
 
 #### Step 2: Creation of PhysicalResource for the place where the service (e.g. connector) will running
 
@@ -206,7 +206,7 @@ to sign this SD-Document.
 #### Step 3: Creation of Service Offering and InstantiatedVirtualResource for each connector:
 
 *   Pre assumptions:
-    *   SD-Document: LegalPerson of connector operator is already existing
+    *   SD-Document: LegalParticipant of connector operator is already existing
     *   SD-Document: PhsicalResource of the Connector is already existing
 *   creation of InstantiatedVirtualResource for each connector
 *   creation of ServiceOffering for each connector
@@ -230,11 +230,11 @@ OpenAPI specification is given there:
 
 [Pre-22.4 schema, AKA 1.06](../src/main/resources/static/SDFactoryApi-vRel3.yml).
 
-An example of the body for LegalPerson is given bellow:
+An example of the body for LegalParticipant is given bellow:
 
 ```json
 {
-  "type": "LegalPerson",
+  "type": "LegalParticipant",
   "holder": "BPNL000000000000",
   "issuer": "CAXSDUMMYCATENAZZ",
   "registrationNumber": [
@@ -250,7 +250,7 @@ An example of the body for LegalPerson is given bellow:
 ```
 
 The Self-Description in the format of Verifiable Credential is created. Here is an example of
-Verifiable Credentials for LegalPerson:
+Verifiable Credentials for LegalParticipant:
 
 ```json
 {
@@ -261,7 +261,7 @@ Verifiable Credentials for LegalPerson:
   ],
   "type": [
     "VerifiableCredential",
-    "LegalPerson"
+    "LegalParticipant"
   ],
   "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
   "issuanceDate": "2023-01-25T13:52:48Z",
@@ -277,7 +277,7 @@ Verifiable Credentials for LegalPerson:
     "headquarterAddress": {
       "countryCode": "DE"
     },
-    "type": "LegalPerson",
+    "type": "LegalParticipant",
     "legalAddress": {
       "countryCode": "DE"
     },
@@ -302,7 +302,7 @@ Verifiable Credentials for LegalPerson:
 
 ## SD-Documents for Release 2:
 
-In agreement with Portal, we will only create the LegalPerson SD-Document for CX-Participants and ServiceOffering for Connector
+In agreement with Portal, we will only create the LegalParticipant SD-Document for CX-Participants and ServiceOffering for Connector
 
 **CX-Release 2.0 (to be discussed with Portal-Team whether this reduces the amount of work or not for first step)**
 
@@ -361,7 +361,7 @@ Here the flow of Self-Description creation is shown:
    SD-Factory needs for creating SD-document. SDFactory takes document in a format,
    specified in [Catena-X Confluence](https://confluence.catena-x.net/display/CORE/Self+Description+Interface)]
    and convert it to [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
-    - LegalPerson;
+    - LegalParticipant;
     - ServiceOffering;
       **Organization wallet of the company which runs the service shall
       be available at this point of time as it signs the Verifiable Credential

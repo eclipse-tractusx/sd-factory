@@ -58,7 +58,7 @@ app:
       #clientId: sa-cl5-custodian-1
       #clientSecret:
     clearingHouse:
-      #url: https://validation.dev.dih-cloud.com/api/v1/compliance
+      #uri: https://validation.dev.dih-cloud.com/api/v1/compliance
       #auth-server-url: https://iam.dev.dih-cloud.com//auth
       #realm: notarisation
       #clientId: CARLA-GXDCH

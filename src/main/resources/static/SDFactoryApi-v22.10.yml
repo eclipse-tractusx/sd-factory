@@ -15,7 +15,7 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/LegalPersonSchema'
+                - $ref: '#/components/schemas/LegalParticipantSchema'
                 - $ref: '#/components/schemas/ServiceOfferingSchema'
                 - $ref: '#/components/schemas/PhysicalResourceSchema'
                 - $ref: '#/components/schemas/VirtualResourceSchema'
@@ -23,16 +23,16 @@ paths:
               discriminator:
                 propertyName: type
                 mapping:
-                  LegalParticipant: '#/components/schemas/LegalPersonSchema'
+                  LegalParticipant: '#/components/schemas/LegalParticipantSchema'
                   ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
                   PhysicalResource: '#/components/schemas/PhysicalResourceSchema'
                   VirtualResource: '#/components/schemas/VirtualResourceSchema'
                   InstantiatedVirtualResource: '#/components/schemas/InstantiatedVirtualResourceSchema'
             examples:
-              LegalPerson:
-                description: payload to create LegalPerson
+              LegalParticipant:
+                description: payload to create LegalParticipant
                 value:
-                  type: LegalPerson
+                  type: LegalParticipant
                   holder: BPNL000000000000
                   issuer: CAXSDUMMYCATENAZZ
                   registrationNumber:
@@ -192,8 +192,8 @@ paths:
                 type: object
                 additionalProperties: {}
               examples:
-                jsonLegalPersonObject:
-                  summary: A sample LegalPerson response
+                jsonLegalParticipantObject:
+                  summary: A sample LegalParticipant response
                   value: |
                     {
                       "@context": [
@@ -203,7 +203,7 @@ paths:
                       ],
                       "type": [
                         "VerifiableCredential",
-                        "LegalPerson"
+                        "LegalParticipant"
                       ],
                       "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
                       "issuanceDate": "2023-01-17T09:53:08Z",
@@ -223,7 +223,7 @@ paths:
                         "headquarterAddress": {
                           "countryCode": "DE"
                         },
-                        "type": "LegalPerson",
+                        "type": "LegalParticipant",
                         "parentOrganization": [
                           "https://parent.organisation1.org",
                           "https://parent.organisation2.org"
@@ -610,7 +610,7 @@ components:
           description: Registration Number value
           minLength: 1
           maxLength: 128
-    LegalPersonSchema:
+    LegalParticipantSchema:
       type: object
       description: A Participant is a Legal Person
       allOf:

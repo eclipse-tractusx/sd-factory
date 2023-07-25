@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 T-Systems International GmbH
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -22,7 +22,7 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
-import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalPersonSchema;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.ServiceOfferingSchema;
@@ -64,9 +64,9 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
         String externalId;
         Map<String, Object> converted;
         List<URI> contexts;
-        if (source instanceof LegalPersonSchema lp) {
+        if (source instanceof LegalParticipantSchema lp) {
             externalId = lp.getExternalId();
-            converted = legalPerson(lp);
+            converted = LegalParticipant(lp);
             contexts = Stream.of(gaiaxParticipantSchema, catenaxSchema).map(URI::create).toList();
         } else if (source instanceof ServiceOfferingSchema so) {
             externalId = so.getExternalId();
@@ -75,7 +75,7 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
         } else {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "LegalPersonSchema is supported only"
+                    "LegalParticipantSchema is supported only"
             );
         }
         var withExternalId = new LinkedHashMap<>(converted);
@@ -86,21 +86,21 @@ public class SDocumentConverterGaiaX extends SDocumentConverter implements Conve
         );
     }
 
-    private Map<String, Object> legalPerson(LegalPersonSchema legalPersonSchema) {
+    private Map<String, Object> LegalParticipant(LegalParticipantSchema legalParticipantSchema) {
         Map<String, Object> res = new LinkedHashMap<>();
-        res.put("id", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("did"));
-        res.put("type", legalPersonSchema.getType());
-        res.put("ctxsd:bpn", legalPersonSchema.getBpn());
-        res.put("gx:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name"));
+        res.put("id", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("did"));
+        res.put("type", legalParticipantSchema.getType());
+        res.put("ctxsd:bpn", legalParticipantSchema.getBpn());
+        res.put("gx:name", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("name"));
         res.put(
                 "gx:legalRegistrationNumber",
-                legalPersonSchema.getRegistrationNumber().stream()
+                legalParticipantSchema.getRegistrationNumber().stream()
                         .map(
                             regNum -> Map.of(regCodeMapper.get(regNum.getType()), regNum.getValue())
                         ).toList()
         );
-        res.put("gx:headquarterAddress", Map.of("gx:addressCountryCode", legalPersonSchema.getHeadquarterAddressCountry()));
-        res.put("gx:legalAddress", Map.of("gx:addressCountryCode", legalPersonSchema.getLegalAddressCountry()));
+        res.put("gx:headquarterAddress", Map.of("gx:addressCountryCode", legalParticipantSchema.getHeadquarterAddressCountry()));
+        res.put("gx:legalAddress", Map.of("gx:addressCountryCode", legalParticipantSchema.getLegalAddressCountry()));
         return res;
     }
 

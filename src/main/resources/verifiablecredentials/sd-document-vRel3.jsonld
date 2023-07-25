@@ -23,8 +23,8 @@
               }
            }
         },
-        "LegalPerson": {
-            "@id": "ctx:LegalPerson",
+        "LegalParticipant": {
+            "@id": "ctx:LegalParticipant",
             "@context": {
                 "registrationNumber": {
                     "@id": "ctx:registrationNumber",

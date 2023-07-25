@@ -46,7 +46,7 @@ sequenceDiagram
    SD-Factory needs for creating SD-document. SDFactory takes document in a format,
    specified in OpenAPI document [Pre-22.4 schema, AKA 1.06]  and convert it to 
    [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
-    - LegalPerson;
+    - LegalParticipant;
     - ServiceOffering;
    **Organization wallet of the company running the service shall
    be available at this point of time as it signs the Verifiable Credential
@@ -83,11 +83,11 @@ To trigger creation of the SD-document one shall call the endpoint available by 
 
 OpenAPI specification is given in [Pre-22.4 schema, AKA 1.06].
 
-An example of the body for LegalPerson is given bellow:
+An example of the body for LegalParticipant is given bellow:
 
 ```json
 {
-  "type": "LegalPerson",
+  "type": "LegalParticipant",
   "holder": "BPNL000000000000",
   "issuer": "CAXSDUMMYCATENAZZ", 
   "externalId": "ID01234-123-4321",
@@ -104,7 +104,7 @@ An example of the body for LegalPerson is given bellow:
 ```
 
 The Self-Description in the format of Verifiable Credential is created. Here is an example of
-Verifiable Credentials for LegalPerson:
+Verifiable Credentials for LegalParticipant:
 
 ```json
 {
@@ -115,7 +115,7 @@ Verifiable Credentials for LegalPerson:
   ],
   "type": [
     "VerifiableCredential",
-    "LegalPerson"
+    "LegalParticipant"
   ],
   "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
   "issuanceDate": "2023-01-25T13:52:48Z",
@@ -131,7 +131,7 @@ Verifiable Credentials for LegalPerson:
     "headquarterAddress": {
       "countryCode": "DE"
     },
-    "type": "LegalPerson",
+    "type": "LegalParticipant",
     "legalAddress": {
       "countryCode": "DE"
     },

@@ -6,8 +6,8 @@
     "spdx": "http://spdx.org/rdf/terms#",
     "schema": "https://schema.org/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "LegalPerson": {
-      "@id": "ctxsd:LegalPerson",
+    "LegalParticipant": {
+      "@id": "ctxsd:LegalParticipant",
       "@context": {
         "registrationNumber": {
           "@id": "ctxsd:registrationNumber",
