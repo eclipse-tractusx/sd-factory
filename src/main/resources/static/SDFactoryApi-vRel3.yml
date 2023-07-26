@@ -82,6 +82,7 @@ components:
           description: the mean to request data retrieval
           enum:
             - taxID
+            - local
             - vatID
             - EUID
             - EORI
