@@ -30,13 +30,10 @@ sequenceDiagram
 	User->>Onboarding Service: participant data
 	Onboarding Service-->>Identity Provider: technical user
 	Onboarding Service->>+SDFactory: SD-document 
-    SDFactory-->>Identity Provider: technical user to acees the Wallet
-    SDFactory->>+Managed Identity Wallet: Verifiable Credential
-    Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
-    SDFactory->>+Compliance Service: Signed Verifiable Credential
+    SDFactory-->>Identity Provider: technical user to access Compliance Service
+    SDFactory->>+Compliance Service: Unsigned Verifiable Credential
     Compliance Service->>Compliance Service: asynchronous processing
     Compliance Service->>+Onboarding Service: Signed Verifiable Credential
-	
 ```
 
 1. A user is authenticated in Identity Provider service on behalf of a company
@@ -48,19 +45,15 @@ sequenceDiagram
    [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
     - LegalParticipant;
     - ServiceOffering;
-   **Organization wallet of the company running the service shall
-   be available at this point of time as it signs the Verifiable Credential
-   with SD document. The wallet associated with the service shall be available
-   as well.**
 3. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
    data as a parameter. OS uses a credential with a role allowing for this request
    (e.g. `add_self_descriptions`, the default role for SD-document creation). The
    credential for this operation is taken from Identity Provider (keycloak).
 4. SD-Factory creates a Verifiable Credential based on the information taken from
-   OS and passes it to the Custodian Wallet to be signed with organization key. The 
-   organization is acting as an Issuer. The wallet ID of the service is used as a Holder.
-5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further 
-   (asynchronous) processing. In the end the Compliance Service sends Self-Description 
+   On-boarding Service
+5. SD-Factory sends unsigned Verifiable Credential to the Compliance Service for further 
+   (asynchronous) processing. Compliance Service is responsible for verification of the VC 
+   and signing. In the end the Compliance Service sends Self-Description 
    document back to the On-boarding service endpoint. OS is responsible for storing and 
    publishing it. 
 
@@ -108,49 +101,33 @@ Verifiable Credentials for LegalParticipant:
 
 ```json
 {
-  "@context": [
-    "https://www.w3.org/2018/credentials/v1",
-    "https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/src/main/resources/verifiablecredentials/sd-document-v2210",
-    "https://w3id.org/vc/status-list/2021/v1"
-  ],
-  "type": [
-    "VerifiableCredential",
-    "LegalParticipant"
-  ],
-  "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
-  "issuanceDate": "2023-01-25T13:52:48Z",
-  "expirationDate": "2023-04-25T13:52:48Z",
-  "credentialSubject": {
-    "bpn": "BPNL000000000000",
-    "registrationNumber": [
-      {
-        "type": "local",
-        "value": "o12345678"
+   "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd"
+   ],
+   "type": [
+      "VerifiableCredential"
+   ],
+   "id": "5096f9c2-24fd-43c5-9d50-e43a409ebb33",
+   "issuanceDate": "2023-07-26T17:07:31Z",
+   "expirationDate": "2023-10-24T17:07:31Z",
+   "credentialSubject": {
+      "bpn": "BPNL000000000000",
+      "registrationNumber": [
+         {
+            "type": "local",
+            "value": "o12345678"
+         }
+      ],
+      "headquarterAddress": {
+         "countryCode": "DE"
+      },
+      "type": "LegalParticipant",
+      "legalAddress": {
+         "countryCode": "DE"
       }
-    ],
-    "headquarterAddress": {
-      "countryCode": "DE"
-    },
-    "type": "LegalParticipant",
-    "legalAddress": {
-      "countryCode": "DE"
-    },
-    "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
-  },
-  "credentialStatus": {
-    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#36",
-    "type": "StatusList2021Entry",
-    "statusPurpose": "revocation",
-    "statusListIndex": "36",
-    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
-  },
-  "proof": {
-    "type": "Ed25519Signature2018",
-    "created": "2023-01-25T13:52:49Z",
-    "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs#key-1",
-    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..rdRVga4MQ-M_t2baOyo--FxaSHm9xPzxJ4QkUW53HMxD9E783WWtkfT4Oo8FYc7AYv5fpXrEiwIeCUrTFhgbDw"
-  }
+   },
+   "issuer": "CAXSDUMMYCATENAZZ"
 }
 ```
 

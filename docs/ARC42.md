@@ -116,7 +116,7 @@ GAIA-X will also provide a service to proof for compliant self descriptions
 ## System Scope and Context
 
 The Portal provides the necessary information to the SD Factory in plain text format via
-API. SD-Factory creates the Jason-LD document signed by the wallet and provides it to the 
+API. SD-Factory creates the JSON-LD document and provides it to the 
 Compliance Service. After processing, Compliance Service sends Self-Description back to the Portal.
 
 ## Business Context
@@ -256,16 +256,14 @@ Verifiable Credentials for LegalParticipant:
 {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials/sd-document-v2210",
-    "https://w3id.org/vc/status-list/2021/v1"
+    "https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd"
   ],
   "type": [
-    "VerifiableCredential",
-    "LegalParticipant"
+    "VerifiableCredential"
   ],
-  "issuer": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs",
-  "issuanceDate": "2023-01-25T13:52:48Z",
-  "expirationDate": "2023-04-25T13:52:48Z",
+  "id": "5096f9c2-24fd-43c5-9d50-e43a409ebb33",
+  "issuanceDate": "2023-07-26T17:07:31Z",
+  "expirationDate": "2023-10-24T17:07:31Z",
   "credentialSubject": {
     "bpn": "BPNL000000000000",
     "registrationNumber": [
@@ -280,23 +278,9 @@ Verifiable Credentials for LegalParticipant:
     "type": "LegalParticipant",
     "legalAddress": {
       "countryCode": "DE"
-    },
-    "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
+    }
   },
-  "credentialStatus": {
-    "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#36",
-    "type": "StatusList2021Entry",
-    "statusPurpose": "revocation",
-    "statusListIndex": "36",
-    "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
-  },
-  "proof": {
-    "type": "Ed25519Signature2018",
-    "created": "2023-01-25T13:52:49Z",
-    "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:sov:XAZ71Ypzh3Da6Yzi1kjgZs#key-1",
-    "jws": "eyJhbGciOiAiRWREU0EiLCAiYjY0IjogZmFsc2UsICJjcml0IjogWyJiNjQiXX0..rdRVga4MQ-M_t2baOyo--FxaSHm9xPzxJ4QkUW53HMxD9E783WWtkfT4Oo8FYc7AYv5fpXrEiwIeCUrTFhgbDw"
-  }
+  "issuer": "CAXSDUMMYCATENAZZ"
 }
 ```    
 
@@ -338,18 +322,15 @@ Responses:
 
 ```mermaid
 sequenceDiagram
-	actor User
-	User-->>Identity Provider: authentication
-	User->>Onboarding Service: participant data
-	Onboarding Service-->>Identity Provider: technical user
-	Onboarding Service->>+SDFactory: SD-document 
-    SDFactory-->>Identity Provider: technical user to acees the Wallet
-    SDFactory->>+Managed Identity Wallet: Verifiable Credential
-    Managed Identity Wallet->>+SDFactory: Signed Verifiable Credential
-    SDFactory->>+Compliance Service: Signed Verifiable Credential
+    actor User
+    User-->>Identity Provider: authentication
+    User->>Onboarding Service: participant data
+    Onboarding Service-->>Identity Provider: technical user
+    Onboarding Service->>+SDFactory: SD-document
+    SDFactory-->>Identity Provider: technical user to access Compliance Service
+    SDFactory->>+Compliance Service: Unsigned Verifiable Credential
     Compliance Service->>Compliance Service: asynchronous processing
     Compliance Service->>+Onboarding Service: Signed Verifiable Credential
-	
 ```
 
 Here the flow of Self-Description creation is shown:
@@ -359,25 +340,21 @@ Here the flow of Self-Description creation is shown:
 2. User calls On-boarding Service with request for creating and publishing
    SD-document. The service authenticates the user and prepare the data
    SD-Factory needs for creating SD-document. SDFactory takes document in a format,
-   specified in [Catena-X Confluence](https://confluence.catena-x.net/display/CORE/Self+Description+Interface)]
-   and convert it to [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
+   specified in OpenAPI document [Pre-22.4 schema, AKA 1.06]  and convert it to
+   [Trust Framework V.22.10]. Currently, these documents are supported by SD-Factory:
     - LegalParticipant;
     - ServiceOffering;
-      **Organization wallet of the company which runs the service shall
-      be available at this point of time as it signs the Verifiable Credential
-      with SD document. The wallet associated with the service shall be available
-      as well.**
 3. On-boarding service (OS) calls SD-Factory for creating SD-document passing this
    data as a parameter. OS uses a credential with a role allowing for this request
    (e.g. `add_self_descriptions`, the default role for SD-document creation). The
-   credential for this operation is taken from Identity Provider (keyclock).
+   credential for this operation is taken from Identity Provider (keycloak).
 4. SD-Factory creates a Verifiable Credential based on the information taken from
-   OS and signs it with organization key. The organization is acting as an Issuer.
-   The wallet ID of the service is used as Holder Id. The Custodian Wallet is used
-   for this operation.
-5. SD-Factory sends signed Verifiable Credential to the Compliance Service for further (asynchronous) processing.
-   In the end the Compliance Service sends Self-Description document back to the On-boarding service endpoint.
-   OS is responsible for storing and publishing it.
+   On-boarding Service
+5. SD-Factory sends unsigned Verifiable Credential to the Compliance Service for further
+   (asynchronous) processing. Compliance Service is responsible for verification of the VC
+   and signing. In the end the Compliance Service sends Self-Description
+   document back to the On-boarding service endpoint. OS is responsible for storing and
+   publishing it.
 
 ## Deployment View
 
