@@ -234,7 +234,7 @@ This application provides container images for demonstration purposes. The base 
 
 ## Notice for Docker image
 
-DockerHub: [https://hub.docker.com/r/tractusx/app-dashboard](https://hub.docker.com/r/tractusx/app-dashboard)
+DockerHub: [https://hub.docker.com/r/tractusx/app-dashboard](https://hub.docker.com/r/tractusx/app-dashboard)  <br />
 Eclipse Tractus-X product(s) installed within the image:
 
 __SD Factory__
