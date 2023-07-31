@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'SDFactory/**'
+      - 'sdfactory/**'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
