@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 T-Systems International GmbH
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,8 +18,20 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service;
+package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
 
-public interface SDFactory {
-    void createVC(Object document);
+import lombok.experimental.Delegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema.TypeEnum;
+
+import java.util.Map;
+
+public class RegCodeMapper implements Map<TypeEnum, String>{
+    @Delegate
+    private final Map<TypeEnum, String> regNumMap = Map.of(
+            TypeEnum.TAXID, "gx:taxID",
+            TypeEnum.VATID, "gx:vatID",
+            TypeEnum.EUID, "gx:EUID",
+            TypeEnum.EORI, "gx:EORI",
+            TypeEnum.LEICODE, "gx:leiCode"
+    );
 }

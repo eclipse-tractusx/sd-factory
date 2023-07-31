@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 T-Systems International GmbH
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,8 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service;
+package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
-public interface SDFactory {
-    void createVC(Object document);
+import com.danubetech.verifiablecredentials.VerifiableCredential;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@FeignClient(name = "clearingHouse", url = "${app.usersDetails.clearingHouse.uri}")
+public interface ClearingHouseClient {
+    @PostMapping
+    void send(@RequestBody VerifiableCredential verifiableCredential, @RequestParam("externalId") String externalId);
 }

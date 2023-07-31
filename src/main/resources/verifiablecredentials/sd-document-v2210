@@ -6,18 +6,28 @@
     "spdx": "http://spdx.org/rdf/terms#",
     "schema": "https://schema.org/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "LegalPerson": {
-      "@id": "ctxsd:LegalPerson",
+    "LegalParticipant": {
+      "@id": "ctxsd:LegalParticipant",
       "@context": {
         "registrationNumber": {
           "@id": "ctxsd:registrationNumber",
-          "@type": "schema:name"
+          "@container": "@set",
+          "@context": {
+            "type": {
+              "@id": "ctxsd:type",
+              "@type": "schema:name"
+            },
+            "value": {
+              "@id": "ctxsd:value",
+              "@type": "schema:name"
+            }
+          }
         },
         "headquarterAddress": {
           "@id": "ctxsd:headquarterAddress",
           "@context": {
-            "country": {
-              "@id": "ctxsd:country",
+            "countryCode": {
+              "@id": "ctxsd:countryCode",
               "@type": "schema:addressCountry"
             }
           }
@@ -25,25 +35,21 @@
         "legalAddress": {
           "@id": "ctxsd:legalAddress",
           "@context": {
-            "country": {
-              "@id": "ctxsd:country",
+            "countryCode": {
+              "@id": "ctxsd:countryCode",
               "@type": "schema:addressCountry"
             }
           }
         },
-        "parentOrganisation": {
-          "@id": "ctxsd:parentOrganisation",
+        "parentOrganization": {
+          "@id": "ctxsd:parentOrganization",
           "@container": "@set",
           "@type": "@id"
         },
-        "subOrganisation": {
-          "@id": "ctxsd:subOrganisation",
+        "subOrganization": {
+          "@id": "ctxsd:subOrganization",
           "@container": "@set",
           "@type": "@id"
-        },
-        "leiCode": {
-          "@id": "ctxsd:leiCode",
-          "@type": "schema:leiCode"
         },
         "bpn": {
           "@id": "ctxsd:bpn",
@@ -55,12 +61,21 @@
       "@id": "ctxsd:ServiceOffering",
       "@type": "rdfs:Class",
       "@context": {
+        "name": {
+          "@id": "ctxsd:name",
+          "@type": "schema:name"
+        },
         "providedBy": {
           "@id": "ctxsd:providedBy",
           "@type": "@id"
         },
         "aggregationOf": {
           "@id": "ctxsd:aggregationOf",
+          "@container": "@set",
+          "@type": "@id"
+        },
+        "dependsOn": {
+          "@id": "ctxsd:dependsOn",
           "@container": "@set",
           "@type": "@id"
         },
@@ -78,9 +93,36 @@
             }
           }
         },
-        "policies": {
-          "@id": "ctxsd:policies",
+        "policy": {
+          "@id": "ctxsd:policy",
           "@container": "@set"
+        },
+        "dataProtectionRegime": {
+          "@id": "ctxsd:dataProtectionRegime",
+          "@container": "@set",
+          "@type": "schema:name"
+        },
+        "dataAccountExport": {
+          "@id": "ctxsd:dataAccountExport",
+          "@container": "@set",
+          "@context": {
+            "requestType": {
+              "@id": "ctxsd:requestType",
+              "@type": "schema:name"
+            },
+            "accessType": {
+              "@id": "ctxsd:accessType",
+              "@type": "schema:name"
+            },
+            "formatType": {
+              "@id": "ctxsd:formatType",
+              "@type": "schema:name"
+            }
+          }
+        },
+        "bpn": {
+          "@id": "ctxsd:bpn",
+          "@type": "schema:name"
         }
       }
     },
@@ -91,6 +133,14 @@
           "@id": "ctxsd:aggregationOf",
           "@container": "@set",
           "@type": "@id"
+        },
+        "name": {
+          "@id": "ctxsd:name",
+          "@type": "schema:name"
+        },
+        "description": {
+          "@id": "ctxsd:description",
+          "@type": "schema:name"
         },
         "maintainedBy": {
           "@id": "ctxsd:maintainedBy",
@@ -111,8 +161,8 @@
           "@id": "ctxsd:locationAddress",
           "@container": "@set",
           "@context": {
-            "country": {
-              "@id": "ctxsd:country",
+            "countryCode": {
+              "@id": "ctxsd:countryCode",
               "@type": "schema:addressCountry"
             }
           }
@@ -137,6 +187,14 @@
           "@container": "@set",
           "@type": "@id"
         },
+        "name": {
+          "@id": "ctxsd:name",
+          "@type": "schema:name"
+        },
+        "description": {
+          "@id": "ctxsd:description",
+          "@type": "schema:name"
+        },
         "copyrightOwnedBy": {
           "@id": "ctxsd:copyrightOwnedBy",
           "@container": "@set",
@@ -146,6 +204,10 @@
           "@id": "ctxsd:license",
           "@container": "@set",
           "@type": "spdx:ListedLicense"
+        },
+        "policy": {
+          "@id": "ctxsd:policy",
+          "@container": "@set"
         }
       }
     },
@@ -157,6 +219,14 @@
           "@container": "@set",
           "@type": "@id"
         },
+        "name": {
+          "@id": "ctxsd:name",
+          "@type": "schema:name"
+        },
+        "description": {
+          "@id": "ctxsd:description",
+          "@type": "schema:name"
+        },
         "copyrightOwnedBy": {
           "@id": "ctxsd:copyrightOwnedBy",
           "@container": "@set",
@@ -167,6 +237,10 @@
           "@container": "@set",
           "@type": "spdx:licenseId"
         },
+        "policy": {
+          "@id": "ctxsd:policy",
+          "@container": "@set"
+        },
         "maintainedBy": {
           "@id": "ctxsd:maintainedBy",
           "@container": "@set",
@@ -176,15 +250,47 @@
           "@id": "ctxsd:hostedOn",
           "@type": "@id"
         },
+        "instanceOf": {
+          "@id": "ctxsd:instanceOf",
+          "@type": "@id"
+        },
         "tenantOwnedBy": {
           "@id": "ctxsd:tenantOwnedBy",
           "@container": "@set",
           "@type": "@id"
         },
-        "endpoint": {
-          "@id": "ctxsd:endpoint",
+        "serviceAccessPoint": {
+          "@id": "ctxsd:serviceAccessPoint",
           "@container": "@set",
-          "@type": "xsd:string"
+          "@context": {
+            "name": {
+              "@id": "ctxsd:name",
+              "@type": "schema:name"
+            },
+            "host": {
+               "@id": "ctxsd:host",
+               "@type": "@id"
+            },
+            "protocol": {
+              "@id": "ctxsd:protocol",
+              "@container": "@set",
+              "@type": "schema:name"
+            },
+            "version": {
+               "@id": "ctxsd:version",
+               "@type": "schema:name"
+            },
+            "port": {
+              "@id": "ctxsd:port",
+              "@container": "@set",
+              "@type": "schema:name"
+            },
+            "openAPI": {
+              "@id": "ctxsd:openAPI",
+              "@container": "@set",
+              "@type": "@id"
+            }
+          }
         }
       }
     }

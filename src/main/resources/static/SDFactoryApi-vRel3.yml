@@ -15,23 +15,23 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/LegalPersonSchema'
+                - $ref: '#/components/schemas/LegalParticipantSchema'
                 - $ref: '#/components/schemas/ServiceOfferingSchema'
               discriminator:
                 propertyName: type
                 mapping:
-                  LegalPerson: '#/components/schemas/LegalPersonSchema'
+                  LegalParticipant: '#/components/schemas/LegalParticipantSchema'
                   ServiceOffering: '#/components/schemas/ServiceOfferingSchema'
             examples:
-              LegalPerson:
-                description: payload to create LegalPerson
+              LegalParticipant:
+                description: payload to create LegalParticipant
                 value:
                     externalId: ID01234-123-4321
-                    type: LegalPerson
+                    type: LegalParticipant
                     holder: BPNL000000000000
                     issuer: CAXSDUMMYCATENAZZ
                     registrationNumber:
-                      - type: local
+                      - type: taxID
                         value: o12345678
                     headquarterAddress.country: DE
                     legalAddress.country: DE
@@ -81,17 +81,18 @@ components:
           type: string
           description: the mean to request data retrieval
           enum:
+            - taxID
             - local
+            - vatID
             - EUID
             - EORI
-            - vatID
             - leiCode
         value:
           type: string
           description: Registration Number value
           minLength: 1
           maxLength: 128
-    LegalPersonSchema:
+    LegalParticipantSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'

@@ -29,7 +29,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static io.vavr.control.Try.failure;
 
@@ -65,7 +70,16 @@ public class Utils {
 
     public static URI uriFromStr(String uriStr) {
         return Try.of(() -> URI.create(uriStr))
-                .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coud not create an URI from '" + uriStr + "'", err)))
+                .recoverWith(mapFailure(err -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not create an URI from '" + uriStr + "'", err)))
                 .get();
+    }
+
+    public static <T> Optional<List<T>> getNonEmptyListFromCommaSeparated(String source, Function<String, T> transform) {
+        return Optional.of(
+                Optional.ofNullable(source)
+                        .map(s -> s.split(",")).stream().flatMap(Arrays::stream)
+                        .filter(Predicate.not(String::isBlank)).map(String::trim)
+                        .map(transform).toList()
+        ).filter(Predicate.not(Collection::isEmpty));
     }
 }

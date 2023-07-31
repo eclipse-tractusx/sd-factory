@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
- - NA
+- NA
+
+## [2.1.3] - 2023-07-31
+
+### Added
+- Added changes for Gaia-x compliance
+
+### Changed
+- Updated the documentation
 
 ## [2.1.2] - 2023-07-20
 
@@ -35,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Added CPU, Memory details
 - Added Header in files
- 
+
 ## [2.0.7] - 2023-05-09
 
 ### Added
@@ -54,11 +62,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Updated librabries and upgrade spring boot
 
- 
+
 ## [2.0.5] - 2023-04-24
 
 ### Fixed
 - Fixed spring security web veracode security by upgrading its version to 6.0.3
+
+### Changed
+- refactoring: removing keycloak-admin, webclient; introducing feign
 
 
 ## [2.0.4] - 2023-04-19
@@ -93,8 +104,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Changed
 - schema was changed so registrationNumber is an array of documents
-  with type and value fields  
-- removed support for 22.10 as OpenAPI yaml is buggy and there ara 
+  with type and value fields
+- removed support for 22.10 as OpenAPI yaml is buggy and there ara
   complains from KICS
 
 ## [1.2.1] - 2023-02-17
@@ -127,7 +138,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [1.1.0] - 2022-11-23
 
 ### Added
-- compatibility with Trust Framework V.22.04. 
+- compatibility with Trust Framework V.22.04.
 - Better Exception handling
 - parameters validation
 - new schema of sd documents for TermsOfConditions, PhysicalResource, VirtualResource
@@ -138,7 +149,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 Added helm release, versioning & tagging
 
 ### Added
-- Generate self description for LegalPerson 
+- Generate self description for LegalPerson
 - Generate self description for ServiceOffering
 - Keycloak protection is added
 

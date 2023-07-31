@@ -1,6 +1,7 @@
+
 /********************************************************************************
- * Copyright (c) 2021,2022 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 T-Systems International GmbH
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,8 +19,20 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service;
+package org.eclipse.tractusx.selfdescriptionfactory.service.keycloak;
 
-public interface SDFactory {
-    void createVC(Object document);
+
+import feign.Body;
+import feign.Headers;
+import feign.Param;
+import feign.RequestLine;
+
+import java.net.URI;
+import java.util.Map;
+
+public interface KeycloakClient {
+    @RequestLine("POST /realms/{realm}/protocol/openid-connect/token")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @Body("grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}&scope=openid")
+    Map<String, Object> getTokens(URI serverUrl, @Param("realm") String realm, @Param("client_id") String clientId, @Param("client_secret") String clientSecret);
 }
