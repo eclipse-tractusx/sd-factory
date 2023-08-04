@@ -13,8 +13,8 @@ further processing.
 ## Software Version
 
 ```shell
-Software version: 2.1.4
-Helm Chart version: 2.1.4
+Software version: 2.1.3
+Helm Chart version: 2.1.3
 
 ```
 
@@ -232,29 +232,15 @@ for keycloak and the Custodian Wallet.
 
 This application provides container images for demonstration purposes. The base image used, to build this demo application image is eclipse-temurin:17-jdk-alpine
 
-## Notice for Docker image
+Docker Hub:
 
-DockerHub: [https://hub.docker.com/r/tractusx/sdfactory](https://hub.docker.com/r/tractusx/sdfactory)  <br />
-Eclipse Tractus-X product(s) installed within the image:
+ - eclipse-temurin(https://hub.docker.com/_/eclipse-temurin)
+ - 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk-alpine/images/sha256-c093675e143dc8023fb218c144e06491154491a7965d0664a93f99ada5259ec7?context=explore)
 
-__SD Factory__
+Source:
 
-- GitHub: https://github.com/eclipse-tractusx/sd-factory
-- Project home: https://projects.eclipse.org/projects/automotive.tractusx
-- Dockerfile: https://github.com/eclipse-tractusx/sd-factory/blob/main/Dockerfile
-- Project license: [Apache License, Version 2.0](https://github.com/eclipse-tractusx/sd-factory/blob/main/LICENSE)
-
-**Used base image**
-
-- 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk-alpine/images/sha256-c093675e143dc8023fb218c144e06491154491a7965d0664a93f99ada5259ec7?context=explore)
-- Official Eclipse Temurin DockerHub page: https://hub.docker.com/_/eclipse-temurin
-- Eclipse Temurin Project: https://projects.eclipse.org/projects/adoptium.temurin
-- Additional information about the Eclipse Temurin images: https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin
-
-As with all Docker images, these likely also contain other software which may be under other licenses 
-(such as Bash, etc. from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
-
-As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
+ - temurin-build(https://github.com/adoptium/temurin-build)
+ - temurin docker repo info(https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin)
 
 ## Installation Steps
 
