@@ -114,9 +114,8 @@ ingress:
     # -- ImplementationSpecific path type matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types.
           pathType: ImplementationSpecific
   tls:
-    - tlsName: chart-example-tls
-      hosts:
-        - chart-example.local
+    - tlsName: ""
+      hosts: ""
 
 resources:
   limits:
