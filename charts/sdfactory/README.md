@@ -19,8 +19,8 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` | Set the Image Pull Policy |
-| image.repository | string | `"ghcr.io/catenax-ng/tx-sd-factory/sdfactory"` | Image to use for deploying an application |
-| image.tag | string | `""` | Image tage is defined in chart appVersion. |
+| image.repository | string | `"tractusx/sdfactory"` | Image to use for deploying an application |
+| image.tag | string | `"main"` | Image tage is defined in chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` | a reference to an Ingress Class resource that contains additional configuration including the name of the controller that should implement the class. |
@@ -28,14 +28,17 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}` | Host of the application on which application runs |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | ImplementationSpecific path type matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types. |
 | ingress.issuer | string | `"letsencrypt-prod"` | Kubernetes resources that represent certificate authorities that are able to generate signed certificates by honoring certificate signing requests. |
-| ingress.tls[0].hosts[0] | string | `"chart-example.local"` |  |
-| ingress.tls[0].tlsName | string | `"chart-example-tls"` |  |
+| ingress.tls[0].hosts | string | `""` |  |
+| ingress.tls[0].tlsName | string | `""` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
 | replicaCount | int | `1` | Number of Replicas for pods |
-| resources | object | `{}` |  |
+| resources.limits.cpu | string | `"600m"` | set a maximum amount of allows CPU utilization by specifying a limit on the container. |
+| resources.limits.memory | string | `"700Mi"` | set a maximum amount of allows memory utilization by specifying a limit on the container. |
+| resources.requests.cpu | string | `"300m"` | sets the minimum amount of CPU required for the container |
+| resources.requests.memory | string | `"700Mi"` | set a minimum amount of allows memory utilization by specifying a limit on the container. |
 | sdfactory.secret.authServerUrl | string | `""` | Keycloak URL |
 | sdfactory.secret.clearingHouseClientId | string | `""` | Details for Clearing House Client ID |
 | sdfactory.secret.clearingHouseClientSecret | string | `""` | Details for Clearing House Client Secret |
