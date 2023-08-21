@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - NA
 
+## [2.1.5] - 2023-08-21
+
+### Added
+- Added headers in java files
+
 ## [2.1.4] - 2023-07-31
 
 ### Changed
