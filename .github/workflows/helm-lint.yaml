@@ -98,5 +98,5 @@ jobs:
       # install the chart to the kind cluster and run helm test
       # define charts to test with the --charts parameter
       - name: Run chart-testing (install)
-        run: ct install --charts charts/sdfactory --config charts/chart-testing-config.yaml
+        run: ct install --charts charts/sdfactory --config charts/chart-testing-config.yaml --helm-extra-set-args "--set=image.tag=testing --set=image.repository=kind-registry:5000/sdfactory"
         if: ${{ env.CHART_CHANGED == 'true' }}
