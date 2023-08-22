@@ -49,7 +49,7 @@ jobs:
 
       - name: Add repos
         run: |
-          helm repo add sdf https://github.com/eclipse-tractusx/sd-factory
+          helm repo add sdf https://eclipse-tractusx.github.io/sd-factory
 
       - name: Run helm install
         # Install latest released sdfactory version
