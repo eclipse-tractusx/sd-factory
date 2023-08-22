@@ -54,7 +54,7 @@ jobs:
       - name: Run helm install
         # Install latest released sdfactory version
         run: |
-          helm install sdf sdfactory/sdfactory
+          helm install sdf charts/sdfactory
 
       - name: Run helm upgrade
         # Upgrade the installed sdfactory version with the locally available charts
