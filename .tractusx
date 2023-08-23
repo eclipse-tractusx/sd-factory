@@ -1,2 +1,3 @@
-product: "SDFactory"
+product: "Self-Description Factory"
 leadingRepository: "https://github.com/eclipse-tractusx/sd-factory"
+repositories: []
