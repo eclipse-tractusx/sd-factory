@@ -114,15 +114,15 @@ spec:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: clearingHouse-clientSecret                
 
-          livenessProbe:
-            httpGet:
-              path: "/actuator/health/liveness"
-              port: {{ .Values.service.targetPort }}
+          #livenessProbe:
+          #  httpGet:
+          #    path: "/actuator/health/liveness"
+          #    port: {{ .Values.service.targetPort }}
           # @url: https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
-          readinessProbe:
-            httpGet:
-              path: "/actuator/health/readiness"
-              port: {{ .Values.service.targetPort }}
+          #readinessProbe:
+          #  httpGet:
+          #    path: "/actuator/health/readiness"
+          #    port: {{ .Values.service.targetPort }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
