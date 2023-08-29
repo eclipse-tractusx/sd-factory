@@ -28,11 +28,11 @@ replicaCount: 1
 
 image:
     # -- Image to use for deploying an application
-  repository: "tractusx/sdfactory"
+  repository: "ghcr.io/catenax-ng/tx-sd-factory/sdfactory"
     # -- Set the Image Pull Policy
   pullPolicy: Always
     # -- Image tage is defined in chart appVersion.
-  tag: ""
+  tag: "2.1.5-test"
 
 imagePullSecrets: []
 nameOverride: ""
