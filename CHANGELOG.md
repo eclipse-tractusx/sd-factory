@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Added CPU, memory request and limits
 
+### Changed
+ - Updated pom.xml
+
 ### Removed
 - Removed ghcr.io references and switched to DockerHub
 - Removed hostnames from values.yaml
