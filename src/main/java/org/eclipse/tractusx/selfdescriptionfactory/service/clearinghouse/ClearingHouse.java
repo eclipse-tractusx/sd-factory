@@ -26,6 +26,8 @@ import org.eclipse.tractusx.selfdescriptionfactory.service.keycloak.KeycloakMana
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public abstract class ClearingHouse {
     @Value("${app.usersDetails.clearingHouse.uri}")
@@ -36,6 +38,6 @@ public abstract class ClearingHouse {
     public abstract void doWork(String url, VerifiableCredential payload, String externalId, String token);
 
     public void sendToClearingHouse(VerifiableCredential verifiableCredential, String externalId) {
-        doWork(clearingHouseUrl, verifiableCredential, externalId, "Bearer ".concat(keycloakManager.getToken("clearingHouse")));
+        doWork(clearingHouseUrl, verifiableCredential, externalId, "Bearer ".concat(Optional.ofNullable(keycloakManager.getToken("clearingHouse")).orElse("")));
     }
 }

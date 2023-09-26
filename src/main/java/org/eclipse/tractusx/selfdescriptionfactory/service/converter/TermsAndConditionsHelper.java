@@ -18,31 +18,36 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.vrel3;
+package org.eclipse.tractusx.selfdescriptionfactory.service.converter;
 
 import io.vavr.control.Try;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
-import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.TermsAndConditionsSchema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
-import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public class SDocumentConverter {
+@Component
+public class TermsAndConditionsHelper {
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
 
-    protected TermsAndConditionsSchema getTermsAndConditions(String urlStr) {
-        return Try.of(() -> new URL(urlStr))
+    public Map<String, Object> getTermsAndConditions(String urlStr, Function<String, Map<String, Object>> urlMaker, Function<String, Map<String, Object>> hashMaker) {
+        return Try.of(() -> URI.create(urlStr).toURL())
                 .mapTry(url -> Utils.getConnectionIfRedirected(url, maxRedirect))
                 .flatMap(urlConnection -> Try.withResources(urlConnection::getInputStream).of(DigestUtils::sha256Hex))
-                .map(sha -> new TermsAndConditionsSchema()
-                        .URL(URI.create(urlStr))
-                        .hash(sha))
-                .recoverWith(Utils.mapFailure(err ->
+                .map(sha -> {
+                            Map<String, Object> res = new LinkedHashMap<>();
+                            if (urlMaker != null) res.putAll(urlMaker.apply(urlStr));
+                            if (hashMaker != null) res.putAll(hashMaker.apply(sha));
+                            return res;
+                }).recoverWith(Utils.mapFailure(err ->
                                 new ResponseStatusException(
                                         HttpStatus.BAD_REQUEST,
                                         "Could not retrieve TermsAndConditions from '" + urlStr + "'",

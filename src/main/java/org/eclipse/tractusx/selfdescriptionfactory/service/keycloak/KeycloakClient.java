@@ -1,4 +1,3 @@
-
 /********************************************************************************
  * Copyright (c) 2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -22,17 +21,16 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.keycloak;
 
 
-import feign.Body;
-import feign.Headers;
-import feign.Param;
-import feign.RequestLine;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.net.URI;
 import java.util.Map;
 
 public interface KeycloakClient {
-    @RequestLine("POST /realms/{realm}/protocol/openid-connect/token")
-    @Headers("Content-Type: application/x-www-form-urlencoded")
-    @Body("grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}&scope=openid")
-    Map<String, Object> getTokens(URI serverUrl, @Param("realm") String realm, @Param("client_id") String clientId, @Param("client_secret") String clientSecret);
+    @RequestMapping(method = RequestMethod.POST, value = "/realms/{realm}/protocol/openid-connect/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    Map<String, Object> getTokens(URI serverUrl, @PathVariable("realm") String realm, Map<String, ?> params);
+
 }

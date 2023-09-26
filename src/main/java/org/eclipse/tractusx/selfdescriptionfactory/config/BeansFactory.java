@@ -26,10 +26,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import feign.Feign;
 import feign.Target;
+import feign.form.spring.SpringFormEncoder;
 import org.eclipse.tractusx.selfdescriptionfactory.service.keycloak.KeycloakClient;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
+import org.springframework.cloud.openfeign.support.SpringEncoder;
+import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,9 +49,11 @@ public class BeansFactory {
     }
 
     @Bean
-    public KeycloakClient keycloakClient(ObjectFactory<HttpMessageConverters> converters){
+    public KeycloakClient keycloakClient(ObjectFactory<HttpMessageConverters> converters, ObjectProvider<HttpMessageConverterCustomizer> customizerProvider){
         return Feign.builder()
-                .decoder(new SpringDecoder(converters))
+                .decoder(new SpringDecoder(converters, customizerProvider))
+                .encoder(new SpringFormEncoder(new SpringEncoder(converters)))
+                .contract(new SpringMvcContract())
                 .target(Target.EmptyTarget.create(KeycloakClient.class));
     }
 }

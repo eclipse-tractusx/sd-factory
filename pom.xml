@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tsystems</groupId>
@@ -16,7 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <resource.delimiter>^</resource.delimiter>
-        <spring-cloud.version>2022.0.1</spring-cloud.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>
@@ -31,11 +31,6 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>32.1.1-jre</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -85,23 +80,23 @@
         <dependency>
             <groupId>com.danubetech</groupId>
             <artifactId>verifiable-credentials-java</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
+            <version>1.1.0</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>4.0.3</version>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.70</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
+            <artifactId>protobuf-javalite</artifactId>
             <version>3.22.3</version>
         </dependency>
         <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.1-jre</version>
         </dependency>
         <dependency>
             <groupId>com.nimbusds</groupId>
@@ -129,71 +124,28 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-resource-server</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-core</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-jose</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-crypto</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>3.22.3</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-core</artifactId>
-            <version>21.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-            <version>2.4.10</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -248,8 +200,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>21</source>
+                    <target>21</target>
                     <debug>true</debug>
                     <debuglevel>lines,vars,source</debuglevel>
                 </configuration>

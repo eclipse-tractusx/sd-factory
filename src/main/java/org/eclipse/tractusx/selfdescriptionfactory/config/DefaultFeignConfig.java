@@ -32,6 +32,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.StringReader;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,17 +51,23 @@ public class DefaultFeignConfig {
     @Bean
     public ErrorDecoder getErrorDecoder(ObjectMapper mapper) {
         return (methodKey, response) -> {
-            var msg = Try.of(() -> response.body().asReader(response.charset()))
-                    .mapTry(mapper::readTree)
-                    .map(node -> node.get("message"))
-                    .filter(Objects::nonNull)
-                    .map(JsonNode::asText)
-                    .map(" : "::concat)
-                    .recover(err -> "").get();
+            String contentType = response.headers().get("Content-Type").stream()
+                    .findFirst()
+                    .orElse("Unknown");
+            var responseStr = Try.of(() -> response.body().asInputStream().readAllBytes()).map(bytes -> new String(bytes, response.charset())).getOrElse("");
+            var msg = (contentType.contains("json") ? Try.success(new StringReader(responseStr)) : Try.<StringReader>failure(new NoSuchElementException()))
+                        .mapTry(mapper::readTree)
+                        .recover(any -> mapper.createObjectNode())
+                        .map(jsonNode -> jsonNode.get("message"))
+                        .filter(Objects::nonNull)
+                        .map(JsonNode::asText)
+                        .getOrElse(responseStr);
             var statusCode = HttpStatusCode.valueOf(response.status());
-            log.error("Original payload: {}", new String(response.request().body(), response.request().charset()));
-            return new ResponseStatusException(statusCode, methodKey.concat(msg));
-
+            log.error("Error in Feign client: {}", msg);
+            if (response.request().body() != null) {
+                log.error("Original payload: {}", new String(response.request().body(), response.request().charset()));
+            }
+            return new ResponseStatusException(statusCode, methodKey.concat(" : ").concat(msg));
         };
     }
 }
