@@ -26,8 +26,13 @@ import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantS
 import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -37,39 +42,35 @@ public class LegalParticipantSDConverter implements Converter<LegalParticipantSc
     private final CustodianWallet custodianWallet;
 
     @Override
-    public SDFactory.SelfDescription convert(@NonNull LegalParticipantSchema legalPersonSchema) {
-        /*
-        if (legalPersonSchema.getRegistrationNumber().size() != 1) {
+    public SDFactory.SelfDescription convert(@NonNull LegalParticipantSchema legalParticipantSchema) {
+        if (legalParticipantSchema.getRegistrationNumber().size() != 1) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Registration Number must have single element for Federated Catalog"
             );
         }
-        LegalParticipantSD legalParticipantSD = new LegalParticipantSD();
-        legalParticipantSD.put("@context", ImmutableMap.of(
+        var legalParticipantSD = new SDFactory.SelfDescription(List.of(), legalParticipantSchema.getHolder(), legalParticipantSchema.getIssuer(), legalParticipantSchema.getExternalId(), null);
+        legalParticipantSD.put("@context", Map.of(
                 "gx", "https://w3id.org/gaia-x/gax-trust-framework#",
                 "xsd", "http://www.w3.org/2001/XMLSchema#",
                 "vcard", "http://www.w3.org/2006/vcard/ns#",
                 "ctxsd", "https://w3id.org/catena-x/core#")
         );
-        legalParticipantSD.put("@id", custodianWallet.getWalletData(legalPersonSchema.getHolder()).get("did"));
+        legalParticipantSD.put("@id", custodianWallet.getWalletData(legalParticipantSchema.getHolder()).get("did"));
         legalParticipantSD.put("@type", "gx:LegalPerson");
-        legalParticipantSD.put("ctxsd:bpn", legalPersonSchema.getBpn());
-        legalParticipantSD.put("gx:name", custodianWallet.getWalletData(legalPersonSchema.getBpn()).get("name"));
-        legalParticipantSD.put("gx:registrationNumber", legalPersonSchema.getRegistrationNumber().iterator().next().getValue());
+        legalParticipantSD.put("ctxsd:bpn", legalParticipantSchema.getBpn());
+        legalParticipantSD.put("gx:name", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("name"));
+        legalParticipantSD.put("gx:registrationNumber", legalParticipantSchema.getRegistrationNumber().iterator().next().getValue());
         legalParticipantSD.put("gx:headquarterAddress",
-                ImmutableMap.of( "@type", "vcard:Address",
-                        "vcard:country-name", legalPersonSchema.getHeadquarterAddressCountry()
+                Map.of("@type", "vcard:Address",
+                        "vcard:country-name", legalParticipantSchema.getHeadquarterAddressCountry()
                 )
         );
         legalParticipantSD.put("gx:legalAddress",
-                ImmutableMap.of( "@type", "vcard:Address",
-                        "vcard:country-name", legalPersonSchema.getLegalAddressCountry()
+                Map.of("@type", "vcard:Address",
+                        "vcard:country-name", legalParticipantSchema.getLegalAddressCountry()
                 )
         );
         return legalParticipantSD;
-
-         */
-        return null;
     }
 }
