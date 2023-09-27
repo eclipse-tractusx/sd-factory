@@ -68,8 +68,8 @@ public class SDFactory implements ApiApiDelegate {
                 .credentialSubject(CredentialSubject.fromJsonObject(processed))
                 .type(processed.getType())
                 .build();
-        var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
-        clearingHouse.sendToClearingHouse(verifiableCredentialSigned, processed.getExternalId());
+        //var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
+        clearingHouse.sendToClearingHouse(verifiableCredential, processed.getExternalId());
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
