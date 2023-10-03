@@ -44,7 +44,8 @@ public class LegalParticipantSDConverter implements Converter<LegalParticipantSc
 
     @Override
     public SDFactory.SelfDescription convert(LegalParticipantSchema legalParticipantSchema) {
-        var legalParticipantSD =  new SDFactory.SelfDescription(List.of(contextUri), legalParticipantSchema.getHolder(), legalParticipantSchema.getIssuer(), legalParticipantSchema.getExternalId(), legalParticipantSchema.getType());
+        var legalParticipantSD =  new SDFactory.SelfDescription(List.of(contextUri), legalParticipantSchema.getHolder(), legalParticipantSchema.getIssuer(), legalParticipantSchema.getExternalId(), null);
+        legalParticipantSD.put("type", "LegalParticipant");
         legalParticipantSD.put("bpn", legalParticipantSchema.getBpn());
         legalParticipantSD.put(
                 "registrationNumber",
