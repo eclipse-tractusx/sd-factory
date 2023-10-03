@@ -58,6 +58,7 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
         var policy = Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getPolicies(), Function.identity()).orElse(null);
         var serviceOfferingSD = new SDFactory.SelfDescription(List.of(contextUri), serviceOfferingSchema.getHolder(), serviceOfferingSchema.getIssuer(), serviceOfferingSchema.getExternalId(), null);
         serviceOfferingSD.put("type", "ServiceOffering");
+        serviceOfferingSD.put("bpn", serviceOfferingSchema.getHolder());
         serviceOfferingSD.put("providedBy", serviceOfferingSchema.getProvidedBy());
         serviceOfferingSD.put("aggregationOf", aggregationOf);
         serviceOfferingSD.put("termsAndConditions", termsAndConditions);
