@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Added type to the subject
 - Added BPN to the ServiceOffering subject as it was before
 
+### Changed
+ - Updated helm lint
+
 ### Removed
  - Disable signing VC
 
