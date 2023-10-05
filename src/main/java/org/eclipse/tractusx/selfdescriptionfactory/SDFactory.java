@@ -22,6 +22,7 @@ package org.eclipse.tractusx.selfdescriptionfactory;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,8 @@ public class SDFactory implements ApiApiDelegate {
                 .credentialSubject(CredentialSubject.fromJsonObject(processed))
                 .type(processed.getType())
                 .build();
-        //var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
+        // This call signs the VC at MIW as it was in versions prior to CH
+        // var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
         clearingHouse.sendToClearingHouse(verifiableCredential, processed.getExternalId());
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -76,6 +78,7 @@ public class SDFactory implements ApiApiDelegate {
 
     @Getter
     @RequiredArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
     public static class SelfDescription extends LinkedHashMap<String, Object> {
          private final List<URI> contexts;
          private final String holder;

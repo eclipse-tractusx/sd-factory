@@ -25,6 +25,7 @@ import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumbe
 import java.util.Map;
 
 public class RegCodeMapper {
+    private RegCodeMapper(){}
     public static Map<TypeEnum, String> getRegCodeMapper(String prefix) {
         return Map.of(
                 TypeEnum.TAXID, prefix.concat("local"),
