@@ -41,7 +41,7 @@ public class KeycloakManager {
 
     private static final long REFRESH_GAP = 60L;
     private final TechnicalUsersDetails technicalUsersDetails;
-    private final Map<String, String> tokenMap = new HashMap<>();
+    private final Map<String, Map<String, Object>> tokenMap = new HashMap<>();
 
     private final KeycloakClient keycloakClient;
 
@@ -49,19 +49,62 @@ public class KeycloakManager {
 
     @SneakyThrows
     public String getToken(String name) {
-        var token = tokenMap.get(name);
-        if (!Objects.isNull(token)) {
-            var jwt = mapper.readValue(Base64.getDecoder().decode(token.split("\\.")[1]), new TypeReference<Map<String, Object>>(){});
-            var expirationInstant = Instant.ofEpochSecond((Integer) jwt.get("exp"));
-            if (Duration.between(Instant.now(), expirationInstant).compareTo(Duration.ofSeconds(REFRESH_GAP)) > 0) {
-                return token;
-            }
-        }
+        var kk = tokenMap.get(name);
         var details = technicalUsersDetails.getUsersDetails().get(name);
         if (Objects.isNull(details))
             return null;
-        token = keycloakClient.getTokens(URI.create(details.serverUrl()), details.realm(), details.clientId(), details.clientSecret()).get("access_token").toString();
-        tokenMap.put(name, token);
-        return token;
+        if (!Objects.isNull(kk)) {
+            var token = kk.get("access_token").toString();
+            var jwt = mapper.readValue(Base64.getDecoder().decode(token.split("\\.")[1]), new TypeReference<Map<String, Object>>(){});
+            var expirationInstant = Instant.ofEpochSecond((Integer) jwt.get("exp"));
+            if (Duration.between(Instant.now(), expirationInstant).compareTo(Duration.ofSeconds(REFRESH_GAP)) > 0) {
+                //token still valid
+                return token;
+            } else {
+                //try to obtain access token using refresh token
+                var refreshToken = kk.get("refresh_token");
+                if (!Objects.isNull(refreshToken)) {
+                    var refreshedToken = refresh(refreshToken.toString(), name, details);
+                    if (refreshedToken != null) return refreshedToken;
+                }
+            }
+        }
+        // Trying to get token using supplied credentials
+        var param = new HashMap<String, String>();
+        if (details.username() == null || details.username().isBlank()) {
+            param.put("grant_type", "client_credentials");
+        } else {
+            param.put("grant_type", "password");
+            param.put("username", details.username());
+            param.put("password", details.password());
+        }
+        param.put("client_id", details.clientId());
+        param.put("client_secret", details.clientSecret());
+        param.put("scope", "openid");
+        kk = keycloakClient.getTokens(URI.create(details.serverUrl()), details.realm(), param);
+        tokenMap.put(name, kk);
+        return kk.get("access_token").toString();
+    }
+
+    private String refresh(String refreshToken, String name, TechnicalUsersDetails.UserDetail details) {
+        try {
+            var token = mapper.readValue(Base64.getDecoder().decode(refreshToken.split("\\.")[1]), new TypeReference<Map<String, Object>>() {});
+            var expirationInstant = Instant.ofEpochSecond((Integer) token.get("exp"));
+            if (Duration.between(Instant.now(), expirationInstant).compareTo(Duration.ofSeconds(REFRESH_GAP)) > 0) {
+                var kk = keycloakClient.getTokens(
+                        URI.create(details.serverUrl()), details.realm(), Map.of(
+                                "grant_type", "refresh_token",
+                                "client_id", details.clientId(),
+                                "client_secret", details.clientSecret(),
+                                "scope", "open_id",
+                                "refresh_token", refreshToken
+                        )
+                );
+                tokenMap.put(name, kk);
+                return kk.get("access_token").toString();
+            } else return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

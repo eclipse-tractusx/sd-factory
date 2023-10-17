@@ -38,9 +38,9 @@ on:
         required: false
         type: string
       upgrade_from:
-        description: 'portal chart version to upgrade from'
-        # portal version from 3.1 release
-        default: '1.3.0'
+        description: 'SD Factory chart version to upgrade from'
+        # SD Factory version from 3.2 release
+        default: '2.1.7'
         required: false
         type: string
 
@@ -90,13 +90,17 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --charts charts/sdfactory --config charts/chart-testing-config.yaml
 
-      # Preparing a kind cluster to install and test charts on
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.4.0
-        if: ${{ env.CHART_CHANGED == 'true' }}
 
       # install the chart to the kind cluster and run helm test
       # define charts to test with the --charts parameter
       - name: Run chart-testing (install)
         run: ct install --charts charts/sdfactory --config charts/chart-testing-config.yaml --helm-extra-set-args "--set=image.tag=testing --set=image.repository=kind-registry:5000/sdfactory"
-        if: ${{ env.CHART_CHANGED == 'true' }}
+        if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
+        # Upgrade the released chart version with the locally available chart
+        # default value for event_name != workflow_dispatch
+      - name: Run helm upgrade
+        run: |
+          helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
+          helm install sdf tractusx-dev/sdfactory
+          helm upgrade sdf charts/sdfactory
+        if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'

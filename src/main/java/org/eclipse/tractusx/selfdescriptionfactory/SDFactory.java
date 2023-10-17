@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2021,2022 T-Systems International GmbH
+ * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,28 +18,29 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service;
+package org.eclipse.tractusx.selfdescriptionfactory;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
-import foundation.identity.jsonld.JsonLDUtils;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.selfdescriptionfactory.api.vrel3.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
 import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -47,32 +48,42 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Profile("catena-x-ctx")
-public class SDFactoryCatenaX implements SDFactory{
+public class SDFactory implements ApiApiDelegate {
     @Value("${app.verifiableCredentials.durationDays:90}")
     private int duration;
+
     private final CustodianWallet custodianWallet;
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
 
-    @Override
     @PreAuthorize("hasAuthority(@securityRoles.createRole)")
-    public void createVC(Object document) {
-        var claimsHolder = Optional.ofNullable(conversionService.convert(document, Claims.class)).orElseThrow();
-        var claims = new LinkedHashMap<>(claimsHolder.claims());
-        var holder = claims.remove("holder");
-        var issuer = claims.remove("issuer");
-        var externalId = claims.remove("externalId");
-        var credentialSubject = CredentialSubject.fromJsonObject(claims);
+    @Override
+    public ResponseEntity<Void> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        var processed = Objects.requireNonNull(conversionService.convert(selfdescriptionPostRequest, SelfDescription.class), "Converted SD-Document is null. Very strange");
         var verifiableCredential = VerifiableCredential.builder()
-                .contexts(claimsHolder.vocabularies())
+                .contexts(processed.getContexts())
+                .id(URI.create("http://example.org/" + UUID.randomUUID()))
+                .issuer(URI.create(processed.getIssuer()))
                 .issuanceDate(new Date())
-                .id(URI.create(UUID.randomUUID().toString()))
                 .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
-                .credentialSubject(credentialSubject)
+                .credentialSubject(CredentialSubject.fromJsonObject(processed))
+                .type(processed.getType())
                 .build();
-        JsonLDUtils.jsonLdAdd(verifiableCredential, "issuer", issuer);
-        //var vc = custodianWallet.getSignedVC(verifiableCredential);
-        clearingHouse.sendToClearingHouse(verifiableCredential, externalId.toString());
+        // This call signs the VC at MIW as it was in versions prior to CH
+        // var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
+        clearingHouse.sendToClearingHouse(verifiableCredential, processed.getExternalId());
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
+    public static class SelfDescription extends LinkedHashMap<String, Object> {
+         private final List<URI> contexts;
+         private final String holder;
+         private final String issuer;
+         private final String externalId;
+         private final String type;
     }
 }

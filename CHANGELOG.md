@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - NA
 
+## [2.1.7] - 2023-10-05
+
+### Added
+- Unification of SDFactory versions for different contexts and MIW
+- Added support for FC schema.
+- Added type to the subject
+- Added BPN to the ServiceOffering subject as it was before
+
+### Changed
+ - Updated helm lint
+
+### Removed
+ - Disable signing VC
 
 ## [2.1.6] - 2023-08-21
 
