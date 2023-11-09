@@ -22,11 +22,13 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.keycloak;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.eclipse.tractusx.selfdescriptionfactory.config.TechnicalUsersDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
@@ -34,6 +36,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +53,10 @@ public class KeycloakManager {
     @SneakyThrows
     public String getToken(String name) {
         var kk = tokenMap.get(name);
-        var details = technicalUsersDetails.getUsersDetails().get(name);
+        var details = Optional.ofNullable(technicalUsersDetails.getUsersDetails())
+                .map(userDetailMap -> userDetailMap.get(name))
+                .filter(ud -> !(Strings.isNullOrEmpty(ud.serverUrl()) || Strings.isNullOrEmpty(ud.realm()) || Strings.isNullOrEmpty(ud.clientId()) || Strings.isNullOrEmpty(ud.clientSecret())))
+                .orElse(null);
         if (Objects.isNull(details))
             return null;
         if (!Objects.isNull(kk)) {
@@ -70,6 +76,14 @@ public class KeycloakManager {
             }
         }
         // Trying to get token using supplied credentials
+        var param = getOauthTokenParameters(details);
+        kk = keycloakClient.getTokens(URI.create(details.serverUrl()), details.realm(), param);
+        tokenMap.put(name, kk);
+        return kk.get("access_token").toString();
+    }
+
+    @Nonnull
+    private static HashMap<String, String> getOauthTokenParameters(TechnicalUsersDetails.UserDetail details) {
         var param = new HashMap<String, String>();
         if (details.username() == null || details.username().isBlank()) {
             param.put("grant_type", "client_credentials");
@@ -81,9 +95,7 @@ public class KeycloakManager {
         param.put("client_id", details.clientId());
         param.put("client_secret", details.clientSecret());
         param.put("scope", "openid");
-        kk = keycloakClient.getTokens(URI.create(details.serverUrl()), details.realm(), param);
-        tokenMap.put(name, kk);
-        return kk.get("access_token").toString();
+        return param;
     }
 
     private String refresh(String refreshToken, String name, TechnicalUsersDetails.UserDetail details) {
