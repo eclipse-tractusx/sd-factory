@@ -155,6 +155,8 @@ keycloak:
 spring:
   jackson:
     default-property-inclusion: non_null
+  profiles:
+     active: catena-x-ctx
   security:
     oauth2:
       resourceserver:
@@ -189,6 +191,13 @@ app:
 ```
 
 Here `keycloak` section defines keycloak's parameters for client requests authentication.
+
+Section `spring.profiles` activates different modes. From functional point of view, the Factory acts as a converter,
+transforming an input message to the output JSON and passes it to the Compliance Service. The actual converter is selected
+by setting corresponding profile. Currently, two type of converters are supported. The old one is selected if profile
+'catena-x-ctx' is selected. It was used from the the beginning and well tested. The second is activated when 'gaia-x-ctx'
+profile is chosen. This converter generates JSON which shall be compatible with Gaia-X requirements, however it needs to
+be aligned with other services/components.
 
 `app.verifiableCredentials.durationDays` defines for how many days the VC is issued.
 
@@ -227,6 +236,9 @@ A Docker image will be built and installed to the local repository.
 SD-Factory can be fired up locally in Docker environment. Before that the image needs
 to be created. Do not forget to provide necessary configuration parameters in `application.yml`
 for keycloak and the Custodian Wallet.
+
+If `spring.profile` is set to `test` then the Factory does not send self-description to the Compliance Service, instead
+it just prints it out along with service data like Compliance Service URL, authentication token (if any) and external ID. 
 
 # Container images
 
