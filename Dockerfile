@@ -28,9 +28,9 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM eclipse-temurin:17.0.6_10-jdk-alpine
+FROM eclipse-temurin:17.0.8.1_1-jdk
 
-RUN apk update && apk upgrade
+#RUN apk update && apk upgrade
 
 ARG DEPENDENCY=/sdfactory/target/dependency
 
