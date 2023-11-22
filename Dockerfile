@@ -30,8 +30,6 @@ RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM eclipse-temurin:17.0.8.1_1-jdk
 
-#RUN apk update && apk upgrade
-
 ARG DEPENDENCY=/sdfactory/target/dependency
 
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
