@@ -13,8 +13,8 @@ further processing.
 ## Software Version
 
 ```shell
-Software version: 2.1.7
-Helm Chart version: 2.1.8
+Software version: 2.1.8
+Helm Chart version: 2.1.9
 
 ```
 
@@ -258,7 +258,7 @@ __SD Factory__
 
 **Used base image**
 
-- 17-jdk-alpine(https://hub.docker.com/layers/library/eclipse-temurin/17.0.6_10-jdk-alpine/images/sha256-c093675e143dc8023fb218c144e06491154491a7965d0664a93f99ada5259ec7?context=explore)
+- [eclipse-temurin:17.0.8.1_1-jdk](https://github.com/adoptium/containers)
 - Official Eclipse Temurin DockerHub page: https://hub.docker.com/_/eclipse-temurin
 - Eclipse Temurin Project: https://projects.eclipse.org/projects/adoptium.temurin
 - Additional information about the Eclipse Temurin images: https://github.com/docker-library/repo-info/tree/master/repos/eclipse-temurin
