@@ -100,7 +100,7 @@ jobs:
         # default value for event_name != workflow_dispatch
       - name: Run helm upgrade
         run: |
-          helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
-          helm install sdf tractusx-dev/sdfactory
-          helm upgrade sdf charts/sdfactory
+          helm repo add tractusx https://eclipse-tractusx.github.io/charts/dev
+          helm install sdf tractusx/sdfactory --version ${{ github.event.inputs.upgrade_from || '2.1.7' }}
+          helm upgrade sdf tractusx/sdfactory
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
