@@ -49,14 +49,14 @@ jobs:
 
       - name: Add repos
         run: |
-          helm repo add sdf https://eclipse-tractusx.github.io/sd-factory
+          helm repo add tractusx https://eclipse-tractusx.github.io/charts/dev
 
       - name: Run helm install
         # Install latest released sdfactory version
         run: |
-          helm install sdf charts/sdfactory
+          helm install sdf tractusx/sdfactory
 
       - name: Run helm upgrade
         # Upgrade the installed sdfactory version with the locally available charts
         run: |
-          helm upgrade sdf charts/sdfactory
+          helm upgrade sdf tractusx/sdfactory
