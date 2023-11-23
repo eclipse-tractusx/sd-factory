@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - Updated base image
 - Updated workflow for helm lint
-
+- helm upgrade workflow fix
 
 ## [2.1.7] - 2023-10-05
 
