@@ -102,5 +102,5 @@ jobs:
         run: |
           helm repo add tractusx https://eclipse-tractusx.github.io/charts/dev
           helm install sdf tractusx/sdfactory --version ${{ github.event.inputs.upgrade_from || '2.1.7' }}
-          helm upgrade sdf tractusx/sdfactory
+          helm upgrade sdf charts/sdfactory
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
