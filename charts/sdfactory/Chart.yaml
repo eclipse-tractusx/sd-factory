@@ -45,4 +45,4 @@ version: "2.1.8"
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 
-appVersion: "2.1.8"
+appVersion: "2.1.9"
