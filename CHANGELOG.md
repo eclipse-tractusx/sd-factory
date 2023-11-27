@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
- - Trivy security fix for bouncycastle
  
-## [2.1.9] - 2023-11-24
+ 
+## [2.1.8] - 2023-11-27
 
 ### Changed
+- Security fix for bouncycastle which can have DoS issue
 - Updated base image
 - Updated workflow for helm lint
 - helm upgrade workflow fix
