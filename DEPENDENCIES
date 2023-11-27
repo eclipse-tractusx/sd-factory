@@ -59,7 +59,7 @@ maven/mavencentral/org.aspectj/aspectjweaver/1.9.20, EPL-1.0, approved, tools.as
 maven/mavencentral/org.bitcoinj/bitcoinj-core/0.16.1, Apache-2.0, approved, clearlydefined
 maven/mavencentral/org.bouncycastle/bcpkix-jdk15on/1.70, MIT, approved, clearlydefined
 maven/mavencentral/org.bouncycastle/bcprov-jdk15on/1.70, MIT, approved, #1712
-maven/mavencentral/org.bouncycastle/bcprov-jdk18on/1.71, MIT, approved, #3475
+maven/mavencentral/org.bouncycastle/bcprov-jdk18on/1.77, MIT AND CC0-1.0, approved, #11595
 maven/mavencentral/org.bouncycastle/bcutil-jdk15on/1.70, MIT, approved, clearlydefined
 maven/mavencentral/org.checkerframework/checker-qual/3.33.0, MIT, approved, clearlydefined
 maven/mavencentral/org.glassfish/jakarta.json/2.0.0, EPL-2.0 OR GPL-2.0-only with Classpath-exception-2.0, approved, ee4j.jsonp
