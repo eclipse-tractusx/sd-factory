@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
-
-### Changed
-- fixed veracode security CVE-2023-6378(logback-classic Denial Of Service)
+### Fixed
+ - Fixed the CVE-2023-33202 security issue
+ - Fixed veracode security CVE-2023-6378(logback-classic Denial Of Service)
  
 ## [2.1.8] - 2023-11-27
 
