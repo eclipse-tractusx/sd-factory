@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Fixed
- - Fixed the CVE-2023-33202 security issue
- - Fixed veracode security CVE-2023-6378(logback-classic Denial Of Service)
+- Fixed the CVE-2023-33202 security issue
+- Fixed veracode security CVE-2023-6378(logback-classic Denial Of Service)
+- Upgrade Spring Boot to get rid of CVE-2023-46589 and CVE-2023-34053
  
 ## [2.1.8] - 2023-11-27
 
