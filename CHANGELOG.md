@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Fixed
+- Fixed the CVE-2023-3635 security issue
 - Fixed the CVE-2023-6481 security issue
 - Fixed the CVE-2023-33202 security issue
 - Fixed veracode security CVE-2023-6378(logback-classic Denial Of Service)
