@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Updated Spring Boot and its transitive dependencies
 - Provided multi-arch image of sdfactory
 - Updated default imagePullPolicy
+- Updated probes in values file so that it can be configurable
 
 ## [2.1.9] - 2024-01-30
 

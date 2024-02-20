@@ -117,13 +117,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: {{ .Values.service.targetPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.service.targetPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

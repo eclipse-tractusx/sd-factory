@@ -25,7 +25,6 @@
     # -- Number of Replicas for pods
 replicaCount: 1
 
-
 image:
     # -- Image to use for deploying an application
   repository: "tractusx/sdfactory"
@@ -48,7 +47,6 @@ serviceAccount:
   name: ""
 
 podAnnotations: {}
-
 
 podSecurityContext:
   fsGroup: 2000
@@ -90,7 +88,6 @@ sdfactory:
     # -- Details for Clearing House Client Secret
     clearingHouseClientSecret: ""
 
-
 service:
     # -- Type of service
   type: ClusterIP
@@ -128,6 +125,13 @@ resources:
     cpu: 300m
     # -- set a minimum amount of allows memory utilization by specifying a limit on the container.
     memory: 700Mi
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
 
 autoscaling:
   enabled: false
