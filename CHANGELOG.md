@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Updated Spring Boot and its transitive dependencies
 
+### Added
+- Added DOCKER_NOTICE.md file
+
 
 ## [2.1.9] - 2024-01-30
 
