@@ -244,6 +244,12 @@ it just prints it out along with service data like Compliance Service URL, authe
 
 This application provides container images for demonstration purposes. The base image used, to build this demo application image is eclipse-temurin:17-jdk-alpine
 
+## Notice for Docker image
+
+Docker Notice for this application can be find below:
+
+ [DOCKER_NOTICE.md](DOCKER_NOTICE.md)
+
 ## Installation Steps
 
 [INSTALL.md](INSTALL.md)
