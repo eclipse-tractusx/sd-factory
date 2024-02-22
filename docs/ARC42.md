@@ -391,6 +391,16 @@ In Catena-X we use [ARGO-CD](https://confluence.catena-x.net/display/ARTI/ArgoCD
 | Verifiable Presentation                                                                                  | The expression of a subset of one's persona is called a verifiable presentation. ([more](https://www.w3.org/TR/vc-data-model/))                                                                                                                                                                                                                             |
 | Verifier                                                                                                 | Is an instance that verifies the verifiable credentials of the holder. ([more](https://www.w3.org/TR/vc-data-model/))                                                                                                                                                                                                                                       |
 
+
+## NOTICE
+
+This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+- SPDX-License-Identifier: Apache-2.0
+- SPDX-FileCopyrightText: 2021,2024 T-Systems International GmbH
+- SPDX-FileCopyrightText: 2021,2024 Contributors to the Eclipse Foundation
+- Source URL: https://github.com/eclipse-tractusx/sd-factory
+
 ## Links:
 
 * [Gaia-X Architecture Document 21-09-2021](https://www.gaia-x.eu/sites/default/files/2021-10/Gaia-X_Architecture_Document_2109.pdf) 

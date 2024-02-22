@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Provided multi-arch image of sdfactory
 - Updated default imagePullPolicy
 - Updated probes in values file so that it can be configurable
+- Updated ARC42 document notice section
 - Updated security context
 - Removed the header from ARC42 document
 - Header update in .tractusx file
