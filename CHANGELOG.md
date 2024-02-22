@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 ### Changed
 - Updated Spring Boot and its transitive dependencies
+- Updated installation steps in Install.md
 
 
 ## [2.1.9] - 2024-01-30
