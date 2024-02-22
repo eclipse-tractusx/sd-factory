@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Updated default imagePullPolicy
 - Updated probes in values file so that it can be configurable
 - Updated security context
+- Removed the header from ARC42 document
 
 ## [2.1.9] - 2024-01-30
 
