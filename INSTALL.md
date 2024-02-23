@@ -1,22 +1,22 @@
 ## Installation Steps
 
-Helm charts are provided inside https://github.com/eclipse-tractusx/sd-factory
-
-1.) Installation from released chart: <br />
+Helm chart is provided inside https://github.com/eclipse-tractusx/sd-factory
 
 How to install application using helm:  <br />
-    helm install ReleaseName ChartName
+    helm install [ReleaseName] [ChartName]
+
+1.) Installation from released chart: <br />
     
-    a.) Add helm repository for sdfactory:
-           helm repo add [name] https://eclipse-tractusx.github.io/charts/dev
+    a.) Add helm repository for tractusx-dev:
+           helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
     b.) To search the specific repo in helm repositories 
-           helm search repo [name]/sdfactory
-    c.) To install using helm command:
-           helm install [ReleaseName] [name]/sdfactory
+           helm search repo tractusx-dev/sdfactory
+    c.) To install using helm command in kubernetes cluster
+           helm install [ReleaseName] tractusx-dev/sdfactory -n [NameSpace]
 
 
 2.) Installation from repository:
-
+        
     a.) git clone https://github.com/eclipse-tractusx/sd-factory.git
     b.) cd sd-factory
     c.) Modify values file according to your requirement
@@ -37,4 +37,3 @@ How to install application using helm:  <br />
 
     e.) Deploy in a kubernetes cluster
         helm install [name] charts/sdfactory/ -n [NameSpace]
-        
