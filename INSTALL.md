@@ -11,8 +11,9 @@ How to install application using helm:  <br />
            helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
     b.) To search the specific repo in helm repositories 
            helm search repo tractusx-dev/sdfactory
-    c.) To install using helm command in kubernetes cluster
-           helm install [ReleaseName] tractusx-dev/sdfactory -n [NameSpace]
+    c.) To set your own configuration and secret values, install the helm chart with your own values file in kubernetes cluster:
+
+           helm install -f your-values.yaml [ReleaseName] tractusx-dev/sdfactory -n [NameSpace]
 
 
 2.) Installation from repository:
@@ -20,7 +21,7 @@ How to install application using helm:  <br />
     a.) git clone https://github.com/eclipse-tractusx/sd-factory.git
     b.) cd sd-factory
     c.) Modify values file according to your requirement
-    d.) You need to define the secrets as well in values.yaml
+    d.) You need to define the secrets as well in your-values.yaml. These secrets should be defined in Hashicorp vault to keep them secure
         secret:
               jwkSetUri: -> JWK Set URL
               clientId: -> Custodian wallet client id
@@ -35,5 +36,6 @@ How to install application using helm:  <br />
               clearingHouseClientId: -> Client id for Clearing House
               clearingHouseClientSecret: -> Clearing house for Client secret
 
-    e.) Deploy in a kubernetes cluster
-        helm install [name] charts/sdfactory/ -n [NameSpace]
+    e.) To set your own configuration and secret values, install the helm chart with your own values file in a kubernetes cluster
+
+           helm install -f your-values.yaml [ReleaseName] charts/sdfactory/ -n [NameSpace]
