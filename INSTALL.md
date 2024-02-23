@@ -3,7 +3,8 @@
 Helm chart is provided inside https://github.com/eclipse-tractusx/sd-factory
 
 How to install application using helm:  <br />
-    helm install [ReleaseName] [ChartName]
+
+              helm install [ReleaseName] [ChartName]
 
 1.) Installation from released chart: <br />
     
@@ -12,7 +13,6 @@ How to install application using helm:  <br />
     b.) To search the specific repo in helm repositories 
            helm search repo tractusx-dev/sdfactory
     c.) To set your own configuration and secret values, install the helm chart with your own values file in kubernetes cluster:
-
            helm install -f your-values.yaml [ReleaseName] tractusx-dev/sdfactory -n [NameSpace]
 
 
@@ -37,5 +37,4 @@ How to install application using helm:  <br />
               clearingHouseClientSecret: -> Clearing house for Client secret
 
     e.) To set your own configuration and secret values, install the helm chart with your own values file in a kubernetes cluster
-
            helm install -f your-values.yaml [ReleaseName] charts/sdfactory/ -n [NameSpace]
