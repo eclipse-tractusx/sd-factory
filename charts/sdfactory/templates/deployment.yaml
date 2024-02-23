@@ -1,6 +1,6 @@
 #################################################################################
-# Copyright (c) 2022,2023 T-Systems International GmbH
-# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+# Copyright (c) 2022,2024 T-Systems International GmbH
+# Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -117,13 +117,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: {{ .Values.service.targetPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.service.targetPort }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
