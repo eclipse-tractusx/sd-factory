@@ -1,6 +1,6 @@
 ## Installation Steps
 
-A helm chart is provided inside the [charts](sd-factory/charts) directory
+A helm chart is provided inside the [charts](charts/sdfactory) directory
 
 How to install application using helm:  <br />
 
