@@ -18,7 +18,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"Always"` | Set the Image Pull Policy |
+| image.pullPolicy | string | `"IfNotPresent"` | Set the Image Pull Policy |
 | image.repository | string | `"tractusx/sdfactory"` | Image to use for deploying an application |
 | image.tag | string | `""` | Image tage is defined in chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
@@ -30,10 +30,14 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | ingress.issuer | string | `"letsencrypt-prod"` | Kubernetes resources that represent certificate authorities that are able to generate signed certificates by honoring certificate signing requests. |
 | ingress.tls[0].hosts | string | `""` |  |
 | ingress.tls[0].tlsName | string | `""` |  |
+| livenessProbe.initialDelaySeconds | int | `10` |  |
+| livenessProbe.periodSeconds | int | `10` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
+| readinessProbe.initialDelaySeconds | int | `10` |  |
+| readinessProbe.periodSeconds | int | `10` |  |
 | replicaCount | int | `1` | Number of Replicas for pods |
 | resources.limits.cpu | string | `"600m"` | set a maximum amount of allows CPU utilization by specifying a limit on the container. |
 | resources.limits.memory | string | `"700Mi"` | set a maximum amount of allows memory utilization by specifying a limit on the container. |
@@ -51,7 +55,10 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
 | sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
 | sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
-| securityContext.allowPrivilegeEscalation | bool | `false` | Controls whether a process can gain more privileges |
+| securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.runAsGroup | int | `1000` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | service.port | int | `80` | Port details for sevice |
 | service.targetPort | int | `8080` | Container Port details for sevice |
