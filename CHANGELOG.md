@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Changed
-- Updated Spring Boot and its transitive dependencies
+- Updated Spring Boot to 3.2.3 to fix CVE-2024-22234 and CVE-2024-22243
 - Provided multi-arch image of sdfactory
 - Updated default imagePullPolicy
 - Updated probes in values file so that it can be configurable
