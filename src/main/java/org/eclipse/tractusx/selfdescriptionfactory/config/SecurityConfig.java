@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,16 +20,19 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,6 +44,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -49,13 +53,12 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-
-    private static final String[] PUBLIC_URL = { "/ping", "/*/public/**", "/api-docs/**", "/swagger-ui/**",
-            "*/swagger-ui/**", "/v3/api-docs/**" };
 
     @Value("${keycloak.resource.clientid}")
     private String resourceName;
+    private final Environment environment;
 
     public interface Jwt2AuthoritiesConverter extends Converter<Jwt, Collection<? extends GrantedAuthority>> {
     }
@@ -85,31 +88,48 @@ public class SecurityConfig {
 
     @SneakyThrows
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, Jwt2AuthenticationConverter authenticationConverter,
-                                           ServerProperties serverProperties) {
+    public SecurityFilterChain filterChain(HttpSecurity http, Jwt2AuthenticationConverter authenticationConverter) {
 
-        // Enable OAuth2 with custom authorities mapping
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(authenticationConverter);
+        // Configure OAuth2 with custom authorities mapping
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(
+                jwt -> jwt.jwtAuthenticationConverter(authenticationConverter)
+        ));
 
-        // Enable anonymous
-        http.anonymous();
+        // Enable anonymous access
+        http.anonymous(Customizer.withDefaults());
 
-        // Enable and configure CORS
-        http.cors().configurationSource(corsConfigurationSource());
+        // Configure CORS with custom source
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        // State-less session (state in access-token only)
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // Configure stateless session management
+        http.sessionManagement(session -> session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS
+        ));
 
-        // Disable CSRF because of state-less session-management
-        http.csrf().disable();
+        // Disable CSRF due to stateless session management
+        http.csrf(AbstractHttpConfigurer::disable);
 
-        http.authorizeHttpRequests()
-                //.requestMatchers("/actuator/**").authenticated()
-                .anyRequest().permitAll();
+        // Define authorization for requests
+        if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
+            http.authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
+        } else {
+            http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
+        }
 
-        http.headers().xssProtection().and()
-                .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline'").and()
-                .httpStrictTransportSecurity().requestMatcher(AnyRequestMatcher.INSTANCE);
+        http.headers(headers -> {
+            // Equivalent to xssProtection().and() in the deprecated configuration
+            // The XSS protection is enabled by default and the X-XSS-Protection header is not necessary to set if you're using modern browser security features.
+
+            // Content Security Policy configuration
+            headers.contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'"));
+            // The .and() is not needed as the lambda configuration allows chaining within the same context.
+
+            // HTTP Strict Transport Security configuration
+            headers.httpStrictTransportSecurity(hsts -> hsts
+                    .includeSubDomains(true)
+                    .maxAgeInSeconds(31536000)
+                    .requestMatcher(AnyRequestMatcher.INSTANCE)); // Apply HSTS to all requests
+        });
 
         return http.build();
     }

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -41,11 +41,17 @@ import java.util.Optional;
 @Slf4j
 public class DefaultFeignConfig {
     @Bean
-    public RequestInterceptor getRequestInterceptor(KeycloakManager keycloakManager) {
-        return  requestTemplate -> Optional.of(requestTemplate.feignTarget().name())
-                .map(keycloakManager::getToken)
-                .ifPresent(token -> requestTemplate.header("Authorization", "Bearer ".concat(token)));
-
+    public RequestInterceptor getRequestInterceptor(KeycloakManager keycloakManager, TechnicalUsersDetails technicalUsersDetails) {
+        return  requestTemplate -> {
+            Optional.of(requestTemplate.feignTarget().name())
+                    .map(keycloakManager::getToken)
+                    .map("Bearer "::concat)
+                    .ifPresent(token -> requestTemplate.header("Authorization", token));
+            Optional.of(requestTemplate.feignTarget().name())
+                    .map(technicalUsersDetails.getUsersDetails()::get)
+                    .map(TechnicalUsersDetails.UserDetail::uri)
+                    .ifPresent(requestTemplate::target);
+        };
     }
 
     @Bean

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "custodianWallet", url = "${app.usersDetails.custodianWallet.uri}")
+@FeignClient(name = "custodianWallet", url = "http://placeholder:8080")
 public interface CustodianClient {
     @GetMapping(path = "/wallets/{walletId}")
     Map<String, Object> getWalletData(@PathVariable("walletId") String walletId);

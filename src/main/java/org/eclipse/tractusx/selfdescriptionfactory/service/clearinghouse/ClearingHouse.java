@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -21,23 +21,53 @@
 package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
 
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.selfdescriptionfactory.config.TechnicalUsersDetails;
 import org.eclipse.tractusx.selfdescriptionfactory.service.keycloak.KeycloakManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
+@Slf4j
+@Service
 @RequiredArgsConstructor
-public abstract class ClearingHouse {
-    @Value("${app.usersDetails.clearingHouse.uri}")
-    private String clearingHouseUrl;
-    @Autowired
-    protected KeycloakManager keycloakManager;
+public class ClearingHouse implements InitializingBean {
 
-    public abstract void doWork(String url, VerifiableCredential payload, String externalId, String token);
+    private final KeycloakManager keycloakManager;
+    private final TechnicalUsersDetails technicalUsersDetails;
+    private final ClearingHouseClient clearingHouseClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Environment environment;
 
-    public void sendToClearingHouse(VerifiableCredential verifiableCredential, String externalId) {
-        doWork(clearingHouseUrl, verifiableCredential, externalId, "Bearer ".concat(Optional.ofNullable(keycloakManager.getToken("clearingHouse")).orElse("")));
+    public void sendToClearingHouse(VerifiableCredential payload, String externalId) {
+        if (log.isDebugEnabled()) {
+            debug(payload,  externalId);
+        }
+        if (!Arrays.asList(environment.getActiveProfiles()).contains("test")) {
+            clearingHouseClient.send(payload, externalId);
+        }
+    }
+    @SneakyThrows
+    protected void debug(VerifiableCredential payload, String externalId) {
+        var annotation = ClearingHouseClient.class.getAnnotation(FeignClient.class);
+        var name = annotation.name();
+        Optional.ofNullable(technicalUsersDetails.getUsersDetails().get(name)).map(TechnicalUsersDetails.UserDetail::uri).ifPresent(uri -> log.debug("URL: {}", uri));
+        Optional.of(name).map(keycloakManager::getToken).ifPresent(token -> log.debug("Authorization: {}", token));
+        log.debug("ExternalId: {}", externalId);
+        log.debug("payload: {}", objectMapper.writeValueAsString(payload));
+    }
+
+
+    @Override
+    public void afterPropertiesSet() {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 }
