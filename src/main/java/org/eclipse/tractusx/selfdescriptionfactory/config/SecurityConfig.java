@@ -109,13 +109,6 @@ public class SecurityConfig {
         // Disable CSRF due to stateless session management
         http.csrf(AbstractHttpConfigurer::disable);
 
-        // Define authorization for requests
-        if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
-            http.authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
-        } else {
-            http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
-        }
-
         http.headers(headers -> {
             // Equivalent to xssProtection().and() in the deprecated configuration
             // The XSS protection is enabled by default and the X-XSS-Protection header is not necessary to set if you're using modern browser security features.
