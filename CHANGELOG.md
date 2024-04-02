@@ -9,6 +9,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Fixed
 - Fixed the CVE-2024-22259 and CVE-2024-22257 security issue
 
+### Changed
+- unused configuration entries in application.yml are not mandatory (e.g. `app.usersDetails.custodianWallet`
+for catena-x-ctx profile)
+- if `test` profile is active then authentication is turned off for the service
+- files placed to the resources/verifiablecredentials directory are served by the service's web-server as static 
+resources. If a file has .jsonld extension then correct `Content-Type` is set for it even if extension is missed in URL
+(e.g. for URL https://{SERVICE_HOST}/context/sd-document-v2210 the file resources/verifiablecredentials/sd-document-v2210.jsonld
+is returned while `Content-Type` is set to `application/ld+json`)
+- correct `Content-Type` is set for YAML extension (can be `application/yaml` or `text/yaml`)
+
 ## [2.1.10] - 2024-02-28
 ### Changed
 - Updated Spring Boot to 3.2.3 to fix CVE-2024-22234 and CVE-2024-22243
