@@ -45,10 +45,9 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd
+    schema2210Url: https://sdfactory.int.demo.catena-x.net/context/sd-document-v2210
     gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
-    catena-x-schema: https://sdfactory.int.demo.catena-x.net/context/sd-document-v2210
   usersDetails:
     clearingHouse:
       #uri: https://validation.dev.dih-cloud.com/api/v1/compliance
