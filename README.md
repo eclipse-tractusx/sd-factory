@@ -14,7 +14,7 @@ further processing.
 
 ```shell
 Software version: 2.1.10
-Helm Chart version: 2.1.12
+Helm Chart version: 2.1.14
 
 ```
 
