@@ -144,7 +144,7 @@
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-javalite</artifactId>
-                <version>3.22.3</version>
+                <version>4.26.1</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
