@@ -38,7 +38,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.18.0
         with:
-          image-ref: "tractusx/<your-image>:<version>" # Pull image from Docker Hub and run Trivy vulnerability scanner
+          image-ref: "tractusx/sdfactory:latest" # Pull image from Docker Hub and run Trivy vulnerability scanner
           format: "sarif"
           output: "trivy-results.sarif"
           exit-code: "1" # Trivy exits with code 1 if vulnerabilities are found, causing the workflow step to fail.
