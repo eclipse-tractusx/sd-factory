@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.selfdescriptionfactory.config.TechnicalUsersDetails;
-import org.eclipse.tractusx.selfdescriptionfactory.service.keycloak.KeycloakManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.core.env.Environment;
@@ -41,7 +40,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClearingHouse implements InitializingBean {
 
-    private final KeycloakManager keycloakManager;
     private final TechnicalUsersDetails technicalUsersDetails;
     private final ClearingHouseClient clearingHouseClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -60,7 +58,6 @@ public class ClearingHouse implements InitializingBean {
         var annotation = ClearingHouseClient.class.getAnnotation(FeignClient.class);
         var name = annotation.name();
         Optional.ofNullable(technicalUsersDetails.getUsersDetails().get(name)).map(TechnicalUsersDetails.UserDetail::uri).ifPresent(uri -> log.debug("URL: {}", uri));
-        Optional.of(name).map(keycloakManager::getToken).ifPresent(token -> log.debug("Authorization: {}", token));
         log.debug("ExternalId: {}", externalId);
         log.debug("payload: {}", objectMapper.writeValueAsString(payload));
     }

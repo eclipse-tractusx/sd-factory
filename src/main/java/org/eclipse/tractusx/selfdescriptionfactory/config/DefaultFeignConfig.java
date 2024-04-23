@@ -70,6 +70,8 @@ public class DefaultFeignConfig {
                         .getOrElse(responseStr);
             var statusCode = HttpStatusCode.valueOf(response.status());
             log.error("Error in Feign client: {}", msg);
+            log.error("Status code: {}", statusCode);
+            log.error("URL: {}", response.request().url());
             if (response.request().body() != null) {
                 log.error("Original payload: {}", new String(response.request().body(), response.request().charset()));
             }
