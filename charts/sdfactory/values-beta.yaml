@@ -71,3 +71,4 @@ sdfactory:
     clearingHouseRealm: "<path:essential-services/data/custodian-beta#clearingHouse-realm>"
     clearingHouseClientId: "<path:essential-services/data/custodian-beta#clearingHouse-clientId>"
     clearingHouseClientSecret: "<path:essential-services/data/custodian-beta#clearingHouse-clientSecret>"
+    verifycredentialsUri: "<path:essential-services/data/custodian-beta#verifiableCredentials-schema2210Url"

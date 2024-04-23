@@ -113,7 +113,7 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: clearingHouse-clientSecret
-          - name: APP.VERIFIABLECREDENTIALS.SCHEMA2210URL
+          - name: APP_VERIFIABLECREDENTIALS_SCHEMA2210URL
             valueFrom: 
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}

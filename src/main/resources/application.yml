@@ -45,7 +45,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-#    schema2210Url: 
+    #schema2210Url: 
     gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
   usersDetails:
