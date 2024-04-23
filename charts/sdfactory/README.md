@@ -1,6 +1,6 @@
 # sdfactory
 
-![Version: 2.1.15](https://img.shields.io/badge/Version-2.1.15-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.10](https://img.shields.io/badge/AppVersion-2.1.10-informational?style=flat-square)
+![Version: 2.1.16](https://img.shields.io/badge/Version-2.1.16-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.10](https://img.shields.io/badge/AppVersion-2.1.10-informational?style=flat-square)
 
 Helm Charts for SD Factory application. Self-Description Factory component is responsible for the creation of Self Descriptions.
 
@@ -55,6 +55,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
 | sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
 | sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
+| sdfactory.secret.verifycredentialsUri | string | `""` | Details for Verifying Client uri |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `1000` |  |
