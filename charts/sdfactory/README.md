@@ -55,6 +55,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
 | sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
 | sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
+| sdfactory.secret.verifycredentialsUri | string | `""` | Details for Verifying Client uri |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `1000` |  |

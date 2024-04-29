@@ -51,3 +51,4 @@ sdfactory:
     clearingHouseRealm: "<path:essential-services/data/custodian#clearingHouse-realm>"
     clearingHouseClientId: "<path:essential-services/data/custodian#clearingHouse-clientId>"
     clearingHouseClientSecret: "<path:essential-services/data/custodian#clearingHouse-clientSecret>"
+    verifycredentialsUri: "<path:essential-services/data/custodian#verifiableCredentials-schema2210Url>"

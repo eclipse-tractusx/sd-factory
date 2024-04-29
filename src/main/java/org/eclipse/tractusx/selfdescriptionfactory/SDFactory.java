@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -28,19 +28,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.selfdescriptionfactory.api.vrel3.ApiApiDelegate;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.service.AuthChecker;
 import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
-import org.eclipse.tractusx.selfdescriptionfactory.service.wallet.CustodianWallet;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * A service to create and manipulate of Self-Description document
@@ -48,17 +50,23 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SDFactory implements ApiApiDelegate {
+public class SDFactory implements ApiApiDelegate, InitializingBean {
     @Value("${app.verifiableCredentials.durationDays:90}")
     private int duration;
 
-    private final CustodianWallet custodianWallet;
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
+    private final Environment environment;
+    private final AuthChecker authChecker;
 
-    @PreAuthorize("hasAuthority(@securityRoles.createRole)")
+    private Function<SelfdescriptionPostRequest, ResponseEntity<Void>> decoratedFunction;
+
     @Override
     public ResponseEntity<Void> selfdescriptionPost(SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        return decoratedFunction.apply(selfdescriptionPostRequest);
+    }
+
+    private ResponseEntity<Void> doWork(SelfdescriptionPostRequest selfdescriptionPostRequest) {
         var processed = Objects.requireNonNull(conversionService.convert(selfdescriptionPostRequest, SelfDescription.class), "Converted SD-Document is null. Very strange");
         var verifiableCredential = VerifiableCredential.builder()
                 .contexts(processed.getContexts())
@@ -69,11 +77,15 @@ public class SDFactory implements ApiApiDelegate {
                 .credentialSubject(CredentialSubject.fromJsonObject(processed))
                 .type(processed.getType())
                 .build();
-        // This call signs the VC at MIW as it was in versions prior to CH
-        // var verifiableCredentialSigned = custodianWallet.getSignedVC(verifiableCredential);
         clearingHouse.sendToClearingHouse(verifiableCredential, processed.getExternalId());
-
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        decoratedFunction = Arrays.asList(environment.getActiveProfiles()).contains("test")
+                ? this::doWork
+                : authChecker.getAuthorizedFn(this::doWork);
     }
 
     @Getter
