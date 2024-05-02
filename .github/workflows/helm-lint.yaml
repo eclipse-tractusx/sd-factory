@@ -39,8 +39,8 @@ on:
         type: string
       upgrade_from:
         description: 'SD Factory chart version to upgrade from'
-        # SD Factory version from 3.2 release
-        default: '2.1.7'
+        # SD Factory version from 24.03 release
+        default: '2.1.10'
         required: false
         type: string
 
@@ -101,6 +101,6 @@ jobs:
       - name: Run helm upgrade
         run: |
           helm repo add tractusx https://eclipse-tractusx.github.io/charts/dev
-          helm install sdf tractusx/sdfactory --version ${{ github.event.inputs.upgrade_from || '2.1.7' }}
+          helm install sdf tractusx/sdfactory --version ${{ github.event.inputs.upgrade_from || '2.1.10' }}
           helm upgrade sdf charts/sdfactory
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
