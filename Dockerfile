@@ -28,7 +28,7 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM eclipse-temurin:17.0.8.1_1-jdk
+FROM eclipse-temurin:17.0.11_9-jdk
 
 ARG DEPENDENCY=/sdfactory/target/dependency
 

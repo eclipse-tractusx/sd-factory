@@ -6,8 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [2.1.11] - 2024-05-02
 ### Fixed
 - Fixed the CVE-2024-22259 and CVE-2024-22257 security issue
+- Upgraded base image due to vulnerability
 
 ### Changed
 - unused configuration entries in application.yml are not mandatory (e.g. `app.usersDetails.custodianWallet`
