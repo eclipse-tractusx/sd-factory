@@ -36,7 +36,6 @@ ingress:
       hosts:
         - sdfactory.dev.demo.catena-x.net
 
-  
 sdfactory:
   secret:
     jwkSetUri: "<path:essential-services/data/custodian-dev#jwkSetUri>"
