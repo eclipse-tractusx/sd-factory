@@ -259,8 +259,7 @@ Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for more inform
 
 ## Contact
 
-For contacting regarding the project see CONTACT.md(CONTACT.md)
-
+For contacting regarding the project see [CONTACT](CONTACT.md)
 
 [Pre-22.4 schema, AKA 1.06]: src/main/resources/static/SDFactoryApi-vRel3.yml
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
