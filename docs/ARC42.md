@@ -121,7 +121,7 @@ Compliance Service. After processing, Compliance Service sends Self-Description 
 
 ## Business Context
 
-![](images/image1.png)
+![](images/image1.svg)
 
 ## Technical Context
 
@@ -186,7 +186,7 @@ Currently, these documents are supported by SD-Factory:
 
 Example LegalParticipant
 
-![](images/image4.png)
+![](images/image4.svg)
 
 *   The SD-Document of a company's LegalParticipant is signed by the Catena-X Wallet.
 
@@ -198,7 +198,7 @@ Example LegalParticipant
 
 Example PhysicalResource:
 
-![](images/image5.png)
+![](images/image5.svg)
 
 The Physical Resource is created by the operator of the service (connector). The operator will use his wallet 
 to sign this SD-Document.
@@ -211,7 +211,7 @@ to sign this SD-Document.
 *   creation of InstantiatedVirtualResource for each connector
 *   creation of ServiceOffering for each connector
 
-![](images/image6.png)
+![](images/image6.svg)
 
 *   The SD-Document of the connector will be signed by the Company Wallet (e.g. T-Systems wallet).
 
@@ -316,7 +316,7 @@ Responses:
 
 ## Building Block View
 
-![](images/image7.png)
+![](images/image7.svg)
 
 ## Runtime View
 
