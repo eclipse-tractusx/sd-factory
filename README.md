@@ -253,6 +253,14 @@ Docker Notice for this application can be find below:
 
 [INSTALL.md](INSTALL.md)
 
+## License
+
+Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for more information.
+
+## Contact
+
+For contacting regarding the project see [CONTACT](CONTACT.md)
+
 [Pre-22.4 schema, AKA 1.06]: src/main/resources/static/SDFactoryApi-vRel3.yml
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
