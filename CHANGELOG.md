@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
-## [2.1.11] - 2024-05-14
+## [2.1.12] - 2024-05-14
 ### Fixed
 - Fixed the CVE-2024-22262 springframework URL Parsing with Host Validation security issue
 
