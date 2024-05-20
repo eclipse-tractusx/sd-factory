@@ -58,7 +58,7 @@ jobs:
           version: v0.19.0
           node_image: ${{ github.event.inputs.node_image || 'kindest/node:v1.27.13' }}
       - name: Build image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
