@@ -1,6 +1,6 @@
 # sdfactory
 
-![Version: 2.1.18](https://img.shields.io/badge/Version-2.1.18-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.12](https://img.shields.io/badge/AppVersion-2.1.12-informational?style=flat-square)
+![Version: 2.1.19](https://img.shields.io/badge/Version-2.1.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.12](https://img.shields.io/badge/AppVersion-2.1.12-informational?style=flat-square)
 
 Helm Charts for SD Factory application. Self-Description Factory component is responsible for the creation of Self Descriptions.
 
@@ -28,8 +28,7 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}` | Host of the application on which application runs |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` | ImplementationSpecific path type matching is up to the IngressClass. Implementations can treat this as a separate pathType or treat it identically to Prefix or Exact path types. |
 | ingress.issuer | string | `"letsencrypt-prod"` | Kubernetes resources that represent certificate authorities that are able to generate signed certificates by honoring certificate signing requests. |
-| ingress.tls[0].hosts | string | `""` |  |
-| ingress.tls[0].tlsName | string | `""` |  |
+| ingress.tls | list | `[]` | Ingress TLS configuration |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | nameOverride | string | `""` |  |
