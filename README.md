@@ -253,6 +253,11 @@ Docker Notice for this application can be find below:
 
 [INSTALL.md](INSTALL.md)
 
+## API health check URL
+We can check the health for SD Factory by using below URL:
+
+- https://<example.com>/actuator/health
+
 ## License
 
 Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for more information.
