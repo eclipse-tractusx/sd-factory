@@ -160,7 +160,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-        #jwk-set-uri: https://<example.com>/auth/realms/CX-Central/protocol/openid-connect/certs
+        #jwk-set-uri: https://<example.com>/auth/realms/<REALM>/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
