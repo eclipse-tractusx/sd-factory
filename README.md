@@ -171,7 +171,7 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schema2210Url: <SCHEMA2210URL>
   usersDetails:
     custodianWallet:
     #uri: https://<example.com>/api
