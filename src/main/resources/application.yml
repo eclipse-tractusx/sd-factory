@@ -34,7 +34,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          #jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
+          #jwk-set-uri: https://centralidp.example.com/auth/realms/CX-Central/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
@@ -50,8 +50,8 @@ app:
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
   usersDetails:
     clearingHouse:
-      #uri: https://validation.dev.dih-cloud.com/api/v1/compliance
-      #auth-server-url: https://iam.dev.dih-cloud.com//auth
+      #uri: https://validation.example.com/api/v1/compliance
+      #auth-server-url: https://iam.example.com//auth
       #realm: notarisation
       #clientId: CARLA-GXDCH
       #clientSecret:
