@@ -360,7 +360,7 @@ Here the flow of Self-Description creation is shown:
 
 In Catena-X we use [ARGO-CD](https://confluence.catena-x.net/display/ARTI/ArgoCD+deployment+tool) for deployment
 
-[README.md](https://github.com/catenax-ng/tx-sd-factory/blob/main/README.md) describe the deployment process
+[README.md](https://github.com/eclipse-tractusx/sd-factory/blob/main/README.md) describe the deployment process
 
 ## Quality Requirements
 

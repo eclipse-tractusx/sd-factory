@@ -218,7 +218,7 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/1.0.6-converter/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld"
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -254,11 +254,11 @@ paths:
                         "id": "did:sov:2xcjN7LjnHGaPdZbbGqju5"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#12",
+                        "id": "https://managed-identity-wallets.example.com/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2#12",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
                         "statusListIndex": "12",
-                        "statusListCredential": "https://managed-identity-wallets.int.demo.catena-x.net/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
+                        "statusListCredential": "https://managed-identity-wallets.example.com/api/credentials/status/7338ff60-dc18-47e2-9021-029e7db70bb2"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
@@ -274,7 +274,7 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld"
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -332,11 +332,11 @@ paths:
                         "id": "BPNL000000000000"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#54",
+                        "id": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#54",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
                         "statusListIndex": "54",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListCredential": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
@@ -352,7 +352,7 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld"
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -401,11 +401,11 @@ paths:
                         "id": "did:sov:AmTGK5u8HdFgzidzTxM9B8"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#56",
+                        "id": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#56",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
                         "statusListIndex": "56",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListCredential": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
@@ -421,7 +421,7 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld"
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -454,11 +454,11 @@ paths:
                         "id": "did:sov:AmTGK5u8HdFgzidzTxM9B8"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#57",
+                        "id": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#57",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
                         "statusListIndex": "57",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListCredential": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
@@ -474,7 +474,7 @@ paths:
                     {
                       "@context": [
                         "https://www.w3.org/2018/credentials/v1",
-                        "https://github.com/catenax-ng/tx-sd-factory/raw/all-versions/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld",
+                        "https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld"
                         "https://w3id.org/vc/status-list/2021/v1"
                       ],
                       "type": [
@@ -553,11 +553,11 @@ paths:
                         "id": "BPNL000000000000"
                       },
                       "credentialStatus": {
-                        "id": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#58",
+                        "id": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92#58",
                         "type": "StatusList2021Entry",
                         "statusPurpose": "revocation",
                         "statusListIndex": "58",
-                        "statusListCredential": "https://managed-identity-wallets.beta.demo.catena-x.net/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
+                        "statusListCredential": "https://managed-identity-wallets.example.com/api/credentials/status/6351c222-3e5f-4650-a9aa-5188bf973c92"
                       },
                       "proof": {
                         "type": "Ed25519Signature2018",
