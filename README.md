@@ -173,12 +173,6 @@ app:
     durationDays: 90
     schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
   usersDetails:
-    custodianWallet:
-    #uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-    #serverUrl: https://centralidp.int.demo.catena-x.net/auth
-    #realm: CX-Central
-    #clientId: sa-cl5-custodian-1
-    #clientSecret:
     clearingHouse:
     #uri: https://dummy.dev.demo.catena-x.net/api/credentials
     #serverUrl: https://centralidp.int.demo.catena-x.net/auth

@@ -16,12 +16,6 @@ How to install application using helm:  <br />
         These secrets should be defined in Hashicorp vault to keep them secure.
         secret:
               jwkSetUri: -> JWK Set URL
-              clientId: -> Custodian wallet client id
-              clientSecret: -> Custodian wallet client secret
-              authServerUrl: -> Keycloak URL
-              realm:  -> Keycloak Realm
-              resource:  ->  Keycloak Resource
-              custodianWalletUri:  -> Custodian wallet URI
               clearingHouseUri:  -> Clearing House URI
               clearingHouseServerUrl: ->  Clearing House server URL
               clearingHouseRealm: ->  Realm for Clearing House
