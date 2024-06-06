@@ -1,6 +1,6 @@
 # sdfactory
 
-![Version: 2.1.19](https://img.shields.io/badge/Version-2.1.19-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.12](https://img.shields.io/badge/AppVersion-2.1.12-informational?style=flat-square)
+![Version: 2.1.20](https://img.shields.io/badge/Version-2.1.20-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.12](https://img.shields.io/badge/AppVersion-2.1.12-informational?style=flat-square)
 
 Helm Charts for SD Factory application. Self-Description Factory component is responsible for the creation of Self Descriptions.
 
@@ -42,18 +42,12 @@ Helm Charts for SD Factory application. Self-Description Factory component is re
 | resources.limits.memory | string | `"700Mi"` | set a maximum amount of allows memory utilization by specifying a limit on the container. |
 | resources.requests.cpu | string | `"300m"` | sets the minimum amount of CPU required for the container |
 | resources.requests.memory | string | `"700Mi"` | set a minimum amount of allows memory utilization by specifying a limit on the container. |
-| sdfactory.secret.authServerUrl | string | `""` | Keycloak URL |
 | sdfactory.secret.clearingHouseClientId | string | `""` | Details for Clearing House Client ID |
 | sdfactory.secret.clearingHouseClientSecret | string | `""` | Details for Clearing House Client Secret |
 | sdfactory.secret.clearingHouseRealm | string | `""` | Details for Clearing House Realm |
 | sdfactory.secret.clearingHouseServerUrl | string | `""` | Details for Clearing House URL |
 | sdfactory.secret.clearingHouseUri | string | `""` | Details for Clearing House URI |
-| sdfactory.secret.clientId | string | `""` | Custodian wallet client id |
-| sdfactory.secret.clientSecret | string | `""` | Custodian wallet client secret |
-| sdfactory.secret.custodianWalletUri | string | `""` | Details for Custodian wallet URI |
 | sdfactory.secret.jwkSetUri | string | `""` | JWK Set URI |
-| sdfactory.secret.realm | string | `""` | Keycloak Realm detail |
-| sdfactory.secret.resource | string | `""` | Keycloak Resource detail |
 | sdfactory.secret.verifycredentialsUri | string | `""` | Details for Verifying Client uri |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
