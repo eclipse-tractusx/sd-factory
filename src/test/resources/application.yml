@@ -24,7 +24,7 @@ server:
     include-message: always
 keycloak:
   resource:
-    clientid: Cl2-CX-Portal
+    clientid: <CLIENTID>
 spring:
   jackson:
     default-property-inclusion: non_null
@@ -34,7 +34,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
+          jwk-set-uri: https://<centalidp.example.com>/auth/realms/<REALM>/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
@@ -45,23 +45,23 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schema2210Url: https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld
     gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
-    catena-x-schema: https://github.com/catenax-ng/tx-sd-factory/raw/clearing-house/src/main/resources/verifiablecredentials.jsonld/catenax.jsonld
+    catena-x-schema: https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials.jsonld/catenax.jsonld
   usersDetails:
     custodianWallet:
-      uri: https://managed-identity-wallets.int.demo.catena-x.net/api
-      serverUrl: https://centralidp.int.demo.catena-x.net/auth
+      uri: https://<miw.example.com>/api
+      serverUrl: https://<centralidp.example.com>/auth
       realm: CX-Central
       clientId: sa-cl5-custodian-1
       clientSecret: secret
     clearingHouse:
-      uri: http://ch.dev.demo.catena-x.net/api
-      serverUrl: https://centralidp.int.demo.catena-x.net/auth
-      realm: CX-Central
-      clientId: sa-cl2-02
-      clientSecret: secret
+      uri: http://<ch.example.com>/api
+      serverUrl: https://<centralidp.example.com/auth
+      realm: <REALM>
+      clientId: <CLIENTID>
+      clientSecret: <CLIENTSECRET>
   security:
     createRole: add_self_descriptions
 logging:

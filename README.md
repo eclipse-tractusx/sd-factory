@@ -150,7 +150,7 @@ server:
     include-message: always
 keycloak:
   resource:
-    clientid: Cl2-CX-Portal
+    clientid: <CLIENTID>
 spring:
   jackson:
     default-property-inclusion: non_null
@@ -160,7 +160,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-        #jwk-set-uri: https://centralidp.int.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
+        #jwk-set-uri: https://<example.com>/auth/realms/<REALM>/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
@@ -171,13 +171,13 @@ app:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
-    schema2210Url: https://github.com/catenax-ng/tx-sd-factory/raw/main/src/main/resources/verifiablecredentials.jsonld/sd-document-v22.10.jsonld
+    schema2210Url: <SCHEMA2210URL>
   usersDetails:
     clearingHouse:
-    #uri: https://dummy.dev.demo.catena-x.net/api/credentials
-    #serverUrl: https://centralidp.int.demo.catena-x.net/auth
-    #realm: CX-Central
-    #clientId: sa-cl2-02
+    #uri: https://<example.com>/api/credentials
+    #serverUrl: https://<example.com>/auth
+    #realm: <REALM>
+    #clientId: <CLIENTID>
     #clientSecret:
   security:
     createRole: add_self_descriptions
