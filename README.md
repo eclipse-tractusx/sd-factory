@@ -14,7 +14,7 @@ further processing.
 
 ```shell
 Software version: 2.1.12
-Helm Chart version: 2.1.18
+Helm Chart version: 2.1.20
 ```
 
 
@@ -173,12 +173,6 @@ app:
     durationDays: 90
     schema2210Url: <SCHEMA2210URL>
   usersDetails:
-    custodianWallet:
-    #uri: https://<example.com>/api
-    #serverUrl: https://<example.com>/auth
-    #realm: <REALM>
-    #clientId: <CLIENTID>
-    #clientSecret:
     clearingHouse:
     #uri: https://<example.com>/api/credentials
     #serverUrl: https://<example.com>/auth

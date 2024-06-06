@@ -65,18 +65,6 @@ sdfactory:
   secret:
     # -- JWK Set URI
     jwkSetUri: ""
-    # -- Custodian wallet client id
-    clientId: ""
-    # -- Custodian wallet client secret
-    clientSecret: ""
-    # -- Keycloak URL
-    authServerUrl: ""
-    # -- Keycloak Realm detail
-    realm: ""
-    # -- Keycloak Resource detail
-    resource: ""
-    # -- Details for Custodian wallet URI
-    custodianWalletUri: ""
     # -- Details for Clearing House URI
     clearingHouseUri: ""
     # -- Details for Clearing House URL

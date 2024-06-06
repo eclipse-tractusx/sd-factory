@@ -39,12 +39,6 @@ ingress:
 sdfactory:
   secret:
     jwkSetUri: "<path:essential-services/data/custodian-pen#jwkSetUri>"
-    clientId: "<path:essential-services/data/custodian-pen#clientId>"
-    clientSecret: "<path:essential-services/data/custodian-pen#clientSecret>"
-    authServerUrl: "<path:essential-services/data/custodian-pen#auth-server-url>"
-    realm: "<path:essential-services/data/custodian-pen#realm>"
-    resource: "<path:essential-services/data/custodian-pen#resource>"
-    custodianWalletUri: "<path:essential-services/data/custodian-pen#uri>"
     clearingHouseUri: "<path:essential-services/data/custodian-pen#clearingHouse-uri>"
     clearingHouseServerUrl: "<path:essential-services/data/custodian-pen#clearingHouse-serverUrl>"
     clearingHouseRealm: "<path:essential-services/data/custodian-pen#clearingHouse-realm>"

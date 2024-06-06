@@ -63,31 +63,6 @@ spec:
               secretKeyRef:
                 name: {{ include "sdfactory.applicationSecret.name" . }}
                 key: jwk-set-uri
-          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTID
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: ClientID
-          - name: APP_USERSDETAILS_CUSTODIANWALLET_CLIENTSECRET
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: ClientSecret
-          - name: APP_USERSDETAILS_CUSTODIANWALLET_SERVERURL
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: auth-server-url
-          - name: APP_USERSDETAILS_CUSTODIANWALLET_URI
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: custodianWalletUri
-          - name: APP_USERSDETAILS_CUSTODIANWALLET_REALM
-            valueFrom: 
-              secretKeyRef:
-                name: {{ include "sdfactory.applicationSecret.name" . }}
-                key: realm
           - name: APP_USERSDETAILS_CLEARINGHOUSE_URI
             valueFrom: 
               secretKeyRef:
