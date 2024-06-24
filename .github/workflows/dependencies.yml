@@ -49,7 +49,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Generate Dependencies file
-        run: mvn org.eclipse.dash:license-tool-plugin:license-check
+        run: mvn org.eclipse.dash:license-tool-plugin:license-check -Ddash.summary=DEPENDENCIES || true
 
       - name: Check if dependencies were changed
         id: dependencies-changed
