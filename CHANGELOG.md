@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 ### Fixed
 - Dependabot reported security issues fixed.
+- Pom changes for dependency check
 ### Changed  
 - Updated API health check details in documentation
 

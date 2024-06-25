@@ -38,6 +38,7 @@
         <java.version>17</java.version>
         <resource.delimiter>^</resource.delimiter>
         <spring-cloud.version>4.1.0</spring-cloud.version>
+        <dash-tool.version>1.0.3-SNAPSHOT</dash-tool.version>
     </properties>
     <dependencies>
         <dependency>
@@ -290,7 +291,7 @@
             <plugin>
                 <groupId>org.eclipse.dash</groupId>
                 <artifactId>license-tool-plugin</artifactId>
-                <version>1.0.3-SNAPSHOT</version>
+                <version>${dash-tool.version}</version>
                 <executions>
                     <execution>
                         <id>license-check</id>
@@ -300,7 +301,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <projectId>automotive.tractusx</projectId>
                     <summary>DEPENDENCIES</summary>
+                    <includeScope>test</includeScope>
                 </configuration>
             </plugin>
         </plugins>
