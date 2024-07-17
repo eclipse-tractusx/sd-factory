@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Fixed
 - Dependabot reported security issues fixed.
 - Pom changes for dependency check
+- Dependabot spring, spring-web, spring-security-core, spring cloud, protobuf-javalite and guava version issues fixed.
 ### Changed  
 - Updated API health check details in documentation
 
