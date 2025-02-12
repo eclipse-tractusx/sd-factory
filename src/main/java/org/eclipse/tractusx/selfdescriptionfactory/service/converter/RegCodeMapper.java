@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,19 +20,30 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.service.converter;
 
-import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema.TypeEnum;
+import org.eclipse.tractusx.selfdescriptionfactory.model.tagus.RegistrationNumberSchema;
 
 import java.util.Map;
+import java.util.function.Function;
 
 public class RegCodeMapper {
-    private RegCodeMapper(){}
-    public static Map<TypeEnum, String> getRegCodeMapper(String prefix) {
-        return Map.of(
-                TypeEnum.TAXID, prefix.concat("local"),
-                TypeEnum.VATID, prefix.concat("vatID"),
-                TypeEnum.EUID, prefix.concat("EUID"),
-                TypeEnum.EORI, prefix.concat("EORI"),
-                TypeEnum.LEICODE, prefix.concat("leiCode")
-        );
+
+    private final String prefix;
+    private RegCodeMapper(String prefix){
+        this.prefix = prefix;
+    }
+    private static final Map<RegistrationNumberSchema.TypeEnum, String> regCodeMapper = Map.of(
+            RegistrationNumberSchema.TypeEnum.TAXID, "local",
+            RegistrationNumberSchema.TypeEnum.VATID, "vatID",
+            RegistrationNumberSchema.TypeEnum.EUID, "EUID",
+            RegistrationNumberSchema.TypeEnum.EORI, "EORI",
+            RegistrationNumberSchema.TypeEnum.LEICODE, "leiCode"
+    );
+
+    public String get(RegistrationNumberSchema.TypeEnum type) {
+        return prefix.concat(regCodeMapper.get(type));
+    }
+
+    public static Function<RegistrationNumberSchema.TypeEnum, String> getRegCodeMapper(String prefix) {
+        return new RegCodeMapper(prefix)::get;
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /********************************************************************************
- * Copyright (c) 2022,2024 T-Systems International GmbH
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -171,7 +171,7 @@
         <dependency>
             <groupId>com.danubetech</groupId>
             <artifactId>verifiable-credentials-java</artifactId>
-            <version>1.1.0</version>
+            <version>1.9.0</version>
         </dependency>
     </dependencies>
 
@@ -315,6 +315,30 @@
                             <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.v2210</modelPackage>
                             <generateApis>false</generateApis>
                             <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <useJakartaEe>true</useJakartaEe>
+                                <delegatePattern>true</delegatePattern>
+                                <openApiNullable>false</openApiNullable>
+                                <dateLibrary>java8</dateLibrary>
+                                <java8>true</java8>
+                                <useBeanValidation>true</useBeanValidation>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>api-tagus</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/static/SDFactoryApi-Tagus.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>org.eclipse.tractusx.selfdescriptionfactory.api.tagus</apiPackage>
+                            <modelPackage>org.eclipse.tractusx.selfdescriptionfactory.model.tagus</modelPackage>
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <useJakartaEe>true</useJakartaEe>
