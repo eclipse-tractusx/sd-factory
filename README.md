@@ -81,7 +81,7 @@ An example of the body for LegalParticipant is given bellow:
 {
   "type": "LegalParticipant",
   "holder": "BPNL000000000000",
-  "issuer": "CAXSDUMMYCATENAZZ", 
+  "name": "CAXSDUMMYCATENAZZ", 
   "externalId": "ID01234-123-4321",
   "registrationNumber": [
     {
@@ -89,9 +89,8 @@ An example of the body for LegalParticipant is given bellow:
       "value": "o12345678"
     }
   ],
-  "headquarterAddress.country": "DE",
-  "legalAddress.country": "DE",
-  "bpn": "BPNL000000000000"
+  "headquarterAddress.countrySubdivisionCode": "DE-BY",
+  "legalAddress.countrySubdivisionCode": "DE-NW"
 }
 ```
 
@@ -100,33 +99,53 @@ Verifiable Credentials for LegalParticipant:
 
 ```json
 {
-   "@context": [
-      "https://www.w3.org/2018/credentials/v1",
-      "https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd"
-   ],
-   "type": [
-      "VerifiableCredential"
-   ],
-   "id": "5096f9c2-24fd-43c5-9d50-e43a409ebb33",
-   "issuanceDate": "2023-07-26T17:07:31Z",
-   "expirationDate": "2023-10-24T17:07:31Z",
-   "credentialSubject": {
-      "bpn": "BPNL000000000000",
-      "registrationNumber": [
-         {
-            "type": "local",
-            "value": "o12345678"
-         }
-      ],
-      "headquarterAddress": {
-         "countryCode": "DE"
-      },
-      "type": "LegalParticipant",
-      "legalAddress": {
-         "countryCode": "DE"
-      }
-   },
-   "issuer": "CAXSDUMMYCATENAZZ"
+    "@context": "https://www.w3.org/2018/credentials/v1",
+    "type": "VerifiablePresentation",
+    "verifiableCredential": [
+        {
+            "@context": [
+                "https://www.w3.org/2018/credentials/v1",
+                "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+            ],
+            "type": [
+                "VerifiableCredential"
+            ],
+            "id": "c4d47109-7a41-4440-a505-68ebb8239a91",
+            "issuanceDate": "2025-02-10T12:05:59Z",
+            "credentialSubject": {
+                "id": "http://catena-x.net/bpn/BPNL000000000000",
+                "type": "gx:LegalParticipant",
+                "bpn": "BPNL000000000000",
+                "gx:legalName": "Legal Participant Company Name",
+                "gx:legalRegistrationNumber": {
+                    "id": "775d0c0b-ce98-433f-a07f-f821f9501fd0"
+                },
+                "gx:headquarterAddress": {
+                    "gx:countrySubdivisionCode": "DE-BY"
+                },
+                "gx:legalAddress": {
+                    "gx:countrySubdivisionCode": "DE-NW"
+                }
+            }
+        },
+        {
+            "@context": [
+                "https://www.w3.org/2018/credentials/v1",
+                "https://w3id.org/security/suites/jws-2020/v1"
+            ],
+            "type": [
+                "VerifiableCredential"
+            ],
+            "id": "775d0c0b-ce98-433f-a07f-f821f9501fd0",
+            "issuanceDate": "2025-02-10T12:05:59Z",
+            "credentialSubject": {
+                "@context": "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#",
+                "type": "gx:legalRegistrationNumber",
+                "id": "http://catena-x.net/bpn/BPNL000000000000",
+                "gx:leiCode": "5299004XSA235235"
+            }
+        }
+    ]
 }
 ```
 
@@ -260,7 +279,7 @@ Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for more inform
 
 For contacting regarding the project see [CONTACT](CONTACT.md)
 
-[Pre-22.4 schema, AKA 1.06]: src/main/resources/static/SDFactoryApi-vRel3.yml
+[Pre-22.4 schema, AKA 1.06]: src/main/resources/static/SDFactoryApi-Tagus.yml
 [Trust Framework]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework
 [Trust Framework V.22.10]: https://gitlab.com/gaia-x/policy-rules-committee/trust-framework/-/tree/22.10
 
