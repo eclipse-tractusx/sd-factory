@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+[2.1.15] - 2025-02-12
+### Added
+Added support for tagus-x compliance.
+Added changes to support v2 version of clearing house.
+### Changed
+- Updated Arc42 document
+
 ## [2.1.14] - 2024-11-14
 ### Fixed
 - Fixed the dependency vulnerability issues.
