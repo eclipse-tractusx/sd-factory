@@ -23,7 +23,6 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.converter.vrel3;
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.SDFactory;
 import org.eclipse.tractusx.selfdescriptionfactory.SelfDescription;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema;
 import org.springframework.beans.factory.annotation.Value;
