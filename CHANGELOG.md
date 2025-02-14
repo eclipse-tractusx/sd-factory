@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [2.1.15] - 2025-02-12
+- Added support for tagus-x compliance.
+- Added changes to support v2 version of clearing house.
 
 [2.1.15] - 2025-02-12
 ### Added

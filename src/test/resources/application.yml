@@ -1,6 +1,6 @@
 #################################################################################
-# Copyright (c) 2022,2023 T-Systems International GmbH
-# Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+# Copyright (c) 2022,2025 T-Systems International GmbH
+# Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -46,9 +46,18 @@ app:
   verifiableCredentials:
     durationDays: 90
     schema2210Url: https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials/sd-document-v2210.jsonld
-    gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
+    gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
-    catena-x-schema: https://github.com/eclipse-tractusx/sd-factory/blob/main/src/main/resources/verifiablecredentials.jsonld/catenax.jsonld
+    gaia-x-policy: https://<policy.example.com>/policy
+    gaia-x-dataAccountExport:
+      "[gx:requestType]": API
+      "[gx:accessType]":
+      "[gx:formatType]": application/json
+    gaia-x-termsAndConditions:
+      "[gx:URL]":
+      "[gx:hash]":
+    gaia-x-dataProtectionRegime:
+      - GDPR12345
   usersDetails:
     custodianWallet:
       uri: https://<miw.example.com>/api

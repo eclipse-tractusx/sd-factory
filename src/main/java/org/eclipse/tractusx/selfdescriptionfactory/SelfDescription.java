@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2025 T-Systems International GmbH
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 T-Systems International GmbH
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,16 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-package org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse;
+package org.eclipse.tractusx.selfdescriptionfactory;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@FeignClient(name = "clearingHouse", url = "http://placeholder:8080")
-public interface ClearingHouseClient {
-    @PostMapping
-    Object send(@RequestBody ObjectNode payload, @RequestParam("externalId") String externalId);
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@RequiredArgsConstructor
+public class SelfDescription {
+    private final String externalId;
+    private final List<VerifiableCredential> verifiableCredentialList = new ArrayList<>();
 }

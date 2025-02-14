@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,6 +20,7 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory;
 
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.vavr.control.Try.failure;
 
@@ -81,5 +81,50 @@ public class Utils {
                         .filter(Predicate.not(String::isBlank)).map(String::trim)
                         .map(transform).toList()
         ).filter(Predicate.not(Collection::isEmpty));
+    }
+
+    /**
+     * Creates a map from the given key-value pairs.
+     *
+     * @param args An array of key-value pairs.
+     * @return A map containing the key-value pairs.
+     * @throws IllegalArgumentException If an odd number of arguments is provided.
+     */
+    public static Map<String, Object> mapOf(Object ... args) {
+        // Check if the number of arguments is even
+        if (args.length % 2 != 0) {
+            throw new IllegalArgumentException("Odd number of arguments in mapOf");
+        }
+
+        // Create a list to store key-value pairs
+        var pairList = new ArrayList<>(2);
+
+        // Stream the arguments and create a map
+        return Arrays.stream(args)
+                .flatMap(o -> {
+                    pairList.add(o);
+                    if (pairList.size() == 2) {
+                        var entry = Map.entry(pairList.get(0).toString(), pairList.get(1));
+                        pairList.clear();
+                        return Stream.of(entry);
+                    } else {
+                        return Stream.empty();
+                    }
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    public static List<VerifiableCredential> getAttachmentVc(List<Object> attachments, int redirects) throws IOException, TooManyRedirectsException {
+        var result = new ArrayList<VerifiableCredential>();
+        for (Object attachment : Optional.ofNullable(attachments).orElse(Collections.emptyList())){
+            if (attachment instanceof String uriStr) {
+                var connection = getConnectionIfRedirected(URI.create(uriStr).toURL(), redirects);
+                result.add(VerifiableCredential.fromJson(new String(connection.getInputStream().readAllBytes())));
+            } else {
+                //noinspection unchecked
+                result.add(VerifiableCredential.fromMap((Map<String, Object>) attachment));
+            }
+        }
+        return result;
     }
 }
