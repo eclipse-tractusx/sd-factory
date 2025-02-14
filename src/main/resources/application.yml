@@ -58,6 +58,7 @@ app:
       "[gx:hash]":
     gaia-x-dataProtectionRegime:
       - GDPR12345
+    catena-x-ns: https://w3id.org/catena-x/core#
   usersDetails:
     clearingHouse:
       #uri: https://validation.example.com/api/v1/compliance
