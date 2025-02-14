@@ -78,9 +78,9 @@ thus providing self descriptions for
 **LegalParticipant**
 
 * **registrationNumber**: Country’s registration number which identify one specific company.
-* **headquarterAddress.country**: Physical location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+* **headquarterAddress.countrySubdivisionCode**: Physical location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
   alpha2, alpha-3 or numeric format.
-* **legalAddress.country**: Legal location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
+* **legalAddress.countrySubdivisionCode**: Legal location in [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)
   alpha2, alpha-3 or numeric format.
 
 additional attributes for Catena-X purpose
@@ -91,7 +91,7 @@ additional attributes for Catena-X purpose
 
 * **providedBy:** a resolvable link to the participant self-description providing the service (see SD LegalParticipant)
 * **termsAndConditions**: a resolvable link to the Terms and Conditions applying to that service
-* **policies**: a list of policy expressed using a DSL (Rego or ODRL)
+* **policy**: a resolvable link to policy expressed
 * **aggregationOf:** (optional) a resolvable link to the resources self descriptions related to the service and that
   can exist independently of it.
 
@@ -234,18 +234,18 @@ An example of the body for LegalParticipant is given bellow:
 
 ```json
 {
+  "externalId": "ID01234-123-4321",
   "type": "LegalParticipant",
   "holder": "BPNL000000000000",
-  "issuer": "CAXSDUMMYCATENAZZ",
+  "name": "CAXSDUMMYCATENAZZ",
   "registrationNumber": [
     {
       "type": "local",
       "value": "o12345678"
     }
   ],
-  "headquarterAddress.country": "DE",
-  "legalAddress.country": "DE",
-  "bpn": "BPNL000000000000"
+  "headquarterAddress.countrySubdivisionCode": "DE-BY",
+  "legalAddress.countrySubdivisionCode": "DE-NW"
 }
 ```
 
@@ -254,33 +254,53 @@ Verifiable Credentials for LegalParticipant:
 
 ```json
 {
-  "@context": [
-    "https://www.w3.org/2018/credentials/v1",
-    "https://f1c82785-5598-41c7-a083-01a8e1a80e19.mock.pstmn.io/ctxsd"
-  ],
-  "type": [
-    "VerifiableCredential"
-  ],
-  "id": "5096f9c2-24fd-43c5-9d50-e43a409ebb33",
-  "issuanceDate": "2023-07-26T17:07:31Z",
-  "expirationDate": "2023-10-24T17:07:31Z",
-  "credentialSubject": {
-    "bpn": "BPNL000000000000",
-    "registrationNumber": [
-      {
-        "type": "local",
-        "value": "o12345678"
+  "@context": "https://www.w3.org/2018/credentials/v1",
+  "type": "VerifiablePresentation",
+  "verifiableCredential": [
+    {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+      ],
+      "type": [
+        "VerifiableCredential"
+      ],
+      "id": "9093670e-caf6-4254-83ad-99b3a7051275",
+      "issuanceDate": "2025-02-13T08:20:02Z",
+      "credentialSubject": {
+        "id": "http://catena-x.net/bpn/BPNL000000000000",
+        "type": "gx:LegalParticipant",
+        "bpn": "BPNL000000000000",
+        "gx:legalName": "Legal Participant Company Name",
+        "gx:legalRegistrationNumber": {
+          "id": "http://catena-x.net/legal-registration-number/f396d773-d8db-4d2b-81f4-caf082d577b8"
+        },
+        "gx:headquarterAddress": {
+          "gx:countrySubdivisionCode": "DE-BY"
+        },
+        "gx:legalAddress": {
+          "gx:countrySubdivisionCode": "DE-NW"
+        }
       }
-    ],
-    "headquarterAddress": {
-      "countryCode": "DE"
     },
-    "type": "LegalParticipant",
-    "legalAddress": {
-      "countryCode": "DE"
+    {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://w3id.org/security/suites/jws-2020/v1"
+      ],
+      "type": [
+        "VerifiableCredential"
+      ],
+      "id": "f396d773-d8db-4d2b-81f4-caf082d577b8",
+      "issuanceDate": "2025-02-13T08:20:02Z",
+      "credentialSubject": {
+        "@context": "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#",
+        "type": "gx:legalRegistrationNumber",
+        "id": "http://catena-x.net/bpn/BPNL000000000000",
+        "gx:leiCode": "5299004XPX8G34534ASV67"
+      }
     }
-  },
-  "issuer": "CAXSDUMMYCATENAZZ"
+  ]
 }
 ```    
 
