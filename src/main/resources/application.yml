@@ -1,6 +1,6 @@
 #################################################################################
-# Copyright (c) 2022,2024 T-Systems International GmbH
-# Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+# Copyright (c) 2022,2025 T-Systems International GmbH
+# Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -29,7 +29,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   profiles:
-    active: catena-x-ctx
+    active: tagus-ctx
   security:
     oauth2:
       resourceserver:
@@ -39,15 +39,25 @@ springdoc:
   api-docs:
     enabled: true
   swagger-ui:
-    url: /SDFactoryApi-vRel3.yml
+    url: /SDFactoryApi-Tagus.yml
 app:
   build:
     version: ^project.version^
   verifiableCredentials:
     durationDays: 90
     #schema2210Url: 
-    gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-schemas-registry/v2/schemas
+    gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#
     gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
+    gaia-x-policy:
+    gaia-x-dataAccountExport:
+      "[gx:requestType]": API
+      "[gx:accessType]":
+      "[gx:formatType]": application/json
+    gaia-x-termsAndConditions:
+      "[gx:URL]":
+      "[gx:hash]":
+    gaia-x-dataProtectionRegime:
+      - GDPR12345
   usersDetails:
     clearingHouse:
       #uri: https://validation.example.com/api/v1/compliance

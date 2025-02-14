@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,8 +20,11 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.service.converter.gaiax;
 
+import com.danubetech.verifiablecredentials.CredentialSubject;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.tractusx.selfdescriptionfactory.SDFactory;
+import org.eclipse.tractusx.selfdescriptionfactory.SelfDescription;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.RegistrationNumberSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.service.converter.RegCodeMapper;
@@ -32,34 +35,47 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 @Profile("gaia-x-ctx")
-public class LegalParticipantSDConverter implements Converter<LegalParticipantSchema, SDFactory.SelfDescription> {
+public class LegalParticipantSDConverter implements Converter<LegalParticipantSchema, SelfDescription> {
 
     private final CustodianWallet custodianWallet;
-    private final Map<RegistrationNumberSchema.TypeEnum, String> regCodeMapper = RegCodeMapper.getRegCodeMapper("gx:");
+    private final Map<RegistrationNumberSchema.TypeEnum, String> regCodeMapper = (Map<RegistrationNumberSchema.TypeEnum, String>) RegCodeMapper.getRegCodeMapper("gx:");
     @Value("${app.verifiableCredentials.gaia-x-participant-schema}")
     private URI contextUri;
 
 
     @Override
-    public SDFactory.SelfDescription convert(LegalParticipantSchema legalParticipantSchema) {
-        var legalParticipantSD = new SDFactory.SelfDescription(List.of(contextUri), legalParticipantSchema.getHolder(), legalParticipantSchema.getIssuer(), legalParticipantSchema.getExternalId(), null);
-        legalParticipantSD.put("@context", Map.of("ctxsd", "https://w3id.org/catena-x/core#"));
-        legalParticipantSD.put("id", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("did"));
-        legalParticipantSD.put("type", "gx:LegalParticipant");
-        legalParticipantSD.put("ctxsd:bpn", legalParticipantSchema.getBpn());
-        legalParticipantSD.put("gx:legalName", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("name"));
-        legalParticipantSD.put(
+    public SelfDescription convert(LegalParticipantSchema legalParticipantSchema) {
+
+
+        var legalParticipantSD = new SelfDescription(legalParticipantSchema.getExternalId());
+
+        var legalParticipantVc = new LinkedHashMap<String, Object>();
+        legalParticipantVc.put("@context", Map.of("ctxsd", "https://w3id.org/catena-x/core#"));
+        legalParticipantVc.put("id", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("did"));
+        legalParticipantVc.put("type", "gx:LegalParticipant");
+        legalParticipantVc.put("ctxsd:bpn", legalParticipantSchema.getBpn());
+        legalParticipantVc.put("gx:legalName", custodianWallet.getWalletData(legalParticipantSchema.getBpn()).get("name"));
+        legalParticipantVc.put(
                 "gx:legalRegistrationNumber",
                 legalParticipantSchema.getRegistrationNumber().stream().map(regNum -> Map.of(regCodeMapper.get(regNum.getType()), regNum.getValue())).toList()
         );
-        legalParticipantSD.put("gx:headquarterAddress", Map.of("gx:countrySubdivisionCode", legalParticipantSchema.getHeadquarterAddressCountry()));
-        legalParticipantSD.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalParticipantSchema.getLegalAddressCountry()));
+        legalParticipantVc.put("gx:headquarterAddress", Map.of("gx:countrySubdivisionCode", legalParticipantSchema.getHeadquarterAddressCountry()));
+        legalParticipantVc.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalParticipantSchema.getLegalAddressCountry()));
+
+        var legalParticipant = VerifiableCredential.builder()
+                .context(contextUri)
+                .issuer(URI.create(legalParticipantSchema.getIssuer()))
+                .credentialSubject(CredentialSubject.fromMap(legalParticipantVc))
+                .build();
+
+        legalParticipantSD.getVerifiableCredentialList().add(legalParticipant);
+
         return legalParticipantSD;
     }
 }

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2024 T-Systems International GmbH
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -33,6 +33,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.StringReader;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,8 +58,8 @@ public class DefaultFeignConfig {
     @Bean
     public ErrorDecoder getErrorDecoder(ObjectMapper mapper) {
         return (methodKey, response) -> {
-            String contentType = response.headers().get("Content-Type").stream()
-                    .findFirst()
+            String contentType = response.headers().getOrDefault("Content-Type", List.of("Unknown"))
+                    .stream().findFirst()
                     .orElse("Unknown");
             var responseStr = Try.of(() -> response.body().asInputStream().readAllBytes()).map(bytes -> new String(bytes, response.charset())).getOrElse("");
             var msg = (contentType.contains("json") ? Try.success(new StringReader(responseStr)) : Try.<StringReader>failure(new NoSuchElementException()))

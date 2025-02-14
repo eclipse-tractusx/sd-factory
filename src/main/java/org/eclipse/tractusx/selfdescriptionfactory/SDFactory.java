@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2024 T-Systems International GmbH
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,27 +20,22 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory;
 
-import com.danubetech.verifiablecredentials.CredentialSubject;
-import com.danubetech.verifiablecredentials.VerifiableCredential;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.danubetech.verifiablecredentials.VerifiablePresentation;
+import com.danubetech.verifiablecredentials.jsonld.VerifiableCredentialKeywords;
+import foundation.identity.jsonld.JsonLDUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.tractusx.selfdescriptionfactory.api.vrel3.ApiApiDelegate;
-import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.SelfdescriptionPostRequest;
+import org.eclipse.tractusx.selfdescriptionfactory.api.tagus.ApiApiDelegate;
+import org.eclipse.tractusx.selfdescriptionfactory.model.tagus.SelfdescriptionPostRequest;
 import org.eclipse.tractusx.selfdescriptionfactory.service.AuthChecker;
 import org.eclipse.tractusx.selfdescriptionfactory.service.clearinghouse.ClearingHouse;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 
@@ -51,8 +46,6 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Slf4j
 public class SDFactory implements ApiApiDelegate, InitializingBean {
-    @Value("${app.verifiableCredentials.durationDays:90}")
-    private int duration;
 
     private final ConversionService conversionService;
     private final ClearingHouse clearingHouse;
@@ -66,18 +59,11 @@ public class SDFactory implements ApiApiDelegate, InitializingBean {
         return decoratedFunction.apply(selfdescriptionPostRequest);
     }
 
-    private ResponseEntity<Void> doWork(SelfdescriptionPostRequest selfdescriptionPostRequest) {
-        var processed = Objects.requireNonNull(conversionService.convert(selfdescriptionPostRequest, SelfDescription.class), "Converted SD-Document is null. Very strange");
-        var verifiableCredential = VerifiableCredential.builder()
-                .contexts(processed.getContexts())
-                .id(URI.create("http://example.org/" + UUID.randomUUID()))
-                .issuer(URI.create(processed.getIssuer()))
-                .issuanceDate(new Date())
-                .expirationDate(Date.from(Instant.now().plus(Duration.ofDays(duration))))
-                .credentialSubject(CredentialSubject.fromJsonObject(processed))
-                .type(processed.getType())
-                .build();
-        clearingHouse.sendToClearingHouse(verifiableCredential, processed.getExternalId());
+    private ResponseEntity<Void> doWork(org.eclipse.tractusx.selfdescriptionfactory.model.tagus.SelfdescriptionPostRequest selfdescriptionPostRequest) {
+        var selfDescription = Objects.requireNonNull(conversionService.convert(selfdescriptionPostRequest, SelfDescription.class), "Converted SD-Document is null. Very strange");
+        var presentation = VerifiablePresentation.builder().build();
+        JsonLDUtils.jsonLdAddAsJsonArray(presentation, VerifiableCredentialKeywords.JSONLD_TERM_VERIFIABLECREDENTIAL, selfDescription.getVerifiableCredentialList());
+        clearingHouse.sendToClearingHouse(presentation, selfDescription.getExternalId());
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
@@ -86,16 +72,5 @@ public class SDFactory implements ApiApiDelegate, InitializingBean {
         decoratedFunction = Arrays.asList(environment.getActiveProfiles()).contains("test")
                 ? this::doWork
                 : authChecker.getAuthorizedFn(this::doWork);
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    @EqualsAndHashCode(callSuper = true)
-    public static class SelfDescription extends LinkedHashMap<String, Object> {
-         private final List<URI> contexts;
-         private final String holder;
-         private final String issuer;
-         private final String externalId;
-         private final String type;
     }
 }

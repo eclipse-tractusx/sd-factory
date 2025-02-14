@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,8 +20,10 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.service.converter.vrel3;
 
+import com.danubetech.verifiablecredentials.CredentialSubject;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tractusx.selfdescriptionfactory.SDFactory;
+import org.eclipse.tractusx.selfdescriptionfactory.SelfDescription;
 import org.eclipse.tractusx.selfdescriptionfactory.model.vrel3.LegalParticipantSchema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -30,24 +32,26 @@ import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Profile("catena-x-ctx")
-public class LegalParticipantSDConverter implements Converter<LegalParticipantSchema, SDFactory.SelfDescription> {
+public class LegalParticipantSDConverter implements Converter<LegalParticipantSchema, SelfDescription> {
 
     @Value("${app.verifiableCredentials.schema2210Url}")
     private URI contextUri;
 
     @Override
-    public SDFactory.SelfDescription convert(LegalParticipantSchema legalParticipantSchema) {
-        var legalParticipantSD =  new SDFactory.SelfDescription(List.of(contextUri), legalParticipantSchema.getHolder(), legalParticipantSchema.getIssuer(), legalParticipantSchema.getExternalId(), null);
-        legalParticipantSD.put("type", "LegalParticipant");
-        legalParticipantSD.put("bpn", legalParticipantSchema.getBpn());
-        legalParticipantSD.put(
+    public SelfDescription convert(LegalParticipantSchema legalParticipantSchema) {
+
+        var legalParticipantSD = new SelfDescription(legalParticipantSchema.getExternalId());
+        var legalParticipantVc = new LinkedHashMap<String, Object>();
+
+        legalParticipantVc.put("type", "LegalParticipant");
+        legalParticipantVc.put("bpn", legalParticipantSchema.getBpn());
+        legalParticipantVc.put(
                 "registrationNumber",
                 legalParticipantSchema.getRegistrationNumber().stream()
                         .map(rNum -> {
@@ -57,8 +61,18 @@ public class LegalParticipantSDConverter implements Converter<LegalParticipantSc
                             return val;
                         }).collect(Collectors.toUnmodifiableSet())
         );
-        legalParticipantSD.put("headquarterAddress", Map.of("countryCode", legalParticipantSchema.getHeadquarterAddressCountry()));
-        legalParticipantSD.put("legalAddress", Map.of("countryCode", legalParticipantSchema.getLegalAddressCountry()));
+        legalParticipantVc.put("headquarterAddress", Map.of("countryCode", legalParticipantSchema.getHeadquarterAddressCountry()));
+        legalParticipantVc.put("legalAddress", Map.of("countryCode", legalParticipantSchema.getLegalAddressCountry()));
+
+
+        var legalParticipant = VerifiableCredential.builder()
+                .context(contextUri)
+                .issuer(URI.create(legalParticipantSchema.getIssuer()))
+                .credentialSubject(CredentialSubject.fromMap(legalParticipantVc))
+                .build();
+
+        legalParticipantSD.getVerifiableCredentialList().add(legalParticipant);
+
         return legalParticipantSD;
     }
 }

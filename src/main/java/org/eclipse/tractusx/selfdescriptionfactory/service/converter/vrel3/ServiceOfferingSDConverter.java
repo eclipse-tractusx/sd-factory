@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 T-Systems International GmbH
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,10 +20,12 @@
 
 package org.eclipse.tractusx.selfdescriptionfactory.service.converter.vrel3;
 
+import com.danubetech.verifiablecredentials.CredentialSubject;
+import com.danubetech.verifiablecredentials.VerifiableCredential;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.eclipse.tractusx.selfdescriptionfactory.SDFactory;
+import org.eclipse.tractusx.selfdescriptionfactory.SelfDescription;
 import org.eclipse.tractusx.selfdescriptionfactory.Utils;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.DataAccountExportSchema;
 import org.eclipse.tractusx.selfdescriptionfactory.model.v2210.TermsAndConditionsSchema;
@@ -37,13 +39,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
 @Profile("catena-x-ctx")
-public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSchema, SDFactory.SelfDescription> {
+public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSchema, SelfDescription> {
 
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
@@ -52,24 +55,35 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
     private URI contextUri;
 
     @Override
-    public SDFactory.SelfDescription convert(ServiceOfferingSchema serviceOfferingSchema) {
+    public SelfDescription convert(ServiceOfferingSchema serviceOfferingSchema) {
         var aggregationOf = Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getAggregationOf(), Utils::uriFromStr).orElse(null);
         var termsAndConditions = Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getTermsAndConditions(), this::getTermsAndConditions).orElse(null);
         var policy = Utils.getNonEmptyListFromCommaSeparated(serviceOfferingSchema.getPolicies(), Function.identity()).orElse(null);
-        var serviceOfferingSD = new SDFactory.SelfDescription(List.of(contextUri), serviceOfferingSchema.getHolder(), serviceOfferingSchema.getIssuer(), serviceOfferingSchema.getExternalId(), null);
-        serviceOfferingSD.put("type", "ServiceOffering");
-        serviceOfferingSD.put("bpn", serviceOfferingSchema.getHolder());
-        serviceOfferingSD.put("providedBy", serviceOfferingSchema.getProvidedBy());
-        serviceOfferingSD.put("aggregationOf", aggregationOf);
-        serviceOfferingSD.put("termsAndConditions", termsAndConditions);
-        serviceOfferingSD.put("policy", policy);
-        serviceOfferingSD.put("dataAccountExport", List.of(
+
+        var serviceOfferingSD = new SelfDescription(serviceOfferingSchema.getExternalId());
+        var serviceOfferingVc = new LinkedHashMap<String, Object>();
+
+        serviceOfferingVc.put("type", "ServiceOffering");
+        serviceOfferingVc.put("bpn", serviceOfferingSchema.getHolder());
+        serviceOfferingVc.put("providedBy", serviceOfferingSchema.getProvidedBy());
+        serviceOfferingVc.put("aggregationOf", aggregationOf);
+        serviceOfferingVc.put("termsAndConditions", termsAndConditions);
+        serviceOfferingVc.put("policy", policy);
+        serviceOfferingVc.put("dataAccountExport", List.of(
                 new DataAccountExportSchema()
                         .requestType(DataAccountExportSchema.RequestTypeEnum.EMAIL)
                         .accessType(DataAccountExportSchema.AccessTypeEnum.DIGITAL)
                         .formatType("json")
                 )
         );
+
+        var legalParticipantSD = VerifiableCredential.builder()
+                .context(contextUri)
+                .issuer(URI.create(serviceOfferingSchema.getIssuer()))
+                .credentialSubject(CredentialSubject.fromMap(serviceOfferingVc))
+                .build();
+        serviceOfferingSD.getVerifiableCredentialList().add(legalParticipantSD);
+
         return serviceOfferingSD;
     }
 
