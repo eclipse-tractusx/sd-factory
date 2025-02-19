@@ -8,13 +8,14 @@ creates a Verifiable Credential and passes the document to the
 [Managed Identity Wallet](https://github.com/eclipse-tractusx/managed-identity-wallet)
 based on the Custodian for the signature. The result is sent to the Compliance Service for
 further processing.
+Architecture communication and documentation are defined in [ARC42](docs/architecture/ARC42.md)
 
 
 ## Software Version
 
 ```shell
-Software version: 2.1.13
-Helm Chart version: 2.1.21
+Software version: 2.1.18
+Helm Chart version: 2.1.26
 ```
 
 
