@@ -29,7 +29,7 @@ spring:
   jackson:
     default-property-inclusion: non_null
   profiles:
-    active: test, gaia-x-ctx
+    active: test, tagus-ctx
   security:
     oauth2:
       resourceserver:
@@ -51,13 +51,14 @@ app:
     gaia-x-policy: https://<policy.example.com>/policy
     gaia-x-dataAccountExport:
       "[gx:requestType]": API
-      "[gx:accessType]":
+      "[gx:accessType]": digital
       "[gx:formatType]": application/json
     gaia-x-termsAndConditions:
       "[gx:URL]":
       "[gx:hash]":
     gaia-x-dataProtectionRegime:
       - GDPR12345
+    catena-x-ns: https://w3id.org/catena-x/core#
   usersDetails:
     custodianWallet:
       uri: https://<miw.example.com>/api
