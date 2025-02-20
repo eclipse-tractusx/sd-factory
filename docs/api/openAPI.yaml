@@ -1,6 +1,6 @@
 #################################################################################
-# Copyright (c) 2024 T-Systems International GmbH
-# Copyright (c) 2024 Contributors to the Eclipse Foundation
+# Copyright (c) 2024, 2025 T-Systems International GmbH
+# Copyright (c) 2024, 2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -20,11 +20,11 @@
 
 openapi: 3.0.0
 info:
-  version: Release3
+  version: TagusRelease
   title: SD-Factory API
   description: API for creating and storing the Verifiable Credentials
 paths:
-  /api/rel3/selfdescription:
+  /api/tagus/selfdescription:
     post:
       summary: Creates a Verifiable Credential and returns it
       operationId: selfdescriptionPost
@@ -49,24 +49,32 @@ paths:
                     externalId: ID01234-123-4321
                     type: LegalParticipant
                     holder: BPNL000000000000
-                    issuer: CAXSDUMMYCATENAZZ
+                    name: CAXSDUMMYCATENAZZ
                     registrationNumber:
                       - type: taxID
                         value: o12345678
-                    headquarterAddress.country: DE
-                    legalAddress.country: DE
-                    bpn: BPNL000000000000
+                    headquarterAddress.countrySubdivisionCode: DE-BY
+                    legalAddress.countrySubdivisionCode: DE-NW
               ServiceOffering:
                 description: payload to create ServiceOffering
                 value:
                   externalId: ID01234-123-4321
                   type: ServiceOffering
                   holder: BPNL000000000000
+                  termsAndConditions:
+                    gx:URL: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/LICENSE
+                    gx:hash: A8789884DECDE0E00D75FA204A78E0A000
                   issuer: CAXSDUMMYCATENAZZ
                   providedBy: https://participant.url
+                  policy: https://policy.url
                   aggregationOf: https://aggr1.url, https://aggr2.url
-                  termsAndConditions: https://raw.githubusercontent.com/eclipse-tractusx/sd-factory/main/LICENSE
-                  policies: policy1, policy2
+                  dataProtectionRegime:
+                    - GDPR2016
+                  dataAccountExport:
+                    gx:requestType: API
+                    gx:accessType: digital
+                    gx:formatType: application/json
+                  connectorUrl: https://company.connector-url.org/
       responses:
         '202':
           description: request has been accepted for processing
@@ -84,14 +92,17 @@ components:
           type: string
         holder:
           type: string
-        issuer:
-          type: string
         externalId:
           type: string
+        attachment:
+          type: array
+          description: any VC that can be attached to a resource
+          items: { }
+          minItems: 1
+          maxItems: 10
       required:
         - type
         - holder
-        - issuer
         - externalId
     RegistrationNumberSchema:
       type: object
@@ -102,7 +113,6 @@ components:
           description: the mean to request data retrieval
           enum:
             - taxID
-            - local
             - vatID
             - EUID
             - EORI
@@ -118,6 +128,8 @@ components:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
         - type: object
           properties:
+            name:
+              type: string
             registrationNumber:
               type: array
               uniqueItems: true
@@ -126,32 +138,60 @@ components:
               description: A list of registration numbers
               items:
                 $ref: '#/components/schemas/RegistrationNumberSchema'
-            headquarterAddress.country:
+            headquarterAddress.countrySubdivisionCode:
               type: string
-            legalAddress.country:
-              type: string
-            bpn:
+            legalAddress.countrySubdivisionCode:
               type: string
           required:
             - registrationNumber
-            - headquarterAddress.country
-            - legalAddress.country
-            - bpn
+            - headquarterAddress.countrySubdivisionCode
+            - legalAddress.countrySubdivisionCode
     ServiceOfferingSchema:
       type: object
       allOf:
         - $ref: '#/components/schemas/SelfDescriptionSchema'
         - type: object
           properties:
+            aggregationOf:
+              type: array
+              uniqueItems: true
+              minItems: 1
+              maximum: 512
+              items:
+                type: string
+                format: uri
+            termsAndConditions:
+              type: object
+              properties:
+                gx:URL:
+                  type: string
+                gx:hash:
+                  type: string
             providedBy:
               type: string
               format: uri
-            aggregationOf:
+            policy:
               type: string
-            termsAndConditions:
+              format: uri
+            dataProtectionRegime:
+              type: array
+              uniqueItems: true
+              minItems: 1
+              maximum: 10
+              items:
+                type: string
+            dataAccountExport:
+              type: object
+              properties:
+                gx:requestType:
+                  type: string
+                gx:accessType:
+                  type: string
+                gx:formatType:
+                  type: string
+            connectorUrl:
               type: string
-            policies:
-              type: string
+              format: uri
           required:
             - providedBy
 security:

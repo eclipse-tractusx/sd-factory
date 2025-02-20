@@ -15,7 +15,7 @@ Architecture communication and documentation are defined in [ARC42](docs/archite
 
 ```shell
 Software version: 2.1.18
-Helm Chart version: 2.1.26
+Helm Chart version: 2.1.27
 ```
 
 
