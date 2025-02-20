@@ -93,7 +93,7 @@ paths:
                     - GDPR2016
                   dataAccountExport:
                     gx:requestType: API
-                    gx:accessType:
+                    gx:accessType: digital
                     gx:formatType: application/json
                   connectorUrl: https://company.connector-url.org/
                   attachment:
@@ -246,7 +246,7 @@ components:
                 gx:hash:
                   type: string
             providedBy:
-              type: String
+              type: string
               format: uri
             policy:
               type: string
