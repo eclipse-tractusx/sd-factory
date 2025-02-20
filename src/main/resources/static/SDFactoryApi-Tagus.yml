@@ -272,6 +272,5 @@ components:
               format: uri
           required:
             - providedBy
-            - connectorUrl
 security:
   - bearerAuth: []
