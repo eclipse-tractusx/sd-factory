@@ -34,12 +34,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://<centalidp.example.com>/auth/realms/<REALM>/protocol/openid-connect/certs
+          jwk-set-uri: https://centralidp.int.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
-    url: /SDFactoryApi-vRel3.yml
+    url: /SDFactoryApi-Tagus.yml
 app:
   build:
     version: ^project.version^
