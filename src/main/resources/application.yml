@@ -47,7 +47,7 @@ app:
     durationDays: 90
     #schema2210Url: 
     gaia-x-participant-schema: https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#
-    gaia-x-service-schema: https://gaia-x.gitlab.io/gaia-x-community/gaia-x-self-descriptions/service/ontology.json
+    gaia-x-service-schema: https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#
     gaia-x-policy: https://shop.t-systems.de/eshop/medias/otc-service-specification-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDI5NTMzNzd8YXBwbGljYXRpb24vcGRmfGVtYWlsLWF0dGFjaG1lbnRzL2g0My9oMDMvaDAwLzg4NjY0MzU0OTgwMTQucGRmfGJiMjUyMmI3OGFjNWYwYzc4MDUxOWNhOTdjOWRmOTNhNmJmNGEzYTU4YTc1YTAxOTZjNzFhZGY5M2Y0YjUwZWY
     gaia-x-dataAccountExport:
       "[gx:requestType]": API
