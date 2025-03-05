@@ -80,7 +80,7 @@ class SelfDescriptionFactoryApplicationTests {
                         "gx:URL": "https://shop.t-systems.de/eshop/medias/otc-GTC-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDEwNTYyMHxhcHBsaWNhdGlvbi9wZGZ8ZW1haWwtYXR0YWNobWVudHMvaDZmL2g5YS9oMDAvODg2MzA1NDgyMzQ1NC5wZGZ8ZGE5Y2UzNjRlM2Q0OWVhZDRlNjk2YWRlZDI3ZGYxYTk5YTlmM2NmMDIwODUwYWM3NWY0MzQ5OTI0YTU2YTA4ZA",
                         "gx:hash": "A884DECDE0E00D75FA204A78E0A000"
                       },
-                      "providedBy":"https://carla.dih-cloud.com/dev/compliance_service/self-descriptions/f3f01f41-e1fe-4c7e-90c7-14b06a1b4b72/1988d094-5c57-4fa6-8fd7-837a68991a3e.json",
+                      "providedBy":"https://portal-backend.int.catena-x.net/api/administration/documents/selfDescription/c9b7b6e8-6efd-4fe4-845b-c70d18b11c35",
                       "policy": "https://shop.t-systems.de/eshop/medias/otc-service-specification-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDI5NTMzNzd8YXBwbGljYXRpb24vcGRmfGVtYWlsLWF0dGFjaG1lbnRzL2g0My9oMDMvaDAwLzg4NjY0MzU0OTgwMTQucGRmfGJiMjUyMmI3OGFjNWYwYzc4MDUxOWNhOTdjOWRmOTNhNmJmNGEzYTU4YTc1YTAxOTZjNzFhZGY5M2Y0YjUwZWY",
                       "dataProtectionRegime": [
                          "GDPR2016"
@@ -228,7 +228,7 @@ class SelfDescriptionFactoryApplicationTests {
                         "gx:URL": "https://shop.t-systems.de/eshop/medias/otc-GTC-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDEwNTYyMHxhcHBsaWNhdGlvbi9wZGZ8ZW1haWwtYXR0YWNobWVudHMvaDZmL2g5YS9oMDAvODg2MzA1NDgyMzQ1NC5wZGZ8ZGE5Y2UzNjRlM2Q0OWVhZDRlNjk2YWRlZDI3ZGYxYTk5YTlmM2NmMDIwODUwYWM3NWY0MzQ5OTI0YTU2YTA4ZA",
                         "gx:hash": "A884DECDE0E00D75FA204A78E0A000"
                       },
-                      "providedBy":"https://carla.dih-cloud.com/dev/compliance_service/self-descriptions/f3f01f41-e1fe-4c7e-90c7-14b06a1b4b72/1988d094-5c57-4fa6-8fd7-837a68991a3e.json",
+                      "providedBy":"https://portal-backend.int.catena-x.net/api/administration/documents/selfDescription/c9b7b6e8-6efd-4fe4-845b-c70d18b11c35",
                       "policy": "https://shop.t-systems.de/eshop/medias/otc-service-specification-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDI5NTMzNzd8YXBwbGljYXRpb24vcGRmfGVtYWlsLWF0dGFjaG1lbnRzL2g0My9oMDMvaDAwLzg4NjY0MzU0OTgwMTQucGRmfGJiMjUyMmI3OGFjNWYwYzc4MDUxOWNhOTdjOWRmOTNhNmJmNGEzYTU4YTc1YTAxOTZjNzFhZGY5M2Y0YjUwZWY",
                       "dataProtectionRegime": [
                         "GDPR2016"
@@ -256,7 +256,7 @@ class SelfDescriptionFactoryApplicationTests {
                       "externalId": "ID01234-123-4321",
                       "type": "ServiceOffering",
                       "holder": "BPNL000000000001",
-                       "providedBy":"https://carla.dih-cloud.com/dev/compliance_service/self-descriptions/f3f01f41-e1fe-4c7e-90c7-14b06a1b4b72/1988d094-5c57-4fa6-8fd7-837a68991a3e.json",
+                       "providedBy":"https://portal-backend.int.catena-x.net/api/administration/documents/selfDescription/c9b7b6e8-6efd-4fe4-845b-c70d18b11c35",
                       "termsAndConditions": {
                        "gx:URL": "https://shop.t-systems.de/eshop/medias/otc-GTC-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDEwNTYyMHxhcHBsaWNhdGlvbi9wZGZ8ZW1haWwtYXR0YWNobWVudHMvaDZmL2g5YS9oMDAvODg2MzA1NDgyMzQ1NC5wZGZ8ZGE5Y2UzNjRlM2Q0OWVhZDRlNjk2YWRlZDI3ZGYxYTk5YTlmM2NmMDIwODUwYWM3NWY0MzQ5OTI0YTU2YTA4ZA",
                        "gx:hash": "A884DECDE0E00D75FA204A78E0A000"
