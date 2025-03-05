@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 [Unreleased]
 ## Added
 - New changes for service offering flow type.
+- legal Participant scheam updated for local.
 ### Fixed
 - Fixed issue #239
 - Fixed issue #240 
