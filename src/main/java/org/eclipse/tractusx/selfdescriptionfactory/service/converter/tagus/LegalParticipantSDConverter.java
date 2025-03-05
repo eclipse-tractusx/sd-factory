@@ -135,6 +135,8 @@ public class LegalParticipantSDConverter implements Converter<LegalParticipantSc
                                         // Conditionally set properties based on registration number type
                                         registrationNumberSchema.getType().equals(RegistrationNumberSchema.TypeEnum.VATID)
                                                 ? mapOf("gx:vatID", registrationNumberSchema.getValue(), "gx:vatID-countryCode", "DE")
+                                                :  registrationNumberSchema.getType().equals(RegistrationNumberSchema.TypeEnum.LOCAL)
+                                                ? mapOf("gx:taxID", registrationNumberSchema.getValue())
                                                 : Map.of(regCodeMapper.apply(registrationNumberSchema.getType()), registrationNumberSchema.getValue()))
                                 .build()
                 ).build();

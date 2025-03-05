@@ -22,7 +22,10 @@ package org.eclipse.tractusx.selfdescriptionfactory.service.converter.tagus;
 
 import com.danubetech.verifiablecredentials.CredentialSubject;
 import com.danubetech.verifiablecredentials.VerifiableCredential;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.vavr.control.Try;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.client.RestClient;
 
 import java.net.URI;
 import java.time.Duration;
@@ -54,13 +58,16 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
     @Setter private Map<String, String> gaiaXTermsAndConditions;
     @Setter private List<String> gaiaXDataProtectionRegime;
     @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-participant-schema shall be defined in the configuration file") private URI gaiaXServiceSchema;
-    @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-policy shall be defined in the configuration file") private URI gaiaXPolicy;
     @Setter @Positive(message = "app.verifiableCredentials.durationDays shall be defined in the configuration file") private int durationDays;
-    @Setter @NotNull(message = "app.verifiableCredentials.catena-x-ns shall be defined in the configuration file") private String catenaXNs;
 
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
     private final TermsAndConditionsHelper termsAndConditionsHelper;
+
+    @Autowired
+    private final RestClient restClient;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Convert ServiceOfferingSchema to SelfDescription
@@ -72,7 +79,8 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
 
         var attachedVc = Try.of(() -> Utils.getAttachmentVc(serviceOfferingSchema.getAttachment(), maxRedirect)).get();
         var holderId = URI.create("http://catena-x.net/bpn/".concat(serviceOfferingSchema.getHolder()));
-        var providedBy = findLegalParticipantVc(holderId, attachedVc).isEmpty()? serviceOfferingSchema.getProvidedBy():findLegalParticipantVc(holderId, attachedVc).get().getId();
+        var legalParticipantVc = findLegalParticipantVcFromProvidedByURL(serviceOfferingSchema.getProvidedBy());
+        var providedBy = findLegalParticipantVc(holderId, attachedVc).isEmpty()? legalParticipantVc.get().getId() : findLegalParticipantVc(holderId, attachedVc).get().getId();
 
         // Create a self description with the external id from the service offering schema
         var selfDescription = new SelfDescription(serviceOfferingSchema.getExternalId());
@@ -123,6 +131,47 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
         selfDescription.getVerifiableCredentialList().add(vc);
         selfDescription.getVerifiableCredentialList().addAll(attachedVc);
         return selfDescription;
+    }
+
+    // Find a legal participant verifiable credential Id based on the ProvidedBy URL
+    private Optional<VerifiableCredential> findLegalParticipantVcFromProvidedByURL(@NotNull @Valid URI providedBy) {
+
+        var legalParticipantObjectNode = restClient.get()
+                .uri(providedBy)
+                .retrieve()
+                .body(ObjectNode.class);
+
+        if (legalParticipantObjectNode == null) {
+            throw new IllegalStateException("Legal participant verifiable credential not found at providedBy URL: " + providedBy);
+        }
+        //For Older Self Description Elbe
+        if (legalParticipantObjectNode.has("selfDescriptionCredential")) {
+            String legalPersonId = legalParticipantObjectNode.get("selfDescriptionCredential").get("LegalPerson").get("id").asText();
+            return getVerifiableCredential(providedBy, legalPersonId);
+        }
+
+        //For Tagus Self Description
+        if (legalParticipantObjectNode.has("LegalPerson")) {
+            String legalPersonId = legalParticipantObjectNode.get("LegalPerson").get("id").asText();
+            return getVerifiableCredential(providedBy, legalPersonId);
+        } else {
+            List<VerifiableCredential> vcList = objectMapper.convertValue(legalParticipantObjectNode.get("verifiableCredential"), objectMapper.getTypeFactory().constructCollectionType(List.class, VerifiableCredential.class));
+            return vcList.stream()
+                    .filter(vc -> {
+                        var credentialSubject = vc.getCredentialSubject();
+                        return credentialSubject != null
+                                && "gx:LegalParticipant".equals(credentialSubject.getType());
+                    }).findFirst();
+        }
+    }
+
+    private static Optional<VerifiableCredential> getVerifiableCredential(URI providedBy, String legalPersonId) {
+        if (legalPersonId == null || legalPersonId.isEmpty()) {
+            throw new IllegalStateException("Legal person Id not found in providedBy URL: " + providedBy);
+        }
+        return Optional.ofNullable(VerifiableCredential.builder()
+                .id(URI.create(legalPersonId))
+                .build());
     }
 
     /**
