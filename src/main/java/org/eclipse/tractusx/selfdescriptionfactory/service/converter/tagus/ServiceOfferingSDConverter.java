@@ -148,8 +148,13 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
         }
 
         if (legalParticipantObjectNode.has("selfDescriptionCredential") || legalParticipantObjectNode.has("LegalPerson")) {
-            return Optional.ofNullable(VerifiableCredential.builder()
-                    .id(URI.create(legalParticipantObjectNode.get("LegalPerson").get("id").asText()))
+
+            String legalPersonId = legalParticipantObjectNode.get("LegalPerson").get("id").asText();
+            if (legalPersonId == null || legalPersonId.isEmpty()) {
+                throw new IllegalStateException("Legal person Id not found in providedBy URL: " + providedBy);
+            }
+            Optional<VerifiableCredential> legalPersonuild = Optional.ofNullable(VerifiableCredential.builder()
+                    .id(URI.create(legalPersonId))
                     .build());
         } else {
             List<VerifiableCredential> vcList = objectMapper.convertValue(legalParticipantObjectNode.get("verifiableCredential"), objectMapper.getTypeFactory().constructCollectionType(List.class, VerifiableCredential.class));
