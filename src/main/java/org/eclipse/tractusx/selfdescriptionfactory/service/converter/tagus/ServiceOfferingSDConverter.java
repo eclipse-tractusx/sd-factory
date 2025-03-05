@@ -58,9 +58,7 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
     @Setter private Map<String, String> gaiaXTermsAndConditions;
     @Setter private List<String> gaiaXDataProtectionRegime;
     @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-participant-schema shall be defined in the configuration file") private URI gaiaXServiceSchema;
-    @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-policy shall be defined in the configuration file") private URI gaiaXPolicy;
     @Setter @Positive(message = "app.verifiableCredentials.durationDays shall be defined in the configuration file") private int durationDays;
-    @Setter @NotNull(message = "app.verifiableCredentials.catena-x-ns shall be defined in the configuration file") private String catenaXNs;
 
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
@@ -146,16 +144,16 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
         if (legalParticipantObjectNode == null) {
             throw new IllegalStateException("Legal participant verifiable credential not found at providedBy URL: " + providedBy);
         }
+        //For Older Self Description Elbe
+        if (legalParticipantObjectNode.has("selfDescriptionCredential")) {
+            String legalPersonId = legalParticipantObjectNode.get("selfDescriptionCredential").get("LegalPerson").get("id").asText();
+            return getVerifiableCredential(providedBy, legalPersonId);
+        }
 
-        if (legalParticipantObjectNode.has("selfDescriptionCredential") || legalParticipantObjectNode.has("LegalPerson")) {
-
+        //For Tagus Self Description
+        if (legalParticipantObjectNode.has("LegalPerson")) {
             String legalPersonId = legalParticipantObjectNode.get("LegalPerson").get("id").asText();
-            if (legalPersonId == null || legalPersonId.isEmpty()) {
-                throw new IllegalStateException("Legal person Id not found in providedBy URL: " + providedBy);
-            }
-            Optional<VerifiableCredential> legalPersonuild = Optional.ofNullable(VerifiableCredential.builder()
-                    .id(URI.create(legalPersonId))
-                    .build());
+            return getVerifiableCredential(providedBy, legalPersonId);
         } else {
             List<VerifiableCredential> vcList = objectMapper.convertValue(legalParticipantObjectNode.get("verifiableCredential"), objectMapper.getTypeFactory().constructCollectionType(List.class, VerifiableCredential.class));
             return vcList.stream()
@@ -165,6 +163,15 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
                                 && "gx:LegalParticipant".equals(credentialSubject.getType());
                     }).findFirst();
         }
+    }
+
+    private static Optional<VerifiableCredential> getVerifiableCredential(URI providedBy, String legalPersonId) {
+        if (legalPersonId == null || legalPersonId.isEmpty()) {
+            throw new IllegalStateException("Legal person Id not found in providedBy URL: " + providedBy);
+        }
+        return Optional.ofNullable(VerifiableCredential.builder()
+                .id(URI.create(legalPersonId))
+                .build());
     }
 
     /**
