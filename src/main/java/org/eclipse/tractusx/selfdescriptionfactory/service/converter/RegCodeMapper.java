@@ -33,6 +33,7 @@ public class RegCodeMapper {
     }
     private static final Map<RegistrationNumberSchema.TypeEnum, String> regCodeMapper = Map.of(
             RegistrationNumberSchema.TypeEnum.TAXID, "taxID",
+            RegistrationNumberSchema.TypeEnum.LOCAL, "local",
             RegistrationNumberSchema.TypeEnum.VATID, "vatID",
             RegistrationNumberSchema.TypeEnum.EUID, "EUID",
             RegistrationNumberSchema.TypeEnum.EORI, "EORI",
