@@ -5,36 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 [Unreleased]
-## Added
+
+
+## [2.1.20] - 2025-03-06
+### Added
 - New changes for service offering flow type.
 - legal Participant scheam updated for local.
 ### Fixed
 - Fixed issue #239
 - Fixed issue #240 
 
-[2.1.19] - 2025-02-24
-## Added
+## [2.1.19] - 2025-02-24
+### Added
 - Added new unit test cases.
 
-[2.1.18] - 2025-02-19
+## [2.1.18] - 2025-02-19
 ### Fixed
 - Fixed security issue for tomcat TOCTOU
 
 ### Changed
 - Updated the documentation path for ARC42
 
-[2.1.17] - 2025-02-14
+## [2.1.17] - 2025-02-14
 ### Fixed
 - Fixed gaiax policy properites value.
 
-[2.1.16] - 2025-02-14
+## [2.1.16] - 2025-02-14
 ### Fixed
 - Fixed missing properites value.
 
-[2.1.15] - 2025-02-12
+## [2.1.15] - 2025-02-12
 ### Added
-Added support for tagus-x compliance.
-Added changes to support v2 version of clearing house.
+- Added support for tagus-x compliance.
+- Added changes to support v2 version of clearing house.
 ### Changed
 - Updated Arc42 document
 
