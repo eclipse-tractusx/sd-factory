@@ -76,6 +76,9 @@ public class DefaultFeignConfig {
             if (response.request().body() != null) {
                 log.error("Original payload: {}", new String(response.request().body(), response.request().charset()));
             }
+            if(statusCode.isSameCodeAs(HttpStatusCode.valueOf(400)) && msg.contains("E2010")) {
+                return new ResponseStatusException(HttpStatusCode.valueOf(202), methodKey.concat(" : ").concat(msg));
+            }
             return new ResponseStatusException(statusCode, methodKey.concat(" : ").concat(msg));
         };
     }
