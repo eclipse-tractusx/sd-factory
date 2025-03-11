@@ -57,7 +57,7 @@ app:
       "[gx:URL]":
       "[gx:hash]":
     gaia-x-dataProtectionRegime:
-      - GDPR12345
+      - GDPR2016
     catena-x-ns: https://w3id.org/catena-x/core#
   usersDetails:
     custodianWallet:

@@ -57,7 +57,7 @@ app:
       "[gx:URL]": https://shop.t-systems.de/eshop/medias/otc-GTC-TSI.pdf?context=bWFzdGVyfGVtYWlsLWF0dGFjaG1lbnRzfDEwNTYyMHxhcHBsaWNhdGlvbi9wZGZ8ZW1haWwtYXR0YWNobWVudHMvaDZmL2g5YS9oMDAvODg2MzA1NDgyMzQ1NC5wZGZ8ZGE5Y2UzNjRlM2Q0OWVhZDRlNjk2YWRlZDI3ZGYxYTk5YTlmM2NmMDIwODUwYWM3NWY0MzQ5OTI0YTU2YTA4ZA
       "[gx:hash]": A884DECDE0E00D75FA204A78E0A000CB
     gaia-x-dataProtectionRegime:
-      - GDPR12345
+      - GDPR2016
     catena-x-ns: https://w3id.org/catena-x/core#
   usersDetails:
     clearingHouse:
