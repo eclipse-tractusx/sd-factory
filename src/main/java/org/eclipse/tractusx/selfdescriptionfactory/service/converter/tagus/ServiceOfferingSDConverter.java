@@ -59,6 +59,7 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
     @Setter private List<String> gaiaXDataProtectionRegime;
     @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-participant-schema shall be defined in the configuration file") private URI gaiaXServiceSchema;
     @Setter @Positive(message = "app.verifiableCredentials.durationDays shall be defined in the configuration file") private int durationDays;
+    @Setter @NotNull(message = "app.verifiableCredentials.gaia-x-policy shall be defined in the configuration file") private URI gaiaXPolicy;
 
     @Value("${app.maxRedirect:5}")
     private int maxRedirect;
@@ -105,8 +106,9 @@ public class ServiceOfferingSDConverter implements Converter<ServiceOfferingSche
                 .ifPresent(setter.set("gx:termsAndConditions"));
 
         // Add policies field if non-empty, using policyUri
-
         Optional.ofNullable(serviceOfferingSchema.getPolicy())
+                .map(Object.class::cast)
+                .or(() -> Optional.ofNullable(gaiaXPolicy))
                 .ifPresent(setter.set("gx:policy"));
         // Add dataProtectionRegime and dataAccountExport fields
         Optional.ofNullable(serviceOfferingSchema.getDataProtectionRegime())
