@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 [Unreleased]
 
+## [2.1.23] - 2025-03-12
+### Changed
+- Service offering for default policy value
+
 ## [2.1.22] - 2025-03-11
 ### Changed
 - Updated the application yml file
