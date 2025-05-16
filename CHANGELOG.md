@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [2.1.24] - 2025-05-15
 ### Changed
-- Updated spring boot & spring security crypto libraries
+- Updated spring boot & spring security crypto libraries.
 
 ## [2.1.23] - 2025-03-12
 ### Changed
