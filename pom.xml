@@ -294,7 +294,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.3.0</version>
+                <version>7.9.0</version>
                 <executions>
                     <execution>
                         <id>api-vRel3</id>
