@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 [Unreleased]
 
+## [2.1.25] - 2025-07-30
+### Changed
+- Updated tomcat embeded version for security fixes.
+
 ## [2.1.24] - 2025-05-15
 ### Changed
 - Updated spring boot & spring security crypto libraries.
