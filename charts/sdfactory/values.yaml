@@ -29,7 +29,7 @@ image:
     # -- Image to use for deploying an application
   repository: "tractusx/sdfactory"
     # -- Set the Image Pull Policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
     # -- Image tage is defined in chart appVersion.
   tag: ""
 
