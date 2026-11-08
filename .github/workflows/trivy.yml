@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           image-ref: "tractusx/sdfactory:latest" # Pull image from Docker Hub and run Trivy vulnerability scanner
           format: "sarif"
@@ -47,7 +47,7 @@ jobs:
           limit-severities-for-sarif: true   
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@9418214df1f2c4b8128c770156c409013b07d6b9 # v3.39.3
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
